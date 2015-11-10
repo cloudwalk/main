@@ -64,56 +64,10 @@ class Interpreter
   file_system_space { |dir, type, variable| }
 
   card_get_variable do |msg1, msg2, min, max, var|
+    Device::Display.clear
     Device::Display.print_line(msg1.value, 0, 2)
     tracks = Device::Magnetic.read_card(Device::IO.timeout)
     var.value = "#{tracks[:track1]}=#{tracks[:track2]}"
-
-
-    var.value = "#{PAN}=#{EXP}000#{PVKI}#{PVV}#{CVV}"
-
-    $device.clear(nil)
-    $device.display(0, 2, msg1.value)
-    @pause = true
-    $device.prompt "Click any button to continue."
-    $device.read do |read_key|
-      if read_key == "ENTER"
-        manual_card_input(msg1, msg2, min, max, var)
-      else
-        @pause = false
-        PAN = $device.getCard(msg1.value, msg2.value, min.value, max.value)
-        if PAN != ""
-          if PAN.size >= min.to_i && PAN.size <= max.to_i
-            EXP  = $device.getCardExp(nil)
-            PVKI = "0"
-            PVV  = "0000"
-            CVV  = $device.getCardCVV(nil)
-            var.value = "#{PAN}=#{EXP}000#{PVKI}#{PVV}#{CVV}"
-          else
-            $device.display(0, 0, "card error")
-            util_exit if input == "KEY_X"
-            if input == "ENTER"
-              manual_card_input(msg1, msg2, min, max, var)
-            end
-          end
-          posxml_loop_next
-        else
-          $device.clear(nil)
-          $device.display(0, 0, "card error")
-          $device.display(0, 1, "click ENTER to set it manually")
-          @pause = true
-          $device.prompt "Click any button to continue."
-          $device.read do |input|
-            @pause = false
-            $device.clear(nil)
-            if input == "ENTER"
-              manual_card_input(msg1, msg2, min, max, var)
-            else
-              posxml_loop_next
-            end
-          end
-        end
-      end
-    end
   end
 
 
@@ -485,51 +439,6 @@ class Interpreter
   input_getvalue do |empty, caption, columnC, lineC, columnI, lineI, max, min, var|
   end
 
-  card_get_variable do |msg1, msg2, min, max, var|
-    $device.clear(nil)
-    $device.display(0, 2, msg1.value)
-    @pause = true
-    $device.prompt "Click any button to continue."
-    $device.read do |read_key|
-      if read_key == "ENTER"
-        manual_card_input(msg1, msg2, min, max, var)
-      else
-        @pause = false
-        PAN = $device.getCard(msg1.value, msg2.value, min.value, max.value)
-        if PAN != ""
-          if PAN.size >= min.to_i && PAN.size <= max.to_i
-            EXP  = $device.getCardExp(nil)
-            PVKI = "0"
-            PVV  = "0000"
-            CVV  = $device.getCardCVV(nil)
-            var.value = "#{PAN}=#{EXP}000#{PVKI}#{PVV}#{CVV}"
-          else
-            $device.display(0, 0, "card error")
-            util_exit if input == "KEY_X"
-            if input == "ENTER"
-              manual_card_input(msg1, msg2, min, max, var)
-            end
-          end
-          posxml_loop_next
-        else
-          $device.clear(nil)
-          $device.display(0, 0, "card error")
-          $device.display(0, 1, "click ENTER to set it manually")
-          @pause = true
-          $device.prompt "Click any button to continue."
-          $device.read do |input|
-            @pause = false
-            $device.clear(nil)
-            if input == "ENTER"
-              manual_card_input(msg1, msg2, min, max, var)
-            else
-              posxml_loop_next
-            end
-          end
-        end
-      end
-    end
-  end
 
   card_read do |key, card, timeout, var|
     @pause = true
