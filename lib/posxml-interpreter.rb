@@ -646,14 +646,6 @@ class Interpreter
     end
   end
 
-  # We cannot call posxml_push_function with "number" alone after posxml_jump!
-  # because it will take the next value, not the current one
-  # We have to use @number - 1, @number only causes the next instruction to fail.
-  def flow_function_call(jump_point, function_name)
-    posxml_push_function(@number-1)
-    posxml_jump!(jump_point.value)
-  end
-
   # MRuby do not have rjust or insert
   def rjust(string1, string2)
     if string1.size > string2.size

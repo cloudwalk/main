@@ -21,9 +21,9 @@ module PosxmlParser
     end
 
     def flow_function_call(jump_point, function_name)
-      posxml_jump!(jump_point.value)
       # Push current
-      posxml_push_function(number)
+      posxml_push_function(number - 1)
+      posxml_jump!(jump_point.value)
     end
 
     def flow_function_end
