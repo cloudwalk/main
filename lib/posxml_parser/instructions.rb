@@ -492,67 +492,67 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def string_char_at
+    def string_char_at(string,character_index,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_element_at
+    def string_element_at(string,element_index,delimiter,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_elements
+    def string_elements(string,delimiter,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_find
+    def string_find(string,substring,start,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_get_value_by_key
+    def string_get_value_by_key(string,key,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_trim
+    def string_trim(string,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_insert_at
+    def string_insert_at(string,string_to_be_inserted,element_index,delimiter,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_pad
+    def string_pad(origin,character,align,length,destination)
       # Should be implemented by platform
     end
 
-    def string_remove_at
+    def string_remove_at(string,element_index,delimiter,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_replace
+    def string_replace(original_string,old_substring,new_substring,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_replace_at
+    def string_replace_at(string,new_element,element_index,delimiter,variablereturn)
       # Should be implemented by platform
     end
 
-    def string_substring
+    def string_substring(string,start,length,variablereturn)
       # Should be implemented by platform
     end
 
-    def smartcard_insert_card
+    def smartcard_insert_card(slot,variablereturn)
       # Should be implemented by platform
     end
 
-    def smartcard_reader_close
+    def smartcard_reader_close(slot,variablereturn)
       # Should be implemented by platform
     end
 
-    def smartcard_reader_start
+    def smartcard_reader_start(slot,variablereturn)
       # Should be implemented by platform
     end
 
-    def smartcard_transmit_APDU
+    def smartcard_transmit_APDU(slot,header,LC,datafield,LE,variabledatafieldresponse,variableSW,variablereturn)
       # Should be implemented by platform
     end
 
@@ -564,7 +564,7 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def util_system_info
+    def util_system_info(type,variablereturn)
       # Should be implemented by platform
     end
 
@@ -576,11 +576,11 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def util_wait_key_timeout(timeout_milliseconds)
+    def util_wait_key_timeout(timeout_seconds)
       # Should be implemented by platform
     end
 
-    def util_wait
+    def util_wait(timeout_milliseconds)
       # Should be implemented by platform
     end
 
@@ -588,7 +588,7 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def util_parse_ticket
+    def util_parse_ticket(productmenu,ticket,message,literal,variablereturn)
       # Should be implemented by platform
     end
 
