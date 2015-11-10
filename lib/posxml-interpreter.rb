@@ -756,18 +756,6 @@ class Interpreter
     end
   end
 
-  def integer_convert_to_binary(number, base, size, variable)
-    b = number.to_i().to_s(base)
-    if b.size < size.to_i
-      if base.to_i == 2
-        b = ("0" * (size.to_i/4 - b.size)) + b
-      else
-        b = ("0" * (size.to_i - b.size)) + b
-      end
-    end
-    variable.value = b.upcase
-  end
-
   def flow_if(jump_point, variable1, operator, variable2=Variable.new(""))
     variable2.value = "" if variable2.value == " "
     if !Variable::OPERATORS[operator.value.to_s]

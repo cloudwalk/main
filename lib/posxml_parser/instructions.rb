@@ -225,52 +225,91 @@ module PosxmlParser
       integer.value = string.value.to_i
     end
 
-    def string_char_at(string,character_index,variablereturn)
-      # Should be implemented by platform
+    def string_char_at(string, index, variable)
+      variable.value = string.value[index.to_i]
     end
 
-    def string_element_at(string,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
+    def string_element_at(string, index, delimiter, variable)
+      variable.value = string.value.split(delimiter.value)[index.to_i]
     end
 
-    def string_elements(string,delimiter,variablereturn)
-      # Should be implemented by platform
+    def string_elements(string, delimiter, variable)
+      variable.value = string.to_s.split(delimiter.value).size
     end
 
-    def string_find(string,substring,start,variablereturn)
-      # Should be implemented by platform
+    def string_find(str, sub, start, variable)
+      str = str.value
+      sub = sub.value
+      start = start.value.to_i
+      if str && str.size > start
+        index = str.index(sub)
+        variable.value = index == nil ? -1 : (index >= start ? index - start : -1)
+      else
+        variable.value = -1
+      end
     end
 
-    def string_get_value_by_key(string,key,variablereturn)
-      # Should be implemented by platform
+    def string_get_value_by_key(string, key, variable)
+      index = string.value.index(key.value+"=")
+      if index
+        from_index = string.value[index+key.value.size+1..-1]
+        last_quote_index = from_index.rindex("\"")
+        from_index = from_index[0..last_quote_index] + "," + from_index[last_quote_index..-1]
+        variable.value = from_index.split("\",")[0]
+      end
     end
 
-    def string_trim(string,variablereturn)
-      # Should be implemented by platform
+    def string_trim(str, variable)
+      strip = str.value.strip
+      variable.value = strip if strip
     end
 
-    def string_insert_at(string,string_to_be_inserted,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
+    def string_insert_at(string, insert, index, delimiter, variable)
+      parts    = string.value.split(delimiter.value)
+      index    = index.to_i
+      head     = parts[0..(index-1)]
+      head[-1] = head[-1]+insert.value
+      tail     = parts[(index)..-1]
+      variable.value = head.join(delimiter.value) + tail.join(delimiter.value)
     end
 
-    def string_pad(origin,character,align,length,destination)
-      # Should be implemented by platform
+    def string_pad(origin, char, align, length, destination)
+      length = length.to_i - origin.value.size
+      chars = char.value * length
+      case align.value
+      when "left"
+        destination.value = chars + origin.value
+      when "right"
+        destination.value = origin.value + chars
+      end
     end
 
-    def string_remove_at(string,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
+    def string_remove_at(original, index, delimiter, variable)
+      parts = original.value.split(delimiter.value)
+      parts.delete_at(index.value.to_i)
+      variable.value = parts.join(delimiter.value)
     end
 
-    def string_replace(original_string,old_substring,new_substring,variablereturn)
-      # Should be implemented by platform
+    def string_replace(original, old, new, variable)
+      sub = original.value.gsub old.value, new.value
+      variable.value = sub ? sub : original.value
     end
 
-    def string_replace_at(string,new_element,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
+    def string_replace_at(string, replace, index, delimiter, variable)
+      parts = string.value.split(delimiter.value)
+      index = index.to_i
+      parts[index] = replace.value
+      variable.value = parts.join(delimiter.value)
     end
 
-    def string_substring(string,start,length,variablereturn)
-      # Should be implemented by platform
+    def string_substring(index, source, destination, char, variable)
+      parts = source.to_s.split(char.to_s)
+      if index.to_i >= 0 && parts.size > index.to_i
+        destination.value = parts[index.to_i]
+        variable.value = index.to_i
+      else
+        variable.value =  -1
+      end
     end
 
     def card_get_variable(msg1, msg2, min, max, var)
