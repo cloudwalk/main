@@ -637,26 +637,6 @@ class Interpreter
     $device.read(&read)
   end
 
-  # posxml_conditional fixed to work without needing to check for ZeroDivisionError
-  def posxml_conditional(jump, variable1, operator, variable2)
-    value1, value2 = rjust(variable1.to_s, variable2.to_s)
-    op = operator.to_operator
-    unless value1.send(op, value2)
-      posxml_jump!(jump.value)
-    end
-  end
-
-  # MRuby do not have rjust or insert
-  def rjust(string1, string2)
-    if string1.size > string2.size
-      insert = ("0" * (string1.size - string2.size))
-      [string1, insert + string2]
-    else
-      insert = ("0" * (string2.size - string1.size))
-      [insert + string1, string2]
-    end
-  end
-
   def string_elements(string, delimiter, variable)
     variable.value = string.to_s.split(delimiter.value).size
   end

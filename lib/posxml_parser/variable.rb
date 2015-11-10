@@ -53,7 +53,7 @@ class Variable
   # TODO: Verify if operator is valid
   # TODO: Test new operator and zero division
   def compare(operator_variable, variable2)
-    value1, value2 = rjust(self.value, variable2.value)
+    value1, value2 = rjust(self.value.to_s, variable2.value.to_s)
     operator = operator_variable.to_operator
 
     value1.send(operator, value2)
