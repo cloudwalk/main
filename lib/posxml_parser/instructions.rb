@@ -42,77 +42,16 @@ module PosxmlParser
       posxml_jump!(jump_point.value)
     end
 
+    def util_exit
+      posxml_load!(file_main)
+    end
+
     def string_variable(value, index)
       posxml_define_variable(value.value, index.value)
     end
 
     def integer_variable(value, index)
       posxml_define_variable(value.value, index.value)
-    end
-
-    def string_to_hex(string, hex)
-      hex.value = string.value.to_s.unpack('H*').first
-    end
-
-    def string_hex_to_string(hex, string)
-      string.value = [hex.value.to_s].pack('H*')
-    end
-
-    def string_join(string1, string2, result)
-      result.value = "#{string1.value}#{string2.value}"
-    end
-
-    def string_length(string, variable)
-      variable.value = string.value.to_s.size
-    end
-
-    def string_string_substring(string, start, length, substring)
-      substring.value = string.value[start.value.to_i, length.value.to_i]
-    end
-
-    def integer_to_string(integer, string)
-      string.value = integer.value.to_s
-    end
-
-    def integer_operator(operator, integer)
-      if operator.value == "++"
-        integer.value = integer.to_i + 1
-      elsif operator.value == "--"
-        integer.value = integer.to_i - 1
-      end
-    end
-
-    def string_to_integer(string, integer)
-      integer.value = string.value.to_i
-    end
-
-    def binary_convert_to_integer(base, string, integer)
-      case base.value
-      when "2"
-        integer.value = string.value.to_i(2)
-      when "10"
-        integer.value = string.value.to_i(16)
-      when "16"
-        integer.value = string.value.to_i(16)
-      end
-    end
-
-    #TODO Refactory need
-    def datetime_get(format_string, string)
-      format = format_string.value
-      format.match(/yy/) == nil ? format = format.gsub(/y/, "\%y") : format = format.gsub(/yy/, "\%Y")
-
-      format = format.gsub(/M/, "\%m")
-      format = format.gsub(/d/, "\%d")
-      format = format.gsub(/h/, "\%H")
-      format = format.gsub(/m/, "\%M")
-      format = format.gsub(/s/, "\%S")
-      #To fix month and minutes confusion
-      format = format.gsub(/%%M/, "\%m")
-
-      datetime = Time.now
-
-      string.value = datetime.strftime(format)
     end
 
     def file_download(file_name, remote_path, variable)
@@ -204,17 +143,135 @@ module PosxmlParser
       end
     end
 
+    #TODO Refactory need
+    def datetime_get(format_string, string)
+      format = format_string.value
+      format.match(/yy/) == nil ? format = format.gsub(/y/, "\%y") : format = format.gsub(/yy/, "\%Y")
+
+      format = format.gsub(/M/, "\%m")
+      format = format.gsub(/d/, "\%d")
+      format = format.gsub(/h/, "\%H")
+      format = format.gsub(/m/, "\%M")
+      format = format.gsub(/s/, "\%S")
+      #To fix month and minutes confusion
+      format = format.gsub(/%%M/, "\%m")
+
+      datetime = Time.now
+
+      string.value = datetime.strftime(format)
+    end
+
     def util_math(result, operator, variable1, variable2)
       result.value = variable1.compare(operator, variable2)
     end
 
-    def util_exit
-      posxml_load!(file_main)
+
+    def string_to_hex(string, hex)
+      hex.value = string.value.to_s.unpack('H*').first
     end
 
+    def string_hex_to_string(hex, string)
+      string.value = [hex.value.to_s].pack('H*')
+    end
 
+    def string_join(string1, string2, result)
+      result.value = "#{string1.value}#{string2.value}"
+    end
 
+    def binary_convert_to_integer(base, string, integer)
+      case base.value
+      when "2"
+        integer.value = string.value.to_i(2)
+      when "10"
+        integer.value = string.value.to_i(16)
+      when "16"
+        integer.value = string.value.to_i(16)
+      end
+    end
 
+    def integer_convert_to_binary(number, base, size, variable)
+      binary = number.to_i.to_s(base.to_i)
+      if binary.size < size.to_i
+        if base.to_i == 2
+          binary = ("0" * (size.to_i/4 - binary.size)) + binary
+        else
+          binary = ("0" * (size.to_i - binary.size)) + binary
+        end
+      end
+      variable.value = binary.upcase
+    end
+
+    def integer_to_string(integer, string)
+      string.value = integer.value.to_s
+    end
+
+    def integer_operator(operator, integer)
+      if operator.value == "++"
+        integer.value = integer.to_i + 1
+      elsif operator.value == "--"
+        integer.value = integer.to_i - 1
+      end
+    end
+
+    def string_length(string, variable)
+      variable.value = string.value.to_s.size
+    end
+
+    def string_string_substring(string, start, length, substring)
+      substring.value = string.value[start.value.to_i, length.value.to_i]
+    end
+
+    def string_to_integer(string, integer)
+      integer.value = string.value.to_i
+    end
+
+    def string_char_at(string,character_index,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_element_at(string,element_index,delimiter,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_elements(string,delimiter,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_find(string,substring,start,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_get_value_by_key(string,key,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_trim(string,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_insert_at(string,string_to_be_inserted,element_index,delimiter,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_pad(origin,character,align,length,destination)
+      # Should be implemented by platform
+    end
+
+    def string_remove_at(string,element_index,delimiter,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_replace(original_string,old_substring,new_substring,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_replace_at(string,new_element,element_index,delimiter,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_substring(string,start,length,variablereturn)
+      # Should be implemented by platform
+    end
 
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
@@ -489,54 +546,6 @@ module PosxmlParser
     end
 
     def emv_removecard(variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_char_at(string,character_index,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_element_at(string,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_elements(string,delimiter,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_find(string,substring,start,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_get_value_by_key(string,key,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_trim(string,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_insert_at(string,string_to_be_inserted,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_pad(origin,character,align,length,destination)
-      # Should be implemented by platform
-    end
-
-    def string_remove_at(string,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_replace(original_string,old_substring,new_substring,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_replace_at(string,new_element,element_index,delimiter,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def string_substring(string,start,length,variablereturn)
       # Should be implemented by platform
     end
 
