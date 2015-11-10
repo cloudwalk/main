@@ -53,15 +53,40 @@ class Interpreter
     variable.value = 0
   end
 
-  card_read do |key, card, timeout, result|
-    result.value = Device::Magnetic.read_card(timeout.to_i)
-  end
-
   # TODO Implement
   util_exit { }
 
   # TODO Won't be implemented
   file_system_space { |dir, type, variable| }
+
+  card_read do |key, card, timeout, result|
+    EmvFlow.start
+    mag     = Device::Magnetic.new
+    emv     = PosxmlEmv.transaction
+    timeout = Time.now + timeout.to_i
+
+    while true
+      key_pressed = getc(900)
+      if key_pressed != Device::IO::KEY_TIMEOUT
+        key.value = key_pressed
+        break
+      elsif mag.swiped?
+        tracks = mag.tracks
+        card.value = "#{tracks[:track1]}=#{tracks[:track2]}"
+        result.value = 0
+        break
+      elsif emv && emv.detected?
+        emv.process
+        result.value = 1
+        break
+      elsif timeout > Time.now
+        result.value = -2
+        break
+      end
+    end
+  ensure
+    mag.close
+  end
 
   card_get_variable do |msg1, msg2, min, max, var|
     Device::Display.clear
@@ -437,51 +462,6 @@ class Interpreter
   end
 
   input_getvalue do |empty, caption, columnC, lineC, columnI, lineI, max, min, var|
-  end
-
-
-  card_read do |key, card, timeout, var|
-    @pause = true
-    $device.prompt "Press 1 to insert the card or 2 to swipe it."
-    var.value  = -2
-    read = Proc.new do |read_key|
-      key.value = read_key
-      if !(read_key == "1" || read_key == "2")
-        $device.prompt "Press 1 to insert the card or 2 to swipe it."
-        $device.read(timeout.to_i, &read)
-      elsif read_key == "ENTER"
-        manual_card_input(Variable.new("Manual Card Input"), Variable.new("Enter the card number"), Variable.new(12), Variable.new(16), card)
-      else
-        $device.prompt "Processing the card..."
-        key.value = read_key
-        $device.read(1000) do |read_key2|
-          if read_key2 == "ENTER"
-            manual_card_input(Variable.new("Manual Card Input"), Variable.new("Enter the card number"), Variable.new(12), Variable.new(16), card)
-          else
-            @pause = false
-            PAN = $device.getCard(nil)
-            if PAN == ""
-              var.value  = -2
-              $device.prompt "Failed to get the card, please set up one"
-            else
-              if read_key == "1"
-                var.value  = 1
-                card.value = PAN
-              else
-                var.value  = 0
-                EXP  = $device.getCardExp(nil)
-                PVKI = "0"
-                PVV  = "0000"
-                CVV  = $device.getCardCVV(nil)
-                card.value = "#{PAN}=#{EXP}000#{PVKI}#{PVV}#{CVV}"
-              end
-            end
-            posxml_loop_next
-          end
-        end
-      end
-    end
-    $device.read(timeout.to_i, &read)
   end
 
   # type:     1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch.
