@@ -65,12 +65,12 @@ class Variable
     OPERATORS[self.value.to_s]
   end
 
-  def to_i
-    self.value.to_i
+  def to_i(*args)
+    self.value.to_i(*args)
   end
 
-  def to_s
-    self.value.to_s
+  def to_s(*args)
+    self.value.to_s(*args)
   end
 
   private
