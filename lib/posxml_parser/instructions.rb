@@ -12,6 +12,10 @@ module PosxmlParser
     def flow_end_if
     end
 
+    def flow_execute(file_name)
+      posxml_load!(file_name.value)
+    end
+
     def flow_function(jump_point, function_name)
       posxml_jump!(jump_point.value)
     end
@@ -36,10 +40,6 @@ module PosxmlParser
 
     def flow_while_end(jump_point)
       posxml_jump!(jump_point.value)
-    end
-
-    def flow_execute(file_name)
-      posxml_load!(file_name.value)
     end
 
     def string_variable(value, index)
@@ -113,10 +113,6 @@ module PosxmlParser
       datetime = Time.now
 
       string.value = datetime.strftime(format)
-    end
-
-    def file_system_space(dir, type, variable)
-      # Should be implemented by platform
     end
 
     def file_download(file_name, remote_path, variable)
@@ -208,43 +204,39 @@ module PosxmlParser
       end
     end
 
-    def network_check_gprs_signal(variable1)
-      # Should be implemented by platform
-    end
-
-    def interface_clean_display
-      # Should be implemented by platform
-    end
-
-    def util_system_checkbattery(variable)
-      # Should be implemented by platform
-    end
-
     def util_math(result, operator, variable1, variable2)
       result.value = variable1.compare(operator, variable2)
     end
 
-    def util_read_key(timeout_milliseconds, variable)
+    def util_exit
+      posxml_load!(file_main)
+    end
+
+
+
+
+
+    def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
 
-    def util_wait_key_timeout(timeout_milliseconds)
+    def card_get(msg1, msg2, min, max, var)
+      # Deprecated, shouldn't be implemented
+    end
+
+    def card_read(key, card, timeout, result)
       # Should be implemented by platform
     end
 
-    def util_wait_key
+    def card_system_input_transaction(key, card, timeout, var, keyboard, type)
       # Should be implemented by platform
     end
 
-    def input_money(variable, line, column, message)
+    def interface_menu(variable, options)
       # Should be implemented by platform
     end
 
-    def input_format(variable, line, column, message, type)
-      # Should be implemented by platform
-    end
-
-    def interface_menu_header(variable, options)
+    def interface_menu_header(header, options, timeout_header, timeout, variable)
       # Should be implemented by platform
     end
 
@@ -256,11 +248,347 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def util_exit
-      posxml_load!(file_main)
+    def interface_clean_display
+      # Should be implemented by platform
     end
 
-    def card_read(key, card, timeout, result)
+    def interface_system_get_touchscreen(axis_x, axis_y, variable)
+      # Should be implemented by platform
+    end
+
+    def print(message)
+      # Should be implemented by platform
+    end
+
+    def print_big(message)
+      # Should be implemented by platform
+    end
+
+    def print_barcode(number)
+      # Should be implemented by platform
+    end
+
+    def print_bitmap(filename)
+      # Should be implemented by platform
+    end
+
+    def print_check_paper_out(variable)
+      # Should be implemented by platform
+    end
+
+    def print_paper_feed
+      # Should be implemented by platform
+    end
+
+    def input_float(variable,line,column,message)
+      # Should be implemented by platform
+    end
+
+    def input_integer(variable,line,column,message,minimum,maximum)
+      # Should be implemented by platform
+    end
+
+    def input_option(variable,line,column,message,minimum,maximum)
+      # Should be implemented by platform
+    end
+
+    def input_money(variable,line,column,message)
+      # Should be implemented by platform
+    end
+
+    def input_format(variable, line, column, message, type)
+      # Should be implemented by platform
+    end
+
+    def input_getvalue(linecaption,columncaption,caption,lineinput,columninput,minimum,maximum,allowsempty,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def crypto_encryptdecrypt(message,key,cryptotype,type,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def crypto_lrc(buffer,size,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def crypto_xor(buffer1,buffer2,size,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def crypto_crc(buffer,size,crctype,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def file_list(dir,listfilename,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def file_system_space(dir, type, variable)
+      # Should be implemented by platform
+    end
+
+    def file_open(mode,filename,variablehandle)
+      # Should be implemented by platform
+    end
+
+    def file_close(handle)
+      # Should be implemented by platform
+    end
+
+    def file_read(handle,size,variablebuffer,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def file_write(handle,size,buffer)
+      # Should be implemented by platform
+    end
+
+    def file_read_by_index(filename,index,variablekey,variablevalue,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def file_unzip(filename,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_init_field_table(filename,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_init_message(format,id,variablemessage,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_analyze_message(format,size,variablemessage,variableid,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_end_message(variablesize,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_put_field(fieldnumber,type,value,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_get_field(fieldnumber,type,variablevalue,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_transact_message(channel,header,trailler,isomsg,variableresponse,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def serial_open_port(port,rate,configuration,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def serial_read_port(variablehandle,variablebuffer,bytes,timeout,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def serial_write_port(variablehandle,buffer)
+      # Should be implemented by platform
+    end
+
+    def serial_close_port(variablehandle)
+      # Should be implemented by platform
+    end
+
+    def datetime_adjust(datetime)
+      # Deprecated, shouldn't be implemented
+    end
+
+    def datetime_calculate(operation,type,date,greaterdate,value,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def network_pre_dial(option,variablestatus)
+      # Should be implemented by platform
+    end
+
+    def network_shutdown_modem
+      # Should be implemented by platform
+    end
+
+    def network_check_gprs_signal(variablestatus)
+      # Should be implemented by platform
+    end
+
+    def network_ping(host,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def pinpad_open(type,variableserialnumber,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def pinpad_display(message)
+      # Should be implemented by platform
+    end
+
+    def pinpad_getkey(message,timeout,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def pinpad_getpindukpt(message,type,pan,maxlen,variablereturnpin,variablereturnksn,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def pinpad_loadipek(ipek,ksn,type,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def pinpad_close(message)
+      # Should be implemented by platform
+    end
+
+    def emv_open(variablereturn,mkslot,pinpadtype,pinpadwk,showamount)
+      # Should be implemented by platform
+    end
+
+    def emv_close(variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_loadtables(acquirer,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_settimeout(seconds,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_cleanstructures
+      # Should be implemented by platform
+    end
+
+    def emv_adddata(type,parameter,value,variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_getinfo(type,parameter,value)
+      # Should be implemented by platform
+    end
+
+    def emv_inittransaction(variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_processtransaction(variablereturn,ctls)
+      # Should be implemented by platform
+    end
+
+    def emv_finishtransaction(variablereturn)
+      # Should be implemented by platform
+    end
+
+    def emv_removecard(variablereturn)
+      # Should be implemented by platform
+    end
+
+    def string_char_at
+      # Should be implemented by platform
+    end
+
+    def string_element_at
+      # Should be implemented by platform
+    end
+
+    def string_elements
+      # Should be implemented by platform
+    end
+
+    def string_find
+      # Should be implemented by platform
+    end
+
+    def string_get_value_by_key
+      # Should be implemented by platform
+    end
+
+    def string_trim
+      # Should be implemented by platform
+    end
+
+    def string_insert_at
+      # Should be implemented by platform
+    end
+
+    def string_pad
+      # Should be implemented by platform
+    end
+
+    def string_remove_at
+      # Should be implemented by platform
+    end
+
+    def string_replace
+      # Should be implemented by platform
+    end
+
+    def string_replace_at
+      # Should be implemented by platform
+    end
+
+    def string_substring
+      # Should be implemented by platform
+    end
+
+    def smartcard_insert_card
+      # Should be implemented by platform
+    end
+
+    def smartcard_reader_close
+      # Should be implemented by platform
+    end
+
+    def smartcard_reader_start
+      # Should be implemented by platform
+    end
+
+    def smartcard_transmit_APDU
+      # Should be implemented by platform
+    end
+
+    def util_system_beep
+      # Should be implemented by platform
+    end
+
+    def util_system_checkbattery
+      # Should be implemented by platform
+    end
+
+    def util_system_info
+      # Should be implemented by platform
+    end
+
+    def util_system_restart
+      # Should be implemented by platform
+    end
+
+    def util_wait_key
+      # Should be implemented by platform
+    end
+
+    def util_wait_key_timeout(timeout_milliseconds)
+      # Should be implemented by platform
+    end
+
+    def util_wait
+      # Should be implemented by platform
+    end
+
+    def util_read_key(timeout_milliseconds, variable)
+      # Should be implemented by platform
+    end
+
+    def util_parse_ticket
       # Should be implemented by platform
     end
 
