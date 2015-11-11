@@ -629,6 +629,10 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
+    def util_system_qrcode(filename, input, size, version)
+      # Should be implemented by platform
+    end
+
     def util_wait_key
       # Should be implemented by platform
     end

@@ -2,6 +2,7 @@
 module PosxmlParser
   module Bytecode
     INSTRUCTIONS = {
+      # Already implemented in pure ruby
       "I"    => :flow_if,
       ","    => :flow_else,
       "E"    => :flow_end_if,
@@ -49,7 +50,7 @@ module PosxmlParser
       "\x0E" => :string_replace,
       "\x12" => :string_replace_at,
       "<"    => :string_substring,
-
+      # Not implemented in pure ruby
       "k"    => :card_get_variable,
       "c"    => :card_get,
       "&"    => :card_read,
@@ -127,6 +128,7 @@ module PosxmlParser
       "\x27" => :util_system_checkbattery,
       "`"    => :util_system_info,
       "\x17" => :util_system_restart,
+      "\x94" => :util_system_qrcode,
       "u"    => :util_wait_key,
       "U"    => :util_wait_key_timeout,
       "C"    => :util_wait,
