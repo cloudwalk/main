@@ -30,7 +30,7 @@ module PosxmlParser
     file_handle     = File.open(posxml_file_path(file), "r")
     @file           = file
     @function_stack = Array.new
-    @bytecode       = file_handle.read
+    @bytecode       = file_handle.read(File.size(posxml_file_path(file)))
     @number         = 0
 
     file_handle.close
