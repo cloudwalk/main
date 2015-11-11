@@ -77,7 +77,8 @@ module PosxmlParser
     end
 
     def file_size(file_name, result)
-      result.value = File.size(posxml_file_path(file_name.value))
+      path = posxml_file_path(file_name.value)
+      result.value = File.exists?(path) ? File.size(path) : -1
     end
 
     def file_delete(file_name)
