@@ -18,6 +18,7 @@ module PosxmlParser
       "4"    => :file_download,
       "\x19" => :file_size,
       "x"    => :file_delete,
+      "\x8A" => :file_rename,
       "A"    => :file_edit_db,
       "B"    => :file_read_db,
       "\x15" => :network_send,

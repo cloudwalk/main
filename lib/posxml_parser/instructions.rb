@@ -87,6 +87,15 @@ module PosxmlParser
       end
     end
 
+    def file_rename(old, new, variable)
+      if File.exists?(old.value)
+        File.rename(old.value, new.value)
+        variable.value = 0 # OK
+      else
+        variable.value = -1 # NOT OK
+      end
+    end
+
     def file_edit_db(file_name, key, value)
       posxml_write_db(file_name.value, key.value, value.value)
     end
