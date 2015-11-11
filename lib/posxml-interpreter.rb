@@ -108,7 +108,8 @@ class Interpreter
   interface_clean_display { Device::Display.clear }
 
   interface_system_get_touchscreen do |axis_x, axis_y, variable|
-    # TODO Implement
+    # TODO Scalone: Low priority implementation. A DaFunk touchscreen interface
+    # is neecesary to be implemented.
     variable.value = 0
   end
 
@@ -116,66 +117,27 @@ class Interpreter
   print_big { |v| Device::Printer.print_big v.value }
 
   print_barcode do |horizontal, number|
-    # TODO Implement
+    # TODO Scalone: Low priority implementation. A DaFunk touchscreen interface
+    # is neecesary to be implemented.
   end
 
   print_bitmap do |filename, variable|
     Device::Printer.print_bmp(posxml_file_path(filename.value))
   end
 
-  print_check_paper_out { |variable|}
-  print_paper_feed      {  }
+  print_check_paper_out { |variable| variable.value = Device::Printer.check }
+  print_paper_feed      { Device::Printer.paperfeed }
 
   input_float do |variable, line, column, message|
-    total_input = ""
-    @pause = true
-    read = Proc.new do |input, remove|
-      if input == "KEY_X"
-        variable.value = -2
-        @pause = false
-        posxml_loop_next
-      elsif input != "ENTER" # The green button
-        total_input = total_input[0..-2] if remove
-        total_input << input
-        $device.display(0, line.value, message.value+total_input)
-        $device.read(&read)
-      else
-        variable.value = total_input
-        @pause = false
-        posxml_loop_next
-      end
-    end
-    $device.display(0, line.value, message.value + (variable.value ? variable.value : ""))
-    $device.prompt "Click any button to continue."
-    $device.read(&read)
+    # TODO Scalone: Low priority implementation.
   end
 
   input_integer do |variable, line, column, message, min, max|
-    total_input = ""
-    @pause = true
-    read = Proc.new do |input, remove|
-      if input == "KEY_X"
-        variable.value = -2
-        @pause = false
-        posxml_loop_next
-      elsif input != "ENTER" # The green button
-        total_input = total_input[0..-2] if remove
-        total_input << input
-        $device.display(0, line.value, message.value+total_input)
-        $device.read(&read)
-      else
-        variable.value = total_input
-        @pause = false
-        posxml_loop_next
-      end
-    end
-    $device.display(0, line.value, message.value + (variable.value ? variable.value : ""))
-    $device.prompt "Click any button to continue."
-    $device.read(&read)
+    # TODO Scalone: Low priority implementation.
   end
 
   input_option do |var, line, column, message, min, max|
-    input_integer(var, line, column, message, min, max)
+    # TODO Scalone: Low priority implementation.
   end
 
   input_money do |v, line, column, message|
@@ -204,6 +166,7 @@ class Interpreter
   end
 
   input_getvalue do |empty, caption, columnC, lineC, columnI, lineI, max, min, var|
+    # TODO Scalone: Low priority implementation.
   end
 
   crypto_encryptdecrypt do |message,key,cryptotype,type,variablereturn|
@@ -211,15 +174,15 @@ class Interpreter
   end
 
   crypto_lrc do |buffer,size,variablereturn|
-    # Should be implemented by platform
+    # TODO Scalone: Low priority implementation.
   end
 
   crypto_xor do |buffer1,buffer2,size,variablereturn|
-    # Should be implemented by platform
+    # TODO Scalone: Low priority implementation.
   end
 
   crypto_crc do |buffer,size,crctype,variablereturn|
-    # Should be implemented by platform
+    # TODO Scalone: Low priority implementation.
   end
 
   file_list do |dir, listfilename, var|
