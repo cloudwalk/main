@@ -77,55 +77,23 @@ class Interpreter
   card_system_input_transaction do |key, card, timeout, var, keyboard, type|
     # TODO Scalone: Low priority implementation
   end
+
+  def parse_menu_selection(options)
+    options.split(".").each_with_index.inject({}) do
+      |hash, values| hash[values[0]] = values[1]; hash
     end
   end
 
   interface_menu do |variable,options|
-    @pause = true
-    $device.clear(nil)
-    options_slides = options.value.index("\\") != nil ? options.value.split("\\") : options.value
-    lines = screen_lines - 1 # -1 because length
-    next_first_option = 1
-    i = 0
-    while i <= lines
-      option = i < options_slides.length && options_slides[i].length > 0 ? options_slides[i] : " "*screen_columns
-      $device.display(0, i, option)
-      i += 1
-    end
-    read = Proc.new do |input, remove|
-      if input == "ENTER"
-        first = next_first_option + lines
-        first = 0 if first > options_slides.length
-        i = first
-        while (i-first) <= lines
-          option = i < options_slides.length && options_slides[i].length > 0 ? options_slides[i] : " "*screen_columns
-          $device.display(0, i-first, option)
-          i += 1
-        end
-        next_first_option = first + 1
-        $device.read(&read)
-      else
-        if input == "KEY_X" || input.match(/[0-9]/)
-          variable.value = input == "KEY_X" ? KEY_CANCEL : input
-          $device.clear(nil)
-          @pause = false
-          posxml_loop_next
-        else
-          $device.read(&read)
-        end
-      end
-    end
-    $device.read(&read)
+    variable.value = menu(nil, parse_menu_selection(options.value), number: false)
   end
 
-  # TODO Scalone: Missing some implementation
-  interface_menu_header do |header, options, timeout_header, timeout, variable|
+  # TODO Scalone: Missing some implementation:
+  #  - Title hot swapping.
+  #  - Title datetime.
+  interface_menu_header do |header, selection, timeout_header, timeout, variable|
     options = { number: false, timeout: timeout.value.to_i*1000 }
-    selection = options.split(".").each_with_index.inject({}) do
-      |hash, values| hash[values[0]] = values[1]; hash
-    end
-
-    variable.value = menu(header.value, selection, options)
+    variable.value = menu(header.value, parse_menu_selection(selection.value), options)
   end
 
   interface_display do |column, line, text|
