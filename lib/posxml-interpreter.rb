@@ -75,41 +75,8 @@ class Interpreter
   # card:     It contains the track 2 and/or track 1 only when inputtype equals to 1.
   # var:      0 when a key is pressed or when the card input happens with success. -1 if it fails reading the tracks. -2 for timeout. For EMV chip or contactless: 1 for success, less than 1 for errors.
   card_system_input_transaction do |key, card, timeout, var, keyboard, type|
-    $device.prompt "Press 1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch"
-    var.value = 0
-    @pause = true
-    $device.read(timeout.to_i) do |input|
-      @pause     = false
-      type.value = input
-      key.value  = input
-      case input
-      when "1"
-        p "Processing magstripe..."
-        PAN = $device.getCard("", "", 12, 16)
-        if PAN != ""
-          EXP  = $device.getCardExp(nil)
-          PVKI = "0"
-          PVV  = "0000"
-          CVV  = $device.getCardCVV(nil)
-          card.value = "#{PAN}=#{EXP}000#{PVKI}#{PVV}#{CVV}"
-        else
-          p "Click on a card in the cards panel."
-          var.value  = -1
-        end
-      when "2"
-        p "Processing chip..."
-        p "WARNING: EMV is not yet implemented in the emulator."
-      when "3"
-        p "Processing contactless..."
-        p "WARNING: EMV is not yet implemented in the emulator."
-      when "4"
-        manual_card_input("", "Enter the number of the card", Variable.new("12"), Variable.new("16"), card)
-        var.value = 0 if card.value != ""
-      when "5"
-        p "Processing touch..."
-        p "WARNING: EMV is not yet implemented in the emulator."
-      end
-      posxml_loop_next
+    # TODO Scalone: Low priority implementation
+  end
     end
   end
 
