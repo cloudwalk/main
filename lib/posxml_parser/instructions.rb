@@ -175,7 +175,6 @@ module PosxmlParser
       result.value = variable1.compare(operator, variable2)
     end
 
-
     def string_to_hex(string, hex)
       hex.value = string.value.to_s.unpack('H*').first
     end
