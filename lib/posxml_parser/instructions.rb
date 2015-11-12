@@ -370,6 +370,15 @@ module PosxmlParser
       end
     end
 
+    def iso8583_get_field(fieldnumber,type,variablevalue,variablereturn)
+      begin
+        variablevalue.value = @iso_analyzed[fieldnumber.to_i]
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -801
+      end
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
@@ -503,11 +512,6 @@ module PosxmlParser
     end
 
     def file_unzip(filename,variablereturn)
-      # Should be implemented by platform
-    end
-
-
-    def iso8583_get_field(fieldnumber,type,variablevalue,variablereturn)
       # Should be implemented by platform
     end
 

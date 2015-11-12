@@ -55,6 +55,7 @@ module PosxmlParser
       "\x05" => :iso8583_analyze_message,
       "\x06" => :iso8583_end_message,
       "\x07" => :iso8583_put_field,
+      "\x08" => :iso8583_get_field,
       # Not implemented in pure ruby
       "k"    => :card_get_variable,
       "c"    => :card_get,
@@ -90,7 +91,6 @@ module PosxmlParser
       "\x86" => :file_write,
       "%"    => :file_read_by_index,
       "\\"   => :file_unzip,
-      "\x08" => :iso8583_get_field,
       "\x3B" => :iso8583_transact_message,
       "\x95" => :iso8583_transact_message_sub_field,
       "Y"    => :serial_open_port,
