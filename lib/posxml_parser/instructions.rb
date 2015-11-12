@@ -92,9 +92,7 @@ module PosxmlParser
     end
 
     def network_send(buffer, size, variable)
-      if socket?
-        #TODO Use send/puts socket.puts(buffer.to_s)
-        socket.send(buffer.to_s, 0)
+      if socket? && socket.send(buffer.to_s, 0) > 0
         variable.value = 1
       else
         variable.value = 0
