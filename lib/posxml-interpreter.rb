@@ -1,3 +1,4 @@
+
 class Interpreter
   include PosxmlParser
   include DaFunk::Helper
@@ -40,32 +41,34 @@ class Interpreter
   end
 
   card_read do |key, card, timeout, result|
-    EmvFlow.start
-    mag     = Device::Magnetic.new
-    emv     = PosxmlEmv.transaction
-    timeout = Time.now + timeout.to_i
+    begin
+      EmvFlow.start
+      mag     = Device::Magnetic.new
+      emv     = PosxmlEmv.transaction
+      timeout = Time.now + timeout.to_i
 
-    while true
-      key_pressed = getc(900)
-      if key_pressed != Device::IO::KEY_TIMEOUT
-        key.value = key_pressed
-        break
-      elsif mag.swiped?
-        tracks = mag.tracks
-        card.value = "#{tracks[:track1]}=#{tracks[:track2]}"
-        result.value = 0
-        break
-      elsif emv && emv.detected?
-        emv.process
-        result.value = 1
-        break
-      elsif timeout > Time.now
-        result.value = -2
-        break
+      while true
+        key_pressed = getc(900)
+        if key_pressed != Device::IO::KEY_TIMEOUT
+          key.value = key_pressed
+          break
+        elsif mag.swiped?
+          tracks = mag.tracks
+          card.value = "#{tracks[:track1]}=#{tracks[:track2]}"
+          result.value = 0
+          break
+        elsif emv && emv.detected?
+          emv.process
+          result.value = 1
+          break
+        elsif timeout > Time.now
+          result.value = -2
+          break
+        end
       end
+    ensure
+      mag.close
     end
-  ensure
-    mag.close
   end
 
   # type:     1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch.
@@ -261,10 +264,6 @@ class Interpreter
   end
 
   file_unzip {|filename, variablereturn| }
-
-  iso8583_transact_message_sub_field do |channel,header,trailler,variablereturn|
-    # Should be implemented by platform
-  end
 
   serial_open_port do |port,rate,configuration,variablereturn|
     # Should be implemented by platform

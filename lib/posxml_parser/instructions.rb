@@ -383,6 +383,10 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
+    def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
+      # Deprecated, shouldn't be implemented
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
@@ -516,10 +520,6 @@ module PosxmlParser
     end
 
     def file_unzip(filename,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
       # Should be implemented by platform
     end
 
