@@ -351,6 +351,16 @@ module PosxmlParser
       end
     end
 
+    def iso8583_end_message(variablesize,variablereturn)
+      begin
+        @iso_binary = @iso.to_b
+        variablesize.value = @iso_binary.size
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -801
+      end
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end

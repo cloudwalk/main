@@ -262,10 +262,6 @@ class Interpreter
 
   file_unzip {|filename, variablereturn| }
 
-  iso8583_end_message do |variablesize,variablereturn|
-    # Should be implemented by platform
-  end
-
   iso8583_put_field do |fieldnumber,type,value,variablereturn|
     # Should be implemented by platform
   end
