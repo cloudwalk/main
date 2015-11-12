@@ -262,10 +262,6 @@ class Interpreter
 
   file_unzip {|filename, variablereturn| }
 
-  iso8583_transact_message do |channel,header,trailler,isomsg,variableresponse,variablereturn|
-    # Should be implemented by platform
-  end
-
   iso8583_transact_message_sub_field do |channel,header,trailler,variablereturn|
     # Should be implemented by platform
   end
