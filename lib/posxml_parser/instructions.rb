@@ -101,12 +101,15 @@ module PosxmlParser
 
     def network_receive(buffer, max_size, bytes, variable)
       variable.value = 0
+      buffer.value = ""
       if socket?
-        #TODO Extract timeout
-        buffer.value = Timeout::timeout(14) { @socket.recv(max_size.to_i) }.to_s
+        timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+        loop do
+          buffer.value << socket.read(bytes.value) if socket.bytes_available > 0
+          break if (timeout > Time.now) || buffer.value.size >= max_size.to_i
+          usleep 500_000
+        end
       end
-    rescue Timeout::Error
-      # Do nothing to not raise, ensure have the logic
     ensure
       # 1 - Success; 0 - Failure
       bytes.value = buffer.value.size
