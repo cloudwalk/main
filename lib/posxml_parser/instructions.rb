@@ -59,21 +59,7 @@ module PosxmlParser
       return unless socket?
 
       file_path = posxml_file_path(file_name.value)
-
-      crc = ""
-      if File.exists?(file_path)
-        file = File.open(file_path, "r")
-        crc = PosxmlParser::Crc16.crc16(file.read).to_s
-        file.close
-      end
-
-      @downloader  ||= PosxmlParser::Download.new(posxml_read_db_config("serialTerminal"), path)
-      variable.value = @downloader.riak_mapreduce_request(
-        @socket,
-        posxml_read_db_config("walkServer3CompanyName"),
-        remote_path.value, crc,
-        posxml_read_db_config("executingAppName"),
-        posxml_read_db_config("numeroLogico"))
+      variable.value = Device::Transaction::Download.request_file(remote_path.value, file_path)
     end
 
     def file_size(file_name, result)

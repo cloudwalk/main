@@ -29,10 +29,6 @@ class Interpreter
   # TODO Scalone: Implement
   util_exit { }
 
-  file_download do |filename, remotepath, variable|
-    #TODO Implement
-  end
-
   card_get_variable do |msg1, msg2, min, max, var|
     Device::Display.clear
     Device::Display.print_line(msg1.value, 0, 2)
