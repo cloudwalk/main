@@ -121,22 +121,10 @@ module PosxmlParser
     end
 
     def network_pre_connect(variable)
-      # TODO Extract errors
-      posxml_execute_thread(true) do
-        @socket = TCPSocket.open(posxml_read_db_config("ipHost"), posxml_read_db_config("portaHost")) unless socket?
-      end
-
-      variable.value = -1
-      if socket?
-        hand_shake = "#{posxml_read_db_config("serialTerminal")};#{posxml_read_db_config("executingAppName")};#{posxml_read_db_config("numeroLogico")};#{posxml_read_db_config("version")}"
-
-        posxml_execute_thread { socket.write hand_shake.insert(0, hand_shake.size.chr) }
-        posxml_execute_thread(true) { @message = socket.read(3) }
-
-        if (@message != "err" && @message)
-          posxml_write_db_config("walkServer3CompanyName", @message)
-          variable.value = 1
-        end
+      variable.value = Device::Network.attach
+      if variable.value == 0
+        socket.close if socket?
+        @socket = Device::Network.socket
       end
     end
 
