@@ -361,6 +361,15 @@ module PosxmlParser
       end
     end
 
+    def iso8583_put_field(fieldnumber,type,value,variablereturn)
+      begin
+        @iso[fieldnumber.to_i] = value.value
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -801
+      end
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
@@ -497,21 +506,6 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def iso8583_init_message(format,id,variablemessage,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def iso8583_analyze_message(format,size,variablemessage,variableid,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def iso8583_end_message(variablesize,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def iso8583_put_field(fieldnumber,type,value,variablereturn)
-      # Should be implemented by platform
-    end
 
     def iso8583_get_field(fieldnumber,type,variablevalue,variablereturn)
       # Should be implemented by platform
