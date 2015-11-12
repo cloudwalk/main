@@ -354,8 +354,47 @@ module PosxmlParser
       end
     end
 
+    # TODO Implement others channels
+    #  0: Size of the response message
+    # -1: Channel unknown or not implemented
+    # -2: Failed to connect to the host or while attempting to dial
+    # -3: Failed to send send the message to the host authorizer
+    # -4: Failed to receive the size of the response message
     def iso8583_transact_message(channel,header,trailler,isomsg,variableresponse,variablereturn)
-      # Should be implemented by platform
+      # -1: Channel unknown or not implemented
+      return(variablereturn.value = -1) unless channel.value == "NAC"
+
+      # -2: Failed to connect to the host or while attempting to dial
+      return(variablereturn.value = -2) if Device::Network.connected? != 0
+
+      message      = "#{header.value}#{@iso_binary}#{trailler.value}"
+      size         = message.size + 2
+      message      = "#{[size].pack("n*")}#{message}"
+      isomsg.value = message
+
+      # Send
+      # -3: Failed to send send the message to the host authorizer
+      return(variablereturn.value = -3) unless socket.send(message)
+
+      # Receive
+      variablereturn.value = socket.read(2).to_s.unpack("n*")[0].to_s
+
+      # -4: Failed to receive the size of the response message
+      return(variablereturn.value = -4) if variableresponse.value.empty?
+
+      timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+      attempts = 1
+      loop do
+        variableresponse.value << socket.read(size) if socket.bytes_available > 0
+        break if variableresponse.value.size >= size
+        if (timeout > Time.now)
+          # -5: Failed to receive the response message
+          break(variablereturn.value = -5) if attempts >= 3
+          timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+          attempts+=1
+        end
+        usleep 500_000
+      end
     end
 
     def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
