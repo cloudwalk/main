@@ -262,11 +262,6 @@ class Interpreter
 
   file_unzip {|filename, variablereturn| }
 
-
-  iso8583_analyze_message do |format,size,variablemessage,variableid,variablereturn|
-    # Should be implemented by platform
-  end
-
   iso8583_end_message do |variablesize,variablereturn|
     # Should be implemented by platform
   end

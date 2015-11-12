@@ -337,6 +337,20 @@ module PosxmlParser
       end
     end
 
+    def iso8583_analyze_message(format,size,variablemessage,variableid,variablereturn)
+      begin
+        iso_format = format.value == "ASCII" ? ISO8583::N : ISO8583::LL_BCD
+        @iso_klass.instance_eval { 
+          mti_format iso_format, :length => 4 
+          mti variableid.to_i, ""
+        }
+        @iso_analyzed = @iso_klass.parse(variablemessage.value, true)
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -806
+      end
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
