@@ -262,10 +262,6 @@ class Interpreter
 
   file_unzip {|filename, variablereturn| }
 
-  iso8583_init_field_table do |filename,variablereturn|
-    # Should be implemented by platform
-  end
-
   iso8583_init_message do |format,id,variablemessage,variablereturn|
     # Should be implemented by platform
   end

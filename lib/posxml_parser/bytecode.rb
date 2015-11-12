@@ -50,6 +50,7 @@ module PosxmlParser
       "\x0E" => :string_replace,
       "\x12" => :string_replace_at,
       "<"    => :string_substring,
+      "\x02" => :iso8583_init_field_table,
       # Not implemented in pure ruby
       "k"    => :card_get_variable,
       "c"    => :card_get,
@@ -85,7 +86,6 @@ module PosxmlParser
       "\x86" => :file_write,
       "%"    => :file_read_by_index,
       "\\"   => :file_unzip,
-      "\x02" => :iso8583_init_field_table,
       "\x03" => :iso8583_init_message,
       "\x05" => :iso8583_analyze_message,
       "\x06" => :iso8583_end_message,

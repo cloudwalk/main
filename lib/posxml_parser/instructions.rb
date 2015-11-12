@@ -321,6 +321,10 @@ module PosxmlParser
       end
     end
 
+    def iso8583_init_field_table(filename,variablereturn)
+      @iso8583_filename = filename.value
+      variablereturn.value = 0
+    end
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
@@ -454,10 +458,6 @@ module PosxmlParser
     end
 
     def file_unzip(filename,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def iso8583_init_field_table(filename,variablereturn)
       # Should be implemented by platform
     end
 
