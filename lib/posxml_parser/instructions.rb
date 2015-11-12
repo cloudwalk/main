@@ -609,7 +609,7 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def smartcard_transmit_APDU(slot,header,LC,datafield,LE,variabledatafieldresponse,variableSW,variablereturn)
+    def smartcard_transmit_APDU(slot,header,lc,datafield,le,variabledatafieldresponse,variableSW,variablereturn)
       # Should be implemented by platform
     end
 

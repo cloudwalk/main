@@ -427,7 +427,7 @@ class Interpreter
     # Should be implemented by platform
   end
 
-  smartcard_transmit_APDU do |slot,header,LC,datafield,LE,variabledatafieldresponse,variableSW,variablereturn|
+  smartcard_transmit_APDU do |slot,header,lc,datafield,le,variabledatafieldresponse,variableSW,variablereturn|
     # Should be implemented by platform
   end
 
