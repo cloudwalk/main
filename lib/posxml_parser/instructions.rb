@@ -664,7 +664,7 @@ module PosxmlParser
 
     private
     def socket?
-      socket && ! socket.closed?
+      socket
     end
   end
 end
