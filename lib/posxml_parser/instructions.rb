@@ -325,6 +325,18 @@ module PosxmlParser
       @iso8583_filename = filename.value
       variablereturn.value = 0
     end
+
+    def iso8583_init_message(format,id,variablemessage,variablereturn)
+      begin
+        iso_format = format.value == "ASCII" ? ISO8583::N : ISO8583::LL_BCD
+        @iso_klass = ISO8583::FileParser.build_klass([iso_format, {length: 4}],
+          {id.value.to_i => ""}, posxml_file_path(@iso8583_filename))
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -801
+      end
+    end
+
     def card_get_variable(msg1, msg2, min, max, var)
       # Should be implemented by platform
     end
