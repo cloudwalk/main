@@ -1,6 +1,21 @@
 class AdminConfiguration
   include Device::Helper
 
+  def self.perform
+    Device::Display.clear
+    Device::Display.print("Admin Password:", 0, 0)
+    password = Device::IO.get_format(1, 5, options = {:mode => :secret})
+
+    if password == "55555"
+      menu
+    else
+      Device::Display.clear
+      Device::Display.print("Incorrect Password", 0, 1)
+      getc
+      true
+    end
+  end
+
   def self.menu
     Device::Display.clear
     Device::Display.print("Configuration Menu", 0, 0)
@@ -71,21 +86,6 @@ class AdminConfiguration
       sleep(1)
       i -= 1
       break if i < 1
-    end
-  end
-
-  def self.get_password
-    Device::Display.clear
-    Device::Display.print("Admin Password:", 0, 0)
-    password = Device::IO.get_format(1, 5, options = {:mode => :secret})
-
-    if password == "55555"
-      menu
-    else
-      Device::Display.clear
-      Device::Display.print("Incorrect Password", 0, 1)
-      getc
-      true
     end
   end
 

@@ -15,7 +15,7 @@ class Main < Device
       when Device::IO::ENTER
         Cloudwalk.start
       when Device::IO::F1
-        AdminConfiguration.get_password
+        AdminConfiguration.perform
       when Device::IO::F2
         break
       end
