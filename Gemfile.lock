@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/cloudwalkio/da_funk.git
-  revision: f255d96d952c0d328b3366e6e1b2ff7234ea40b0
+  revision: ab33af90b847058b6b2818930fd97f3cf313b51a
   specs:
-    da_funk (0.4.17)
+    da_funk (0.4.18)
       bundler (~> 1.7)
       cloudwalk_handshake (~> 0.4)
       rake (~> 10.4)
@@ -10,9 +10,9 @@ GIT
 
 GIT
   remote: https://github.com/scalone/walk-simplehttp-poc.git
-  revision: 9dad485f7a7c4e783651805b3e75a4779629b0cb
+  revision: 5b1e7813e9b5653d3005f799a1a4bd3871596dd9
   specs:
-    simplehttp (0.4.0)
+    simplehttp (0.4.1)
 
 GEM
   remote: https://rubygems.org/
