@@ -92,7 +92,7 @@ class AdminConfiguration
   def self.show_config
     Device::Display.clear
 
-    if Network.connected?
+    if Device::Network.connected?
       connected = "Connected"
     else
       connected = "Not Connected"
