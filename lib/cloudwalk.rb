@@ -1,27 +1,6 @@
 class Cloudwalk
   include Device::Helper
 
-  WIFI_AUTHENTICATION_OPTIONS = {
-    "None"         => Device::Network::AUTH_NONE_OPEN,
-    "WEP"          => Device::Network::AUTH_NONE_WEP,
-    "WEP Shared"   => Device::Network::AUTH_NONE_WEP_SHARED,
-    "WPA PSK"      => Device::Network::AUTH_WPA_PSK,
-    "WPA/WPA2 PSK" => Device::Network::AUTH_WPA_WPA2_PSK,
-    "WPA2 PSK"     => Device::Network::AUTH_WPA2_PSK
-  }
-
-  WIFI_CIPHERS_OPTIONS = {
-    "None"    => Device::Network::PARE_CIPHERS_NONE,
-    "WEP 64"  => Device::Network::PARE_CIPHERS_WEP64,
-    "WEP 128" => Device::Network::PARE_CIPHERS_WEP128,
-    "CCMP"    => Device::Network::PARE_CIPHERS_CCMP,
-    "TKIP"    => Device::Network::PARE_CIPHERS_TKIP
-  }
-
-  WIFI_MODE_OPTIONS = {
-    "IBSS (Ad-hoc)" => Device::Network::MODE_IBSS,
-    "Station (AP)"  => Device::Network::MODE_STATION
-  }
 
   def self.boot
     if Device::Network.configured?
@@ -52,28 +31,19 @@ class Cloudwalk
   end
 
   def self.logical_number
-    Device::Setting.logical_number = form("Logical Number", :min => 0, :max => 127, :default => Device::Setting.logical_number)
+    Device::Setting.logical_number = form("Logical Number", :min => 0,
+                                          :max => 127, :default => Device::Setting.logical_number)
   end
 
   def self.communication
     configure = menu("Would like to configure communication?",
                      {"Yes" => true, "No" => false})
     if (configure)
-      media = menu("Select Media:",
-                   {"WIFI" => true, "GPRS" => false})
-      if media
-        Device::Setting.media = Device::Network::MEDIA_WIFI
-        Device::Setting.authentication = menu("Authentication", WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication)
-        Device::Setting.essid          = form("Essid", :min => 0, :max => 127, :default => Device::Setting.essid)
-        Device::Setting.password       = form("Password", :min => 0, :max => 127, :default => Device::Setting.password)
-        Device::Setting.channel        = form("Channel", :min => 0, :max => 127, :default => Device::Setting.channel)
-        Device::Setting.cipher         = menu("Cipher", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher)
-        Device::Setting.mode           = menu("Mode", WIFI_MODE_OPTIONS, default: Device::Setting.mode)
-      else
-        Device::Setting.media    = Device::Network::MEDIA_GPRS
-        Device::Setting.apn      = form("Apn", :min => 0, :max => 127, :default => Device::Setting.apn)
-        Device::Setting.user     = form("User", :min => 0, :max => 127, :default => Device::Setting.user)
-        Device::Setting.password = form("Password", :min => 0, :max => 127, :default => Device::Setting.password)
+      media = menu("Select Media:", {"WIFI" => :wifi, "GPRS" => :gprs})
+      if media == :wifi
+        MediaConfiguration.wifi
+      elsif media == :gprs
+        MediaConfiguration.gprs
       end
 
       Device::Setting.network_configured = "1"
