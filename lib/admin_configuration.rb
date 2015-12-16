@@ -55,20 +55,13 @@ class AdminConfiguration
       Device::Display.clear
       Cloudwalk.logical_number
     elsif key == "4"
-      Device::Display.clear
-      Device::Display.print("Input the year:",0,0)
-      year = Device::IO.get_format(1, 4, option  = {:mode => :numbers}).to_i
-      Device::Display.print("Input the month:",1,0)
-      month = Device::IO.get_format(1, 2, option  = {:mode => :numbers}).to_i
-      Device::Display.print("Input the day:",2,0)
-      day = Device::IO.get_format(1, 2, option  = {:mode => :numbers}).to_i
-      Device::Display.print("Input the hour:",3,0)
-      h = Device::IO.get_format(1, 2, option  = {:mode => :numbers}).to_i
-      Device::Display.print("Input the minute:",4,0)
-      m = Device::IO.get_format(1, 2, option  = {:mode => :numbers}).to_i
-      Device::Display.print("Input the second:",5,0)
-      s = Device::IO.get_format(1, 2, option  = {:mode => :numbers}).to_i
-      Time.new(year,month,day,h,m,s).hwclock
+      year   = form("Input the year:"       , :min => 0 , :max => 4 , :default => Time.now.year)
+      month  = form("Input the month:"      , :min => 0 , :max => 2 , :default => Time.now.month)
+      day    = form("Input the day:"        , :min => 0 , :max => 2 , :default => Time.now.day)
+      hour   = form("Input the hour:"       , :min => 0 , :max => 2 , :default => Time.now.hour)
+      minute = form("Input the minutes:"    , :min => 0 , :max => 2 , :default => Time.now.min)
+      second = form("Input the seconds:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
+      Time.new(year,month,day,hour,minute,second).hwclock
     elsif key == "5"
       show_config
     elsif key == "6"
