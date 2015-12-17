@@ -362,7 +362,7 @@ class Interpreter
     # Should be implemented by platform
   end
 
-  v_getinfo do |type,parameter,value|
+  emv_getinfo do |type,parameter,value|
     # Should be implemented by platform
   end
 
