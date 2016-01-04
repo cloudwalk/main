@@ -3,10 +3,6 @@ module PosxmlParser
   DELIMITER_END_INSTRUCTION = "\r"
   DELIMITER_END_PARAMETER   = "\n"
 
-  include PosxmlParser::Threadable
-  include PosxmlParser::Parameters
-  include PosxmlParser::FileDb
-
   attr_accessor :thread, :variables, :bytecode, :number, :path, :file_main, :file, :function_stack, :socket
 
   def self.included(base)
