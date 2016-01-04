@@ -84,11 +84,21 @@ module PosxmlParser
     end
 
     def file_edit_db(file_name, key, value)
-      posxml_write_db(file_name.value, key.value, value.value)
+      if file_name.value == "config.dat"
+        posxml_write_db_config(key.value, value.value)
+      else
+        file = FileDb.new(posxml_file_path(file_name.value))
+        file.update_attributes({key.value => value.value})
+      end
     end
 
     def file_read_db(file_name, key, string)
-      string.value = posxml_read_db(file_name.value, key.value)
+      if file_name.value == "config.dat"
+        string.value = posxml_read_db_config(key.value)
+      else
+        string.value = FileDb.new(posxml_file_path(file_name.value))[key.value]
+      end
+    end
     end
 
     def network_send(buffer, size, variable)
@@ -103,7 +113,7 @@ module PosxmlParser
       variable.value = 0
       buffer.value = ""
       if socket?
-        timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+        timeout = Time.now + posxml_read_db_config("uclreceivetimeout").to_i
         loop do
           buffer.value << socket.read(bytes.value) if socket.bytes_available > 0
           break if (timeout > Time.now) || buffer.value.size >= max_size.to_i
@@ -382,7 +392,7 @@ module PosxmlParser
       # -4: Failed to receive the size of the response message
       return(variablereturn.value = -4) if variableresponse.value.empty?
 
-      timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+      timeout = Time.now + posxml_read_db_config("uclreceivetimeout").to_i
       attempts = 1
       loop do
         variableresponse.value << socket.read(size) if socket.bytes_available > 0
@@ -390,7 +400,7 @@ module PosxmlParser
         if (timeout > Time.now)
           # -5: Failed to receive the response message
           break(variablereturn.value = -5) if attempts >= 3
-          timeout = Time.now + Device::Setting.uclreceivetimeout.to_i
+          timeout = Time.now + posxml_read_db_config("uclreceivetimeout").to_i
           attempts+=1
         end
         usleep 500_000

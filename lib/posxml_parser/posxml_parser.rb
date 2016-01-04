@@ -95,5 +95,13 @@ module PosxmlParser
   def posxml_file_path(file_name)
     "#{path}#{file_name}"
   end
+
+  def posxml_write_db_config(key, value)
+    PosxmlParser::PosxmlSetting.send("#{key}=", value)
+  end
+
+  def posxml_read_db_config(key)
+    PosxmlParser::PosxmlSetting.send(key)
+  end
 end
 
