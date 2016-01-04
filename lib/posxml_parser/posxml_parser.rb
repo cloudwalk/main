@@ -29,7 +29,7 @@ module PosxmlParser
     @number         = 0
 
     file_handle.close
-    posxml_write_db_config("executingAppName", file)
+    posxml_write_db_config("nomeaplicativo", file)
   end
 
   def posxml_next_instruction
