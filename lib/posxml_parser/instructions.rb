@@ -99,6 +99,75 @@ module PosxmlParser
         string.value = FileDb.new(posxml_file_path(file_name.value))[key.value]
       end
     end
+
+    def file_list(dir, listfilename, var)
+      begin
+        path = posxml_file_path(listfilename.value)
+        File.delete(path) if File.exists?(path)
+        file = FileDb.new("./#{path}", {})
+        Dir.entries.inject({}) do |entry,hash|
+          fpath = posxml_file_path(entry)
+          hash[entry] = File.size(fpath) if File.file?(fpath) && entry != ".." && entry != "."
+        end
+        file.update_attributes(hash)
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -1
+      end
+    end
+
+    def file_open(mode, filename, variable)
+      @files ||= []
+      @files << File.open(posxml_file_path(filename.value), mode.value)
+      variable.value = (@files.size - 1)
+    end
+
+    def file_close(handle)
+      file = @files[handle.to_i]
+      file.close if file
+    end
+
+    def file_read(handle, size, buffer, variable)
+      file = @files[handle.to_i]
+      buffer.value   = file.read.to_s.unpack("H*").first
+      variable.value = buffer.value.size / 2
+      size.value     = variable.value
+    end
+
+    def file_write(handle, size, buffer)
+      file = @files[handle.value]
+      buf = buffer.value[0..(size.to_i * 2 - 1)]
+      file.syswrite(buf)
+    end
+
+    def file_read_by_index(filename, index, key, value, var)
+      var.value = 0
+      path = posxml_file_path(filename.value)
+      if File.exist?(path)
+        file = File.open(path, "r")
+        i = 0
+        file.read.each_line do |line|
+          parts = line.chomp().split("=")
+          line_key, line_value = parts[0], parts[1]
+          if i == index
+            value.value = line_value
+            key.value   = line_key
+            var.value = 1
+            return
+          end
+          i += 1
+        end
+        file.close
+      end
+    end
+
+    def file_unzip(filename, variablereturn)
+      begin
+        Zip.uncompress(filename.value, posxml_file_path(""))
+        variablereturn.value = 0
+      rescue
+        variablereturn.value = -1
+      end
     end
 
     def network_send(buffer, size, variable)
@@ -138,7 +207,17 @@ module PosxmlParser
       end
     end
 
+    def network_shutdown_modem
+      @socket.close
+    end
 
+    def network_check_gprs_signal(variablestatus)
+      variablestatus.value = Device::Network.signal
+    end
+
+    def network_ping(host,variablereturn)
+      variablereturn.value = Device::Network.ping(host.value, 14000)
+    end
 
     def datetime_get(format_string, string)
       time = Time.now
@@ -421,72 +500,199 @@ module PosxmlParser
       end
     end
 
-    def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
-      # Deprecated, shouldn't be implemented
+    def util_system_beep
+      Device::Audio.beep(0, 200)
+    end
+
+    def util_system_checkbattery(variablereturn)
+      variablereturn.value = Device::System.battery
+    end
+
+    # TODO Scalone: Low priority implementation
+    def util_system_info(type,variablereturn)
+      case type.value
+      when "simid"
+        variablereturn.value = " "
+      when "macaddress"
+        variablereturn.value = " "
+      when "osversion"
+        variablereturn.value = " "
+      when "libsversion"
+        variablereturn.value = " "
+      when "gprssignal"
+        variablereturn.value = Device::Network.signal
+      when "wifisignal"
+        variablereturn.value = Device::Network.signal
+      when "is3g"
+        variablereturn.value = 0
+      end
+    end
+
+    def util_system_restart
+      Device::System.restart
+    end
+
+    def util_system_qrcode(filename, input, size, version)
+      begin
+        qr = QR.new(input.value, version.to_i)
+        result = qr.generate("bmp", size.to_s.gsub("x", "").to_i)
+        file = File.open(posxml_file_path(filename.value), "w")
+        file.write result
+        file.close
+      end
+    end
+
+    def util_wait_key
+      getc
+    end
+
+    def util_wait_key_timeout(seconds)
+      getc(seconds.to_i*1000)
+    end
+
+    def util_wait(milliseconds)
+      usleep timeout_milliseconds.to_i * 1000
+    end
+
+    def util_read_key(timeout_milliseconds, v)
+      v.value = getc(timeout_milliseconds)
     end
 
     def card_get_variable(msg1, msg2, min, max, var)
-      # Should be implemented by platform
+      Device::Display.clear
+      Device::Display.print_line(msg1.value, 0, 2)
+      tracks = Device::Magnetic.read_card(Device::IO.timeout)
+      var.value = "#{tracks[:track1]}=#{tracks[:track2]}"
+    end
+
+    def card_read(key, card, timeout, result)
+      begin
+        EmvFlow.start
+        mag     = Device::Magnetic.new
+        emv     = PosxmlEmv.transaction
+        timeout = Time.now + timeout.to_i
+
+        while true
+          key_pressed = getc(900)
+          if key_pressed != Device::IO::KEY_TIMEOUT
+            key.value = key_pressed
+            break
+          elsif mag.swiped?
+            tracks = mag.tracks
+            card.value = "#{tracks[:track1]}=#{tracks[:track2]}"
+            result.value = 0
+            break
+          elsif emv && emv.detected?
+            emv.process
+            result.value = 1
+            break
+          elsif timeout > Time.now
+            result.value = -2
+            break
+          end
+        end
+      ensure
+        mag.close
+      end
+    end
+
+    def interface_menu(variable,options)
+      variable.value = menu(nil, posxml_parse_menu_selection(options.value), number: false)
+    end
+
+    # TODO Scalone: Missing some implementation:
+    #  - Title hot swapping.
+    #  - Title datetime.
+    def interface_menu_header(header, selection, timeout_header, timeout, variable)
+      options = { number: false, timeout: timeout.value.to_i*1000 }
+      variable.value = menu(header.value, posxml_parse_menu_selection(selection.value), options)
+    end
+
+    def interface_display(column, line, text)
+      Device::Display.print_line(text.value, line.value.to_i, column.value.to_i)
+    end
+
+    def interface_display_bitmap(filename, variable)
+      Device::Display.print_bitmap(posxml_file_path(filename.value), 0, 0)
+      variable.value = 0
+    end
+
+    def interface_clean_display
+      Device::Display.clear
+    end
+
+    def interface_system_get_touchscreen(axis_x, axis_y, variable)
+      # TODO Scalone: Low priority implementation. A DaFunk touchscreen interface
+      # is neecesary to be implemented.
+      variable.value = 0
+    end
+
+    def input_money(v, line, column, message)
+      options = Hash.new
+      options[:label]  = message.value
+      options[:line]   = line.value.to_i
+      options[:column] = column.value.to_i
+      options[:mode]   = Device::IO::IO_INPUT_MONEY
+
+      v.value = Device::IO.get_format(0, 20, options)
+    end
+
+    def input_format(variable, line, column, message, format)
+      options = Hash.new
+      options[:label]  = message.value
+      options[:line]   = line.value.to_i
+      options[:column] = column.value.to_i
+
+      if format.value[0] == "*"
+        options[:mode] = Device::IO::IO_INPUT_SECRET
+      else
+        options[:mode] = Device::IO::IO_INPUT_MASK
+        options[:mask] = format.value
+      end
+      variable.value = Device::IO.get_format(0, 20, options)
+    end
+
+    def print(v)
+      Device::Printer.print v.value
+    end
+
+    def print_big(v)
+      Device::Printer.print_big v.value
+    end
+
+    def print_barcode(horizontal, number)
+      # TODO Scalone: Low priority implementation. A DaFunk touchscreen interface
+      # is neecesary to be implemented.
+    end
+
+    def print_bitmap(filename, variable)
+      Device::Printer.print_bmp(posxml_file_path(filename.value))
+    end
+
+    def print_check_paper_out(variable)
+      variable.value = Device::Printer.check
+    end
+
+    def print_paper_feed
+      Device::Printer.paperfeed
+    end
+
+    def iso8583_transact_message_sub_field(channel,header,trailler,variablereturn)
+      # Deprecated, shouldn't be implemented
     end
 
     def card_get(msg1, msg2, min, max, var)
       # Deprecated, shouldn't be implemented
     end
 
-    def card_read(key, card, timeout, result)
-      # Should be implemented by platform
-    end
-
+    # type:     1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch.
+    # keyboard: 1 for keybard enabled and 0 for keyboard disabled.
+    # timeout:  In miliseconds in this case 30 seconds.
+    # key:      When keyboard equals to 0, just returns with timeout or if you press KEY_CANCEL. If keyboard equals to 1 it will return all the pressed keys.
+    # card:     It contains the track 2 and/or track 1 only when inputtype equals to 1.
+    # var:      0 when a key is pressed or when the card input happens with success. -1 if it fails reading the tracks. -2 for timeout. For EMV chip or contactless: 1 for success, less than 1 for errors.
     def card_system_input_transaction(key, card, timeout, var, keyboard, type)
-      # Should be implemented by platform
-    end
-
-    def interface_menu(variable, options)
-      # Should be implemented by platform
-    end
-
-    def interface_menu_header(header, options, timeout_header, timeout, variable)
-      # Should be implemented by platform
-    end
-
-    def interface_display(column, line, text)
-      # Should be implemented by platform
-    end
-
-    def interface_display_bitmap(file_name, variable)
-      # Should be implemented by platform
-    end
-
-    def interface_clean_display
-      # Should be implemented by platform
-    end
-
-    def interface_system_get_touchscreen(axis_x, axis_y, variable)
-      # Should be implemented by platform
-    end
-
-    def print(message)
-      # Should be implemented by platform
-    end
-
-    def print_big(message)
-      # Should be implemented by platform
-    end
-
-    def print_barcode(number)
-      # Should be implemented by platform
-    end
-
-    def print_bitmap(filename)
-      # Should be implemented by platform
-    end
-
-    def print_check_paper_out(variable)
-      # Should be implemented by platform
-    end
-
-    def print_paper_feed
-      # Should be implemented by platform
+      # TODO Scalone: Low priority implementation
     end
 
     def input_float(variable,line,column,message)
@@ -529,35 +735,7 @@ module PosxmlParser
       # Should be implemented by platform
     end
 
-    def file_list(dir,listfilename,variablereturn)
-      # Should be implemented by platform
-    end
-
     def file_system_space(dir, type, variable)
-      # Should be implemented by platform
-    end
-
-    def file_open(mode,filename,variablehandle)
-      # Should be implemented by platform
-    end
-
-    def file_close(handle)
-      # Should be implemented by platform
-    end
-
-    def file_read(handle,size,variablebuffer,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def file_write(handle,size,buffer)
-      # Should be implemented by platform
-    end
-
-    def file_read_by_index(filename,index,variablekey,variablevalue,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def file_unzip(filename,variablereturn)
       # Should be implemented by platform
     end
 
@@ -581,23 +759,7 @@ module PosxmlParser
       # Deprecated, shouldn't be implemented
     end
 
-    def datetime_calculate(operation,type,date,greaterdate,value,variablereturn)
-      # Should be implemented by platform
-    end
-
     def network_pre_dial(option,variablestatus)
-      # Should be implemented by platform
-    end
-
-    def network_shutdown_modem
-      # Should be implemented by platform
-    end
-
-    def network_check_gprs_signal(variablestatus)
-      # Should be implemented by platform
-    end
-
-    def network_ping(host,variablereturn)
       # Should be implemented by platform
     end
 
@@ -682,42 +844,6 @@ module PosxmlParser
     end
 
     def smartcard_transmit_APDU(slot,header,lc,datafield,le,variabledatafieldresponse,variableSW,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def util_system_beep
-      # Should be implemented by platform
-    end
-
-    def util_system_checkbattery
-      # Should be implemented by platform
-    end
-
-    def util_system_info(type,variablereturn)
-      # Should be implemented by platform
-    end
-
-    def util_system_restart
-      # Should be implemented by platform
-    end
-
-    def util_system_qrcode(filename, input, size, version)
-      # Should be implemented by platform
-    end
-
-    def util_wait_key
-      # Should be implemented by platform
-    end
-
-    def util_wait_key_timeout(timeout_seconds)
-      # Should be implemented by platform
-    end
-
-    def util_wait(timeout_milliseconds)
-      # Should be implemented by platform
-    end
-
-    def util_read_key(timeout_milliseconds, variable)
       # Should be implemented by platform
     end
 

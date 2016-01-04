@@ -132,5 +132,11 @@ module PosxmlParser
   def posxml_read_db_config(key)
     PosxmlParser::PosxmlSetting.send(key)
   end
+
+  def posxml_parse_menu_selection(options)
+    options.split(".").each_with_index.inject({}) do
+      |hash, values| hash[values[0]] = values[1]; hash
+    end
+  end
 end
 
