@@ -18,7 +18,6 @@ module PosxmlParser
     @thread    = use_thread
     @file_main = file
 
-    posxml_initialize_parameters
     posxml_load!(file)
   end
 
