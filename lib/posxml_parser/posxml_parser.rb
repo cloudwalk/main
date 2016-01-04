@@ -96,6 +96,35 @@ module PosxmlParser
     "#{path}#{file_name}"
   end
 
+  def posxml_date_to_time(text)
+    result = text.match(/([0-9]+)-([0-9]+)-([0-9]+) ([0-9]+):([0-9]+):([0-9]+)/)
+    return nil unless result
+    Time.local(result[0].to_i, result[1].to_i, result[2].to_i, result[3].to_i, result[4].to_i, result[5].to_i)
+  end
+
+  def posxml_time_to_date(time)
+    "#{time.year}-#{time.month}-#{time.day} #{time.hour}:#{time.min}:#{time.sec}"
+  end
+
+  def posxml_date_to_seconds(type, value)
+    case type
+    when (type == "segundos" || type == "seconds")
+      value
+    when (type == "minutos" || type == "minutes")
+      value * 60
+    when (type == "horas" || type == "hours")
+      value * 60 * 60
+    when (type == "dias" || type == "days")
+      value * 60 * 60 * 24
+    when (type == "meses" || type == "months")
+      value * 60 * 60 * 24 * 30
+    when (type == "years" || type == "years")
+      value * 60 * 60 * 24 * 30 * 365
+    else
+      0
+    end
+  end
+
   def posxml_write_db_config(key, value)
     PosxmlParser::PosxmlSetting.send("#{key}=", value)
   end

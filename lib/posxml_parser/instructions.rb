@@ -138,22 +138,36 @@ module PosxmlParser
       end
     end
 
-    #TODO Refactory need
+
+
     def datetime_get(format_string, string)
-      format = format_string.value
-      format.match(/yy/) == nil ? format = format.gsub(/y/, "\%y") : format = format.gsub(/yy/, "\%Y")
+      time = Time.now
+      string.value = format_string.value.sub("yy", time.year.to_s).
+        sub("y", time.year.to_s[2..3]).
+        sub("M", time.month.to_s).
+        sub("d", time.day.to_s).
+        sub("h", time.hour.to_s).
+        sub("m", time.min.to_s).
+        sub("s", time.sec.to_s)
+    end
 
-      format = format.gsub(/M/, "\%m")
-      format = format.gsub(/d/, "\%d")
-      format = format.gsub(/h/, "\%H")
-      format = format.gsub(/m/, "\%M")
-      format = format.gsub(/s/, "\%S")
-      #To fix month and minutes confusion
-      format = format.gsub(/%%M/, "\%m")
-
-      datetime = Time.now
-
-      string.value = datetime.strftime(format)
+    def datetime_calculate(operation, type, date1, date2, value, var)
+      # operation can be: sum, less, difference
+      # type can be: years, months, days, hours, minutes or seconds
+      # type is not used on a difference operation
+      var.value = 0
+      case operation.value
+      when "sum"
+        result = posxml_date_to_time(date2.value) - posxml_date_to_seconds(type.to_s, value.to_i)
+        date1.value = posxml_time_to_date(result)
+      when "less"
+        result = posxml_date_to_time(date2.value) + posxml_date_to_seconds(type.to_s, value.to_i)
+        date1.value = posxml_time_to_date(result)
+      when "difference"
+        var.value = (posxml_date_to_time(date2.to_s) - posxml_date_to_time(date1.to_s)).to_i
+      else
+        var.value = -1
+      end
     end
 
     def util_math(result, operator, variable1, variable2)

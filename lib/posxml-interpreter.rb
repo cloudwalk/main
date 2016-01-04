@@ -277,23 +277,6 @@ class Interpreter
     # Should be implemented by platform
   end
 
-  datetime_calculate do |operation, type, date1, date2, value, var|
-    # operation can be: sum, less, difference
-    # type can be: years, months, days, hours, minutes or seconds
-    # type is not used on a difference operation
-    var.value = 0
-    case operation.value
-    when "sum"
-      date1.value = $device.dateSum(date1.value, type.value, value.to_i)
-    when "less"
-      date1.value = $device.dateSum(date1.value, type.value, -value.to_i)
-    when "difference"
-      var.value = $device.dateDiff(date1.value, date2.value)
-    else
-      var.value = -1
-    end
-  end
-
   network_pre_dial do |option, var|
     # Should be implemented by platform
   end
