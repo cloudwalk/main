@@ -3,13 +3,32 @@ class PosxmlInterpreter
   include PosxmlParser
   include DaFunk::Helper
 
+  def posxml_write_variables
+    hash = @variables.inject({}) do |hash, values|
+      hash[values[0]] = values[1].value
+      hash
+    end
+    Posxml::posxml_variables = JSON::stringify(hash)
+  end
+
+  def posxml_read_variables
+    if internal_variables = Posxml::posxml_variables
+      @variables = JSON::parse(internal_variables)
+    end
+  end
+
+  def initialize(file)
+    posxml_read_variables
+    posxml_configure!("./shared/", file, false)
+  end
+
   def start
-    posxml_configure!("./shared/", "inicio.posxml", false)
     posxml_loop
   end
 
   util_exit do
     @stop = true
+    posxml_write_variables
   end
 
   # type:     1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch.
