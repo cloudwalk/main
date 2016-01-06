@@ -43,7 +43,7 @@ module PosxmlParser
     end
 
     def util_exit
-      posxml_load!(file_main)
+      @stop = true
     end
 
     def string_variable(value, index)

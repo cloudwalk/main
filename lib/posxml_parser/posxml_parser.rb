@@ -3,7 +3,7 @@ module PosxmlParser
   DELIMITER_END_INSTRUCTION = "\r"
   DELIMITER_END_PARAMETER   = "\n"
 
-  attr_accessor :thread, :variables, :bytecode, :number, :path, :file_main, :file, :function_stack, :socket
+  attr_accessor :thread, :variables, :bytecode, :number, :path, :file, :function_stack, :socket
 
   def self.included(base)
     base.send :extend, PosxmlParser::ClassMethods
@@ -13,10 +13,9 @@ module PosxmlParser
   #Core VM
   #TODO posxml_* methods should extract to a helper/core class
   def posxml_configure!(path, file, use_thread)
-    @variables = Hash.new
+    @variables ||= Hash.new
     @path      = path
     @thread    = use_thread
-    @file_main = file
 
     posxml_load!(file)
   end
@@ -33,14 +32,14 @@ module PosxmlParser
   end
 
   def posxml_next_instruction
-    size        = bytecode[number..-1].index(PosxmlParser::DELIMITER_END_INSTRUCTION).to_i
-    line        = bytecode[number..(number + size - 1)]
-    @number     += (size + 1)
+    size    = bytecode[number..-1].index(PosxmlParser::DELIMITER_END_INSTRUCTION).to_i
+    line    = bytecode[number..(number + size - 1)]
+    @number += (size + 1)
     line
   end
 
   def posxml_next
-    posxml_load!(file_main) if number >= bytecode.size
+    util_exit if number >= bytecode.size
     line        = posxml_next_instruction
     instruction = line[0]
     parameters  = line[1..-1].split(PosxmlParser::DELIMITER_END_PARAMETER)
@@ -48,12 +47,12 @@ module PosxmlParser
     posxml_execute_bytecode(instruction, parameters)
   end
 
-  # TODO: I don't know if should be on PosxmlInstanceMethods
   def posxml_loop
     if block_given?
       yield
     else
       loop do
+        return if @stop
         posxml_next
       end
     end

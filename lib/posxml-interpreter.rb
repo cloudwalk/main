@@ -8,8 +8,9 @@ class PosxmlInterpreter
     posxml_loop
   end
 
-  # TODO Scalone: Implement
-  util_exit { }
+  util_exit do
+    @stop = true
+  end
 
   # type:     1 for magstripe, 2 for chip, 3 for contactless, 4 for keyboard, 5 for touch.
   # keyboard: 1 for keybard enabled and 0 for keyboard disabled.
