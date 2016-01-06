@@ -72,6 +72,7 @@ module PosxmlParser
       "timeoutinput"                  => "funk_api",
       "iskeytimeout"                  => "funk_api",
       "sn_terminal"                   => "funk_api",
+      "model"                         => "funk_api",
       # "sn_walk"                       => "", #ignore
       # "inputcancel"                   => "", #ignore
       # "enablevlib"                    => "", #ignore
@@ -113,7 +114,6 @@ module PosxmlParser
       "ctls"                          => "ctls",
       "brand"                         => "brand",
       "retentativas"                  => "attach_tries",
-      "model"                         => "model",
       "numerodestepos"                => "logical_number"
     }
 
@@ -160,6 +160,10 @@ module PosxmlParser
         "1"
       when "sn_terminal"
         Device::System.serial
+      when "model"
+        Device::System.model
+      when "brand"
+        Device::System.brand
       # when "crcpaginawalkserver"
       # when "keypaperfeed"
       # when "keyalpha"
