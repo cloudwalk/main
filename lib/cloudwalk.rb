@@ -1,23 +1,29 @@
 class Cloudwalk
   include Device::Helper
 
-
-  def self.boot
-    if Device::Network.configured?
+  def self.boot(start_attach = true)
+    I18n.configure("main", Device::Setting.locale)
+    if Device::Network.configured? && start_attach
       if attach
         Device::Notification.start
       end
     end
   end
 
-  def self.start
-    if application = Device::ParamsDat.executable_app
-      application.execute
-    elsif Device::ParamsDat.apps.size > 1
+  def self.execute
+    unless application = Device::ParamsDat.executable_app
       application = Device::ParamsDat.application_menu
-      application.execute if application
+    end
+    application.execute if application
+  end
+
+  def self.start
+    if Device::ParamsDat.ready?
+      self.execute
+    elsif Device::ParamsDat.exists?
+      Device::ParamsDat.update_apps
     else
-      self.wizard
+      CloudwalkWizard.new.start
     end
   end
 
