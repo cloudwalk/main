@@ -7,9 +7,8 @@ class Main < Device
     Device::Display.clear
 
     Device.app_loop do
-      time = Time.now
       Device::Display.print_bitmap("./shared/walk.bmp",0,0)
-      Device::Display.print("#{rjust(time.day.to_s, 2, "0")}/#{rjust(time.month.to_s, 2, "0")}/#{time.year} #{rjust(time.hour.to_s, 2, "0")}:#{rjust(time.min.to_s, 2, "0")}", 6, 0)
+      Device::Display.print(I18n.t(:time, :time => Time.now), 6, 0)
       case getc(2000)
       when Device::IO::ENTER
         Cloudwalk.start
