@@ -3,118 +3,141 @@ class AdminConfiguration
 
   def self.perform
     Device::Display.clear
-    Device::Display.print("Admin Password:", 0, 0)
+    Device::Display.print("ADMIN PASSWORD:", 0, 0)
     password = Device::IO.get_format(1, 5, options = {:mode => :secret})
 
     if password == "55555"
-      menu
+      main_menu
     else
       Device::Display.clear
-      Device::Display.print("Incorrect Password", 0, 1)
+      Device::Display.print("INCORRECT PASSWORD", 1, 0)
       getc
       true
     end
   end
 
-  def self.menu
-    Device::Display.clear
-    Device::Display.print("Configuration Menu", 0, 0)
-    Device::Display.print(" 1 - Communication", 1, 0)
-    Device::Display.print(" 2 - Update Apps", 2, 0)
-    Device::Display.print(" 3 - Logical Number", 3, 0)
-    Device::Display.print(" 4 - Set Clock", 4, 0)
-    Device::Display.print(" 5 - Show Config",5,0)
-    Device::Display.print(" 6 - Versions",6,0)
-    key = getc
-    if key == "1"
-      Cloudwalk.communication
-    elsif key == "2"
-      Device::ParamsDat.update_apps
-    elsif key == Device::IO::F2
-      puts ""
-      keys = Device::IO.get_format(1, 6, options = {:mode => :secret})
-      if keys == "999999"
-        Device::Display.clear
-        Device::Display.print("Select:", 0, 7)
-        Device::Display.print(" 1 - Production",1, 3)
-        Device::Display.print(" 2 - Staging", 2, 3)
+  def self.main_menu
+    selected = menu(nil, {
+      "LOGICAL NUMBER"     => :logical_number,
+      "COMMUNICATION"      => :communication,
+      "MAGSTRIPE SETTINGS" => :magstripe,
+      "CHECK S. NUMBER"    => :serial_number,
+      "CLEAR THIS DEVICE"  => :clear,
+      "CLOUDWALK UPDATE"   => :update,
+      "ABOUT"              => :about,
+    })
 
-        if getc == "1"
-            Device::Setting.environment = "production"
-            closing
-            Device::System.restart
-        elsif getc == "2"
-          Device::Setting.environment = "staging"
-          closing
-          Device::System.restart
-        end
-      else
-        menu
-      end
-    elsif key == "3"
-      Device::Display.clear
-      Cloudwalk.logical_number
-    elsif key == "4"
-      year   = form("Input the year:"       , :min => 0 , :max => 4 , :default => Time.now.year)
-      month  = form("Input the month:"      , :min => 0 , :max => 2 , :default => Time.now.month)
-      day    = form("Input the day:"        , :min => 0 , :max => 2 , :default => Time.now.day)
-      hour   = form("Input the hour:"       , :min => 0 , :max => 2 , :default => Time.now.hour)
-      minute = form("Input the minutes:"    , :min => 0 , :max => 2 , :default => Time.now.min)
-      second = form("Input the seconds:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
-      Time.new(year,month,day,hour,minute,second).hwclock
-    elsif key == "5"
-      show_config
-    elsif key == "6"
-      versions
-    end
-    Device::Display.clear
+    self.send(selected) if selected
   end
 
-  def self.closing
-    Device::Display.clear
-    i = 3
-    loop do
-      Device::Display.print("Rebooting...",3,3)
-      Device::Display.print("#{i}")
-      sleep(1)
-      i -= 1
-      break if i < 1
-    end
+  def self.logical_number
+    Device::Setting.logical_number = form("Logical Number", :min => 0,
+                                          :max => 127, :default => Device::Setting.logical_number)
   end
 
-  def self.show_config
-    Device::Display.clear
-
-    if Device::Network.connected?
-      connected = "Connected"
+  def self.communication
+    if menu("COMMUNICATION MENU:", {"CONFIGURE" => true, "SHOW" => false})
+      communication_configure
     else
-      connected = "Not Connected"
+      communication_show
+    end
+  end
+
+  def self.communication_show
+    if Device::Network.connected? == 0
+      show = "STATUS: Connected"
+    else
+      show = "STATUS: Disconnected"
     end
 
     if Device::Setting.media == Device::Network::MEDIA_WIFI
-      Device::Display.print("Status:#{connected}", 0, 0)
-      Device::Display.print("Auth:#{Device::Setting.authentication}", 1, 0)
-      Device::Display.print("Essid:#{Device::Setting.essid}", 2, 0)
-      Device::Display.print("PW:#{Device::Setting.password}", 3, 0)
-      Device::Display.print("Channel:#{Device::Setting.channel}", 4, 0)
-      Device::Display.print("Chiper:#{Device::Setting.cipher}", 5, 0)
-      Device::Display.print("Mode:#{Device::Setting.mode}", 6,0)
+      show << "\nAUTH: #{Device::Setting.authentication}"
+      show << "\nESSID: #{Device::Setting.essid}"
+      show << "\nCHANNEL: #{Device::Setting.channel}"
+      show << "\nCHIPER: #{Device::Setting.cipher}"
       getc
     else
-      Device::Display.print("Connected?:#{connected}", 0, 0)
-      Device::Display.print("Apn:#{Device::Setting.apn}", 1, 0)
-      Device::Display.print("User:#{Device::Setting.user}", 2, 0)
-      Device::Display.print("PW:#{Device::Setting.password}", 3, 0)
-      getc
+      show << "\nAPN: #{Device::Setting.apn}"
+      show << "\nUSER: #{Device::Setting.user}"
+      show << "\nPW: #{Device::Setting.password}"
+    end
+
+    Device::Display.clear
+    puts show
+    getc
+  end
+
+  def self.communication_configure
+    media = menu("Select Media:", {"WIFI" => :wifi, "GPRS" => :gprs})
+    if media == :wifi
+      ret = MediaConfiguration.wifi
+    elsif media == :gprs
+      ret = MediaConfiguration.gprs
+    end
+
+    Device::Setting.network_configured = "1" if ret
+  end
+
+  def self.magstripe
+  end
+
+  def self.clear
+    Device::Display.clear
+    I18n.pt(:question_clear)
+    if getc == Device::IO::ENTER
+      Device::ParamsDat.parse
+      Device::ParamsDat.format!
     end
   end
 
-  def self.versions
+  def self.update
+    if attach
+      Device::ParamsDat.update_apps
+    end
+  end
+
+  def self.serial_number
     Device::Display.clear
-    Device::Display.print("Versions",0,0)
-    Device::Display.print("Application:#{Main.version}", 2, 0)
-    Device::Display.print("API:#{Device.api_version}", 3, 0)
-    Device::Display.print("Framework:#{Device.version}", 4, 0)
+    puts "SERIAL NUMBER:\n\n#{Device::System.serial}"
     getc
   end
+
+  def self.about
+    show = "ABOUT\n"
+    show << "\nAPI: #{Device.api_version}"
+    show << "\nFRAMEWORK: #{Device.version}"
+    show << "\nAPPLICATION: #{Main.version}"
+    Device::Display.clear
+    puts show
+    if getc == Device::IO::F2
+      keys = Device::IO.get_format(1, 6, options = {:mode => :secret})
+      if keys == "999999"
+        env = menu("SELECT:", {
+          "PRODUCTION" => :to_production!,
+          "STAGING"    => :to_staging!
+        })
+        restart if Device::Setting.send(env)
+      end
+    end
+  end
+
+  def self.restart
+    Device::Display.clear
+    3.times do |i|
+      Device::Display.print("REBOOTING IN #{3 - i}",3,3)
+      sleep(1)
+    end
+    Device::System.restart
+  end
+
+  def self.change_hour
+    year   = form("Input the year:"       , :min => 0 , :max => 4 , :default => Time.now.year)
+    month  = form("Input the month:"      , :min => 0 , :max => 2 , :default => Time.now.month)
+    day    = form("Input the day:"        , :min => 0 , :max => 2 , :default => Time.now.day)
+    hour   = form("Input the hour:"       , :min => 0 , :max => 2 , :default => Time.now.hour)
+    minute = form("Input the minutes:"    , :min => 0 , :max => 2 , :default => Time.now.min)
+    second = form("Input the seconds:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
+    Time.new(year,month,day,hour,minute,second).hwclock
+  end
 end
+
