@@ -66,6 +66,6 @@ class MediaConfiguration
 
     Device::Setting.update_attributes(
       "apn" => apn, "user" => user, "password" => password,
-      :media => Device::Network::MEDIA_GPRS)
+      "media" => Device::Network::MEDIA_GPRS)
   end
 end
