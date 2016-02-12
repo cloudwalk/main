@@ -3,14 +3,12 @@ class AdminConfiguration
 
   def self.perform
     Device::Display.clear
-    Device::Display.print("ADMIN PASSWORD:", 0, 0)
-    password = Device::IO.get_format(1, 5, options = {:mode => :secret})
-
-    if password == "55555"
+    I18n.pt(:admin_password)
+    if "55555" == Device::IO.get_format(1, 5, options = {:mode => :secret})
       main_menu
     else
       Device::Display.clear
-      Device::Display.print("INCORRECT PASSWORD", 1, 0)
+      I18n.pt(:admin_password_invalid)
       getc
       true
     end
@@ -18,25 +16,27 @@ class AdminConfiguration
 
   def self.main_menu
     selected = menu(nil, {
-      "LOGICAL NUMBER"     => :logical_number,
-      "COMMUNICATION"      => :communication,
-      "MAGSTRIPE SETTINGS" => :magstripe,
-      "CHECK S. NUMBER"    => :serial_number,
-      "CLEAR THIS DEVICE"  => :clear,
-      "CLOUDWALK UPDATE"   => :update,
-      "ABOUT"              => :about,
+      I18n.t(:admin_logical_number) => :logical_number,
+      I18n.t(:admin_communication)  => :communication,
+      I18n.t(:admin_magstripe)      => :magstripe,
+      I18n.t(:admin_serial_number)  => :serial_number,
+      I18n.t(:admin_clear)          => :clear,
+      I18n.t(:admin_update)         => :update,
+      I18n.t(:admin_about)          => :about,
     })
 
     self.send(selected) if selected
   end
 
   def self.logical_number
-    Device::Setting.logical_number = form("Logical Number", :min => 0,
-                                          :max => 127, :default => Device::Setting.logical_number)
+    Device::Setting.logical_number = form(
+      I18n.t(:admin_logical_number), :min => 0,
+      :max => 127, :default => Device::Setting.logical_number)
   end
 
   def self.communication
-    if menu("COMMUNICATION MENU:", {"CONFIGURE" => true, "SHOW" => false})
+    if menu(I18n.t(:admin_communication), { I18n.t(:admin_configure) => true,
+              I18n.t(:admin_show) => false })
       communication_configure
     else
       communication_show
@@ -44,10 +44,10 @@ class AdminConfiguration
   end
 
   def self.communication_show
-    if Device::Network.connected? == 0
-      show = "STATUS: Connected"
+    if (ret = Device::Network.connected?) == 0
+      show = I18n.t(:attach_connected)
     else
-      show = "STATUS: Disconnected"
+      show = I18n.t(:attach_fail, :args => ret)
     end
 
     if Device::Setting.media == Device::Network::MEDIA_WIFI
@@ -67,7 +67,7 @@ class AdminConfiguration
   end
 
   def self.communication_configure
-    media = menu("Select Media:", {"WIFI" => :wifi, "GPRS" => :gprs})
+    media = menu(I18n.t(:admin_select_media), {"WIFI" => :wifi, "GPRS" => :gprs})
     if media == :wifi
       ret = MediaConfiguration.wifi
     elsif media == :gprs
@@ -82,7 +82,7 @@ class AdminConfiguration
 
   def self.clear
     Device::Display.clear
-    I18n.pt(:question_clear)
+    I18n.pt(:admin_question_clear)
     if getc == Device::IO::ENTER
       Device::ParamsDat.parse
       Device::ParamsDat.format!
@@ -90,27 +90,24 @@ class AdminConfiguration
   end
 
   def self.update
-    if attach
-      Device::ParamsDat.update_apps
-    end
+    Device::ParamsDat.update_apps if attach
   end
 
   def self.serial_number
     Device::Display.clear
-    puts "SERIAL NUMBER:\n\n#{Device::System.serial}"
+    puts "#{I18n.t(:admin_serial_number)}:\n\n#{Device::System.serial}"
     getc
   end
 
   def self.about
-    show = "ABOUT\n"
+    show = "#{I18n.t(:admin_about)}\n"
     show << "\nAPI: #{Device.api_version}"
     show << "\nFRAMEWORK: #{Device.version}"
     show << "\nAPPLICATION: #{Main.version}"
     Device::Display.clear
     puts show
     if getc == Device::IO::F2
-      keys = Device::IO.get_format(1, 6, options = {:mode => :secret})
-      if keys == "999999"
+      if "999999" == Device::IO.get_format(1, 6, options = {:mode => :secret})
         env = menu("SELECT:", {
           "PRODUCTION" => :to_production!,
           "STAGING"    => :to_staging!
