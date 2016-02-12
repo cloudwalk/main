@@ -29,5 +29,6 @@ PLATFORMS
 
 DEPENDENCIES
   da_funk!
+  posxml_parser
   rake
   simplehttp!
