@@ -1,8 +1,6 @@
-# Walk App/Lib Skeleton for mruby
+# Funky Main App
 
-POC to CloudWalk gems and libs, pure ruby implementation.
-
-This repo is expected to be used mainly by the CloudWalk's CLI tool at the point of creating new applications, but feel free to use it for your purposes.
+Funky application responsible for start DaFunk ecosystem.
 
 ## What's inside?
 
@@ -10,23 +8,9 @@ This repo is expected to be used mainly by the CloudWalk's CLI tool at the point
 - Example test cases.
 - All the scripts needed to make it work.
 
-# Folders Structure
-
-```
-lib/
-  main.rb             # Simple example application
-test/
-  integration/
-    skeleton_test.rb  # Example of an integration test
-  unit/
-    skeleton_test.rb  # Example of an unit test
-  test_helper.rb      # A small file to help testing this app
-  test_run.rb         # The file that says which tests are to be executed
-```
-
 ## Setup
 
-1. Install Ruby(1.9.3 mruby compatible)
+1. Install Ruby
 2. Bundle `bundle install`
 
 ## Running
@@ -42,8 +26,9 @@ In case you're using this skeleton from a new application created by our CLI, yo
 
 ## Test
 
-1. Ruby Environment `rake test`
-2. MRuby Environment `rake mtest`
+1. Unit `rake test:unit`
+2. Integration `rake test:integration`
+3. All `rake test`
 
 ## Customizing the app
 
@@ -58,6 +43,5 @@ To customize the application, read our docs at <https://docs.cloudwalk.io/en/cli
 5. Create new Pull Request
 
 # License
-under the MIT License:
 
-* http://www.opensource.org/licenses/mit-license.php
+Apache License 2.0
