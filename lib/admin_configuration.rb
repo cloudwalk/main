@@ -55,7 +55,6 @@ class AdminConfiguration
       show << "\nESSID: #{Device::Setting.essid}"
       show << "\nCHANNEL: #{Device::Setting.channel}"
       show << "\nCHIPER: #{Device::Setting.cipher}"
-      getc
     else
       show << "\nAPN: #{Device::Setting.apn}"
       show << "\nUSER: #{Device::Setting.user}"
