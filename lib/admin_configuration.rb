@@ -131,12 +131,12 @@ class AdminConfiguration
   end
 
   def self.change_hour
-    year   = form("Input the year:"       , :min => 0 , :max => 4 , :default => Time.now.year)
-    month  = form("Input the month:"      , :min => 0 , :max => 2 , :default => Time.now.month)
-    day    = form("Input the day:"        , :min => 0 , :max => 2 , :default => Time.now.day)
-    hour   = form("Input the hour:"       , :min => 0 , :max => 2 , :default => Time.now.hour)
-    minute = form("Input the minutes:"    , :min => 0 , :max => 2 , :default => Time.now.min)
-    second = form("Input the seconds:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
+    year   = form("INPUT THE YEAR:"       , :min => 0 , :max => 4 , :default => Time.now.year)
+    month  = form("INPUT THE MONTH:"      , :min => 0 , :max => 2 , :default => Time.now.month)
+    day    = form("INPUT THE DAY:"        , :min => 0 , :max => 2 , :default => Time.now.day)
+    hour   = form("INPUT THE HOUR:"       , :min => 0 , :max => 2 , :default => Time.now.hour)
+    minute = form("INPUT THE MINUTES:"    , :min => 0 , :max => 2 , :default => Time.now.min)
+    second = form("INPUT THE SECONDS:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
     Time.new(year,month,day,hour,minute,second).hwclock
   end
 end
