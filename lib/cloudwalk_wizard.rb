@@ -63,7 +63,7 @@ class CloudwalkWizard < DaFunk::ScreenFlow
   add :activation_2 do |result|
     I18n.pt(:activation_2)
     connected = Device::Network.connected?
-    conn = Device::Network.attach if connected != Device::Network::SUCCESS
+    connected = Device::Network.attach if connected != Device::Network::SUCCESS
     params = Device::ParamsDat.download if connected == Device::Network::SUCCESS
     if params && Device::ParamsDat.exists?
       true
