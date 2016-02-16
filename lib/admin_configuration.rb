@@ -101,7 +101,7 @@ class AdminConfiguration
 
   def self.about
     show = "#{I18n.t(:admin_about)}\n"
-    show << "\nAPI: #{Device.api_version}"
+    show << "\nAPI: #{DaFunk::VERSION}"
     show << "\nFRAMEWORK: #{Device.version}"
     show << "\nAPPLICATION: #{Main.version}"
     Device::Display.clear
