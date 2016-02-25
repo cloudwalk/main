@@ -78,6 +78,23 @@ class AdminConfiguration
   end
 
   def self.magstripe
+    hash = {
+      1 => "0".chr,
+      2 => "2".chr,
+      3 => "4".chr,
+      4 => "255".chr
+    }
+    selection = {
+      "T2/DIGIT/SWIPE"    => 1,
+      "T2/SWIPE ONLY"     => 2,
+      "T1/T2/DIGIT/SWIPE" => 3,
+      "T1/T2/SWIPE ONLY"  => 4
+    }
+    options = {
+      :default => hash.invert[PosxmlParser::PosxmlSetting.tiposcartao]
+    }
+    value = menu(I18n.t(:admin_magstripe), selection, options)
+    PosxmlParser::PosxmlSetting.tiposcartao = hash[value]
   end
 
   def self.clear
