@@ -9,7 +9,7 @@ GEM
       rake (~> 10.4)
       yard (~> 0.8)
     funky-simplehttp (0.4.4)
-    posxml_parser (0.7.7)
+    posxml_parser (0.7.8)
     rake (10.5.0)
     yard (0.8.7.6)
 
