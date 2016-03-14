@@ -3,11 +3,29 @@ class Cloudwalk
 
   def self.boot(start_attach = true)
     I18n.configure("main", Device::Setting.locale)
+    self.setup_listeners
     if Device::Network.configured? && start_attach
       if attach
         Device::Notification.start
       end
     end
+  end
+
+  def self.setup_notifications
+    Device::NotificationCallback.new "APP_UPDATE", :on => Proc.new { Device::ParamsDat.update_apps(true) }
+    Device::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.update_apps(true) }
+    Device::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.format! }
+
+    Device::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { |file| }
+    Device::NotificationCallback.new "CANCEL_SYSTEM_UPDATE", :on => Proc.new { }
+    Device::NotificationCallback.new "TIMEZONE_UPDATE", :on => Proc.new { Device::Setting.cw_pos_timezone = "" }
+    Device::NotificationCallback.new "SHOW_MESSAGE", :on => Proc.new { |message, datetime|
+      Device::Display.clear
+      date = datetime.sub(" ", "-").split("-")
+      Device::Display.print_line("#{date[1]}/#{date[0]}/#{date[2]} #{date[3]}", 0)
+      Device::Display.print_line("#{message}", 2)
+      getc(0)
+    }
   end
 
   def self.execute
