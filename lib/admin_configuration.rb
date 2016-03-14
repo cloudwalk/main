@@ -138,6 +138,8 @@ class AdminConfiguration
           I18n.locale = locale
           Device::Setting.locale = locale
         end
+      elsif password == "777777"
+        DaFunk::Engine.stop!
       end
     end
   end
