@@ -6,12 +6,48 @@ class Cloudwalk
     I18n.pt(:setup_booting)
     self.setup_notifications
     self.setup_listeners
+    self.setup_events
+    PosxmlParser.setup
     if Device::Network.configured? && start_attach
       if attach
         I18n.pt(:setup_notifications)
         Device::Notification.start
       end
     end
+  end
+
+  def self.setup_listeners
+    DaFunk::EventListener.new :key_main do |event|
+      event.check do
+        key = getc(2000)
+        handler = event.handlers[key]
+        handler.perform if handler
+      end
+    end
+
+    DaFunk::EventListener.new :magnetic do |event|
+      event.start do
+        @mag = Device::Magnetic.new
+      end
+
+      event.check do
+        if @mag && @mag.swiped?
+          handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
+          puts "handler #{handler.inspect}";getc(2000)
+          handler[1].perform(@mag.track2) if handler
+          event.finish
+          event.start
+        end
+      end
+
+      event.finish do @mag.close if @mag end
+    end
+  end
+
+  def self.setup_events
+    DaFunk::EventHandler.new :key_main, Device::IO::ENTER do Cloudwalk.start end
+    DaFunk::EventHandler.new :key_main, Device::IO::F1 do AdminConfiguration.perform end
+    DaFunk::EventHandler.new :key_main, Device::IO::F2 do DaFunk::Engine.stop! end
   end
 
   def self.setup_notifications
@@ -48,3 +84,4 @@ class Cloudwalk
     end
   end
 end
+
