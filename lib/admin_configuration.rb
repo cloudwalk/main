@@ -129,7 +129,7 @@ class AdminConfiguration
           "PRODUCTION" => :to_production!,
           "STAGING"    => :to_staging!
         })
-        restart if Device::Setting.send(env)
+        restart if env && Device::Setting.send(env)
       end
     end
   end
