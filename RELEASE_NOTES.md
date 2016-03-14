@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.0.7 - 2016-03-14 - Update posxml_parser to version 0.7.8
+
+-  Update posxml_parser to version 0.7.8.
+-  Admin password accept more than 5 chars.
+-  Add locale configuration on About screen.
+-  Support to configure locale as configure env.
+-  Support to stop execution as configure env(Call DaFunk::Engine.stop!).
+
 ### 1.0.6 - 2016-03-14 - Update da_funk
 
 - Bug fix on environment change restart only if valid
