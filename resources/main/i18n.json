@@ -44,7 +44,9 @@
 		"admin_show":"SHOW",
 		"admin_select_media":"SELECT MEDIA",
 		"admin_password":"ADMIN PASSWORD",
-		"admin_password_invalid":"PASSWORD INVALID"
+		"admin_password_invalid":"PASSWORD INVALID",
+		"setup_booting":"BOOTING",
+		"setup_notifications":"SETUP NOTIFICATIONS..."
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUÊS\n2.ENGLISH",
@@ -91,6 +93,8 @@
 		"admin_show":"MOSTRAR",
 		"admin_select_media":"SELECIONE MIDIA",
 		"admin_password":"SENHA ADMIN",
-		"admin_password_invalid":"SENHA INVALIDA"
+		"admin_password_invalid":"SENHA INVALIDA",
+		"setup_booting":"INICIALIZANDO",
+		"setup_notifications":"CONFIGURANDO NOTIFICACOES..."
 	}
 }
