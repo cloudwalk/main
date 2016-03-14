@@ -33,7 +33,6 @@ class Cloudwalk
       event.check do
         if @mag && @mag.swiped?
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
-          puts "handler #{handler.inspect}";getc(2000)
           handler[1].perform(@mag.track2) if handler
           event.finish
           event.start
