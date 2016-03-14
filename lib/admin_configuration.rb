@@ -118,6 +118,7 @@ class AdminConfiguration
 
   def self.about
     show = "#{I18n.t(:admin_about)}\n"
+    show << "\nI18n: #{I18n.locale}"
     show << "\nAPI: #{DaFunk::VERSION}"
     show << "\nFRAMEWORK: #{Device.version}"
     show << "\nAPPLICATION: #{Main.version}"
