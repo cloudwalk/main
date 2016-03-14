@@ -1,11 +1,14 @@
 class Cloudwalk
-  include Device::Helper
+  include DaFunk::Helper
 
   def self.boot(start_attach = true)
     I18n.configure("main", Device::Setting.locale)
+    I18n.pt(:setup_booting)
+    self.setup_notifications
     self.setup_listeners
     if Device::Network.configured? && start_attach
       if attach
+        I18n.pt(:setup_notifications)
         Device::Notification.start
       end
     end
