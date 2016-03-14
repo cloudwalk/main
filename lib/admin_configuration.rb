@@ -116,6 +116,7 @@ class AdminConfiguration
     getc
   end
 
+  # TODO Refactoring locale
   def self.about
     show = "#{I18n.t(:admin_about)}\n"
     show << "\nI18n: #{I18n.locale}"
@@ -125,12 +126,18 @@ class AdminConfiguration
     Device::Display.clear
     puts show
     if getc == Device::IO::F2
-      if "999999" == Device::IO.get_format(1, 6, options = {:mode => :secret})
+      password = Device::IO.get_format(1, 6, options = {:mode => :secret})
+      if password == "999999"
         env = menu("SELECT:", {
           "PRODUCTION" => :to_production!,
           "STAGING"    => :to_staging!
         })
         restart if env && Device::Setting.send(env)
+      elsif password == "888888"
+        if locale = menu("SELECT:", I18n.hash.keys)
+          I18n.locale = locale
+          Device::Setting.locale = locale
+        end
       end
     end
   end
