@@ -4,7 +4,7 @@ class AdminConfiguration
   def self.perform
     Device::Display.clear
     I18n.pt(:admin_password)
-    if "55555" == Device::IO.get_format(1, 5, options = {:mode => :secret})
+    if "55555" == Device::IO.get_format(1, 10, options = {:mode => :secret})
       main_menu
     else
       Device::Display.clear
