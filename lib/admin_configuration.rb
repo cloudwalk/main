@@ -107,7 +107,7 @@ class AdminConfiguration
   end
 
   def self.update
-    Device::ParamsDat.update_apps if attach
+    Device::ParamsDat.update_apps(true) if attach
   end
 
   def self.serial_number
