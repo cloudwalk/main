@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.0.9 - 2016-06-20 - Fix WIFI configuration
+
+- Fix WIFI configuration flow.
+
 ### 1.0.8 - 2016-04-18 - Force params dat update on “Update apps”
 
 - Update posxml_parser to version 0.7.11.
