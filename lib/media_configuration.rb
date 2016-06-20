@@ -24,6 +24,7 @@ class MediaConfiguration
   }
 
   def self.wifi
+    Device::Setting.media = Device::Network::MEDIA_WIFI
     ret = menu(I18n.t(:scan_wifi), {I18n.t(:yes) => true, I18n.t(:no) => false})
     return if ret.nil?
     if ret
@@ -55,8 +56,6 @@ class MediaConfiguration
       Device::Setting.cipher         = menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher)
       Device::Setting.mode           = menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode)
     end
-
-    Device::Setting.media = Device::Network::MEDIA_WIFI
   end
 
   def self.gprs
