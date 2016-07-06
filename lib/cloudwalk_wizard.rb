@@ -35,7 +35,7 @@ class CloudwalkWizard < DaFunk::ScreenFlow
     I18n.pt(:logical_number_2)
     options = {:value => Device::Setting.logical_number, :mode => :alpha,
       :column => 0, :line => 4, :label => ": "}
-    Device::Setting.logical_number = Device::IO.get_format(1, 19, options)
+    Device::Setting.logical_number = Device::IO.get_format(1, 15, options)
     ! Device::Setting.logical_number.empty?
   end
 
