@@ -48,6 +48,22 @@ class Cloudwalk
         handler.perform if handler
       end
     end
+
+    DaFunk::EventListener.new :emv do |event|
+      event.start do
+        EmvTransaction.open("01")
+        EmvTransaction.load("04")
+      end
+
+      event.check do
+         EmvTransaction.initilize do |emv|
+          if emv.icc.detected?
+            handler = event.handlers.first
+            handler.perform(emv.select) if handler
+          end
+        end
+      end
+    end
   end
 
   def self.setup_events
