@@ -30,8 +30,8 @@ class AdminConfiguration
 
   def self.logical_number
     Device::Setting.logical_number = form(
-      I18n.t(:admin_logical_number), :min => 0,
-      :max => 127, :default => Device::Setting.logical_number)
+      I18n.t(:admin_logical_number), :min => 0, :max => 15,
+      :default => Device::Setting.logical_number, :mode => :alpha)
   end
 
   def self.communication
