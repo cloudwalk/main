@@ -41,6 +41,13 @@ class Cloudwalk
 
       event.finish do @mag.close if @mag end
     end
+
+    DaFunk::EventListener.new :schedule do |event|
+      event.check do
+        handler = event.handlers.find { |option, h| h.execute? }
+        handler.perform if handler
+      end
+    end
   end
 
   def self.setup_events
