@@ -1,4 +1,5 @@
 require 'funky-simplehttp'
+require 'funky-emv'
 
 class Main < Device
   include Device::Helper
