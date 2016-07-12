@@ -52,15 +52,23 @@ class Cloudwalk
     DaFunk::EventListener.new :emv do |event|
       event.start do
         EmvTransaction.open("01")
-        EmvTransaction.load("04")
+        EmvTransaction.load("4")
+        EmvTransaction.clean
       end
 
       event.check do
-         EmvTransaction.initilize do |emv|
+        EmvTransaction.initialize do |emv|
+          time = Time.now
+          emv.init_data.date = "#{time.year.to_s[2..3]}#{rjust(time.month, 2, "0")}#{rjust(time.day, 2, "0")}"
+          emv.init_data.initial_value = "000000000000"
           if emv.icc.detected?
             handler = event.handlers.first
-            handler.perform(emv.select) if handler
+            handler[1].perform(emv.select) if handler && handler[1]
           end
+        end
+
+        event.finish do
+          EmvTransaction.clean
         end
       end
     end
