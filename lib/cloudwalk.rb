@@ -28,6 +28,7 @@ class Cloudwalk
     DaFunk::EventListener.new :magnetic do |event|
       event.start do
         @mag = Device::Magnetic.new
+        @mag.open?
       end
 
       event.check do
