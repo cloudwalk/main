@@ -52,7 +52,7 @@ class Cloudwalk
 
     DaFunk::EventListener.new :emv do |event|
       event.start do
-        if File.exists? "/shared/emv_acquirer_aids_04.dat"
+        if File.exists? "./shared/emv_acquirer_aids_04.dat"
           EmvTransaction.open("01")
           EmvTransaction.clean
           EmvTransaction.load("4")
