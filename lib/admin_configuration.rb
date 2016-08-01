@@ -107,7 +107,20 @@ class AdminConfiguration
   end
 
   def self.update
+    selected = menu(I18n.t(:admin_update), {
+      I18n.t(:admin_update_apps)   => :apps_update,
+      I18n.t(:admin_update_system) => :system_update,
+    })
+
+    self.send(selected) if selected
+  end
+
+  def self.apps_update
     Device::ParamsDat.update_apps(true) if attach
+  end
+
+  def self.system_update
+    SystemUpdate.new.start
   end
 
   def self.serial_number
