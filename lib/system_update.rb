@@ -7,7 +7,7 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   attr_accessor :dat, :zip_filename, :total, :zip_path, :status, :zip_crc
 
-  header do
+  setup do
     Device::Display.clear
     I18n.pt(:system_update)
   end
