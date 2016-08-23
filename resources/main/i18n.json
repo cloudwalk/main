@@ -62,7 +62,15 @@
 		"system_update_file_not_found":"FILE NOT FOUND",
 		"system_update_updating":"UPDATING...",
 		"system_update_success_restart":"SUCCESS\nSYSTEM WILL RESTART IN 5 SECONDS",
-		"system_update_problem":"PROBLEM TO UPDATE"
+		"system_update_problem":"PROBLEM TO UPDATE",
+		"emv_card_brand_not_supported":"\nCARD BRAND\nNOT SUPPORTED",
+		"emv_insert_card":"INSERT CARD",
+		"emv_not_accept":"\nNOT ACCEPT\nPLEASE TRY AGAIN",
+		"emv_select_application":"SELECT",
+		"emv_money_label":"AMOUNT: $ ",
+		"emv_transaction_declined":"TRANSACTION DECLINED",
+		"emv_transaction_approved":"TRANSACTION APPROVED",
+		"emv_remove_card":"REMOVE CARD"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUÊS\n2.ENGLISH",
@@ -127,6 +135,14 @@
 		"system_update_file_not_found":"ARQUIVO NAO ENCONTRADO",
 		"system_update_updating":"ATUALIZANDO...",
 		"system_update_success_restart":"SUCESSO\nREINICIANDO SISTEMA EM 5 SEGUNDOS",
-		"system_update_problem":"PROBLEMA PARA ATUALIZAR"
+		"system_update_problem":"PROBLEMA PARA ATUALIZAR",
+		"emv_card_brand_not_supported":"\nMARCA DE CARTAO\nNAO SUPORTADA",
+		"emv_insert_card":"INSIRA CARTAO",
+		"emv_not_accept":"\nNAO ACEITO\nTENTE NOVAMENTE",
+		"emv_select_application":"SELECIONE",
+		"emv_money_label":"VALOR: R$ ",
+		"emv_transaction_declined":"TRANSACAO NEGADA",
+		"emv_transaction_approved":"TRANSACAO APROVADA",
+		"emv_remove_card":"REMOVA CARTAO"
 	}
 }
