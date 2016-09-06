@@ -1,4 +1,4 @@
-require 'funky-simplehttp'
+require 'posxml_parser'
 require 'funky-emv'
 
 class Main < Device

@@ -1,19 +1,21 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    cloudwalk_handshake (0.5.4)
-    da_funk (0.7.3)
+    cloudwalk_handshake (0.6.0)
+    da_funk (0.7.5)
       bundler (~> 1.7)
       cloudwalk_handshake (~> 0.5)
       posxml_parser (~> 0.6)
       rake (~> 10.4)
       yard (~> 0.8)
-    funky-emv (0.2.0)
+    funky-emv (0.3.1)
+      da_funk (~> 0.7)
+      funky-tlv (~> 0.2)
     funky-simplehttp (0.4.4)
     funky-tlv (0.2.0)
-    posxml_parser (0.7.11)
+    posxml_parser (0.9.1)
     rake (10.5.0)
-    yard (0.8.7.6)
+    yard (0.9.5)
 
 PLATFORMS
   ruby
