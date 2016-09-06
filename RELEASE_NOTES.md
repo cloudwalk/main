@@ -2,6 +2,33 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.1.0 - 2016-09-06
+
+- Change max size of logil_number form on admin menu for 15 chars.
+- Add Listener for scheduled processes.
+- Add emv Listener.
+- Change max size of logical number on wizard to 15 chars.
+- Add funky-tlv and funky-emv.
+- Refactoring EMV Listener adding finish and init data values.
+- Check if Magnetic successfully open to start EventListener.
+- Check if emv_acquirer_aids_04.dat exists to start emv EventListener.
+- Add key_main EventHandler for s920.
+- Add i18n for device not configured error.
+- Add main image for s920.
+- Bug fix the env acquirer id path in EventListener.
+- Refactoring CloudwalkWizard adapting new Screenflow syntax.
+- add SystemUpdate class and I18n.
+- Add SystemUpdat entry in AdminConfiguration.
+- Fix setup process of SystemUpdate screen flow.
+- Fix serial number activation step.
+- Add EMV message to i18n.json.
+- Add emv_enter_pin, emv_incorrect_pin and emv_last_chance I18n message and update emv_select_application message.
+- Update da_funk(0.7.5), cloudwalk_handshake(0.6.0), funky-emv(0.3.1) and posxml_parser(0.9.11).
+- Refactoring env EventListener to always try to load table file.
+- Add support to paperfeed key.
+- Refactoring key_main EventListener improving the syntax.
+- Temporarily remove notifications.
+
 ### 1.0.9 - 2016-06-20 - Fix WIFI configuration
 
 - Fix WIFI configuration flow.
