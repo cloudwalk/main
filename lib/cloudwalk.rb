@@ -92,6 +92,7 @@ class Cloudwalk
     DaFunk::EventHandler.new :key_main, Device::IO::F2 do DaFunk::Engine.stop! end
     DaFunk::EventHandler.new :key_main, Device::IO::FUNC do AdminConfiguration.perform end #PAX s920
     DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop! end #PAX s920
+    DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed end
   end
 
   def self.setup_notifications
