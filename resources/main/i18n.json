@@ -69,7 +69,10 @@
 		"emv_select_application":"SELECT",
 		"emv_money_label":"AMOUNT: $ ",
 		"emv_transaction_declined":"TRANSACTION DECLINED",
-		"emv_transaction_approved":"TRANSACTION APPROVED",
+		"emv_enter_pin":"AMOUNT: $ %s\nENTER PIN: ",
+		"emv_incorrect_pin":"INCORRECT PIN",
+		"emv_last_chance":"LAST CHANCE",
+		"emv_transaction_approved":"ENTER PIN:",
 		"emv_remove_card":"REMOVE CARD"
 	},
 	"pt-br":{
@@ -139,9 +142,12 @@
 		"emv_card_brand_not_supported":"\nMARCA DE CARTAO\nNAO SUPORTADA",
 		"emv_insert_card":"INSIRA CARTAO",
 		"emv_not_accept":"\nNAO ACEITO\nTENTE NOVAMENTE",
-		"emv_select_application":"SELECIONE",
+		"emv_select_application":"SELECIONE APLICACAO",
 		"emv_money_label":"VALOR: R$ ",
 		"emv_transaction_declined":"TRANSACAO NEGADA",
+		"emv_enter_pin":"VALOR: R$ %s\nSENHA: ",
+		"emv_incorrect_pin":"SENHA INVALIDA",
+		"emv_last_chance":"ULTIMA TENTATIVA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
 		"emv_remove_card":"REMOVA CARTAO"
 	}
