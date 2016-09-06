@@ -56,26 +56,32 @@ class Cloudwalk
           EmvTransaction.open("01")
           EmvTransaction.clean
           EmvTransaction.load("4")
-          true
-        else
-          false
         end
+        true
       end
 
       event.check do
-        EmvTransaction.initialize do |emv|
-          time = Time.now
-          emv.init_data.date = "#{time.year.to_s[2..3]}#{rjust(time.month, 2, "0")}#{rjust(time.day, 2, "0")}"
-          emv.init_data.initial_value = "000000000000"
-          if emv.icc.detected?
-            handler = event.handlers.first
-            handler[1].perform(emv.select) if handler && handler[1]
+        if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
+          EmvTransaction.initialize do |emv|
+            time = Time.now
+            emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
+            emv.init_data.initial_value = "000000000000"
+            if emv.icc.detected?
+              handler = event.handlers.first
+              handler[1].perform(emv.select) if handler && handler[1]
+            end
+          end
+        else
+          if File.exists?("./shared/emv_acquirer_aids_04.dat") && Device::ParamsDat.file["emv_enabled"] == "1"
+            EmvTransaction.open("01")
+            EmvTransaction.clean
+            EmvTransaction.load("4")
           end
         end
+      end
 
-        event.finish do
-          EmvTransaction.clean
-        end
+      event.finish do
+        EmvTransaction.clean
       end
     end
   end
