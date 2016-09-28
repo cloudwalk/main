@@ -15,17 +15,55 @@ class AdminConfiguration
   end
 
   def self.main_menu
-    selected = menu(nil, {
-      I18n.t(:admin_logical_number) => :logical_number,
-      I18n.t(:admin_communication)  => :communication,
-      I18n.t(:admin_magstripe)      => :magstripe,
-      I18n.t(:admin_serial_number)  => :serial_number,
-      I18n.t(:admin_clear)          => :clear,
-      I18n.t(:admin_update)         => :update,
-      I18n.t(:admin_about)          => :about,
-    })
+    selected = true
+    while(selected) do
+      selected = menu(I18n.t(:admin_menu_description), {
+        "CLOUDWALK"                => :cloudwalk_menu,
+        I18n.t(:admin_device_menu) => :device_menu,
+        I18n.t(:admin_about)       => :about,
+        I18n.t(:admin_exit)        => false
+      })
+      self.send(selected) if selected
+    end
+  end
 
-    self.send(selected) if selected
+  def self.cloudwalk_menu
+    selected = true
+    while(selected) do
+      selected = menu("CLOUDWALK", {
+        I18n.t(:admin_logical_number) => :logical_number,
+        I18n.t(:admin_update)         => :update_menu,
+        I18n.t(:admin_clear)          => :clear,
+        I18n.t(:admin_back)           => false
+      })
+      self.send(selected) if selected
+    end
+  end
+
+  def self.device_menu
+    selected = true
+    while(selected) do
+      selected = menu(I18n.t(:admin_device_menu), {
+        I18n.t(:admin_communication) => :communication,
+        I18n.t(:admin_magstripe)     => :magstripe,
+        I18n.t(:admin_serial_number) => :serial_number,
+        I18n.t(:admin_back)          => false
+      })
+      self.send(selected) if selected
+    end
+  end
+
+  def self.update_menu
+    selected = true
+    while(selected) do
+      selected = menu(I18n.t(:admin_update), {
+        I18n.t(:admin_update_apps)   => :apps_update,
+        I18n.t(:admin_clear)         => :clear,
+        I18n.t(:admin_update_system) => :system_update,
+        I18n.t(:admin_back)          => false
+      })
+      self.send(selected) if selected
+    end
   end
 
   def self.logical_number
@@ -106,14 +144,6 @@ class AdminConfiguration
     end
   end
 
-  def self.update
-    selected = menu(I18n.t(:admin_update), {
-      I18n.t(:admin_update_apps)   => :apps_update,
-      I18n.t(:admin_update_system) => :system_update,
-    })
-
-    self.send(selected) if selected
-  end
 
   def self.apps_update
     Device::ParamsDat.update_apps(true) if attach
