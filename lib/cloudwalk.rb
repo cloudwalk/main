@@ -4,16 +4,15 @@ class Cloudwalk
   def self.boot(start_attach = true)
     I18n.configure("main", Device::Setting.locale)
     I18n.pt(:setup_booting)
-    #self.setup_notifications
+    self.setup_notifications
     self.setup_listeners
     self.setup_events
     PosxmlParser.setup
     if Device::Network.configured? && start_attach
-      #if attach
-      attach
-      #I18n.pt(:setup_notifications)
-      #Device::Notification.start
-      #end
+      if attach
+        I18n.pt(:setup_notifications)
+        Device::Notification.start
+      end
     end
   end
 
