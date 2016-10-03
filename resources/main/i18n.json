@@ -159,6 +159,6 @@
 		"emv_incorrect_pin":"SENHA INVALIDA",
 		"emv_last_chance":"ULTIMA TENTATIVA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
-		"emv_remove_card":"REMOVA CARTAO"
+		"emv_remove_card":"RETIRE CARTAO"
 	}
 }
