@@ -45,7 +45,7 @@ class Cloudwalk
     DaFunk::EventListener.new :schedule do |event|
       event.check do
         handler = event.handlers.find { |option, h| h.execute? }
-        handler.perform if handler
+        handler[1].perform if handler
       end
     end
 
