@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.1.1 - 2016-10-03
+
+- Update da_funk(0.7.9), funky-emv(0.4.0), posxml_parser(0.9.3) and funky-tlv(0.2.2).
+- Bug fix timer handler call.
+- Refactoring admin menu improving UX and translation.
+- EMV Listener only call initialise if icc.detected.
+- Enable Notifications
+- Display emv password in the next line.
+
 ### 1.1.0 - 2016-09-06
 
 - Change max size of logil_number form on admin menu for 15 chars.
