@@ -2,7 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
-### 1.1.1 - 2016-10-03
+### 1.1.2 - 2016-10-07
+
+- Add gertec main images.
+- Remove spaces at time i18n.
+- Print date time in the last line available.
+- I18n pt:emv_remove_card to RETIRE CARTAO instead of REMOVA CARTAO.
+
+### 1.1.1 - 2016-10-06
 
 - Update da_funk(0.7.9), funky-emv(0.4.0), posxml_parser(0.9.3) and funky-tlv(0.2.2).
 - Bug fix timer handler call.
