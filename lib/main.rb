@@ -8,7 +8,7 @@ class Main < Device
     Cloudwalk.boot
     DaFunk::Engine.app_loop do
       Device::Display.print_main_image
-      Device::Display.print(I18n.t(:time, :time => Time.now), Screen.max_y - 1, 0)
+      Device::Display.print(I18n.t(:time, :time => Time.now), STDOUT.max_y - 1, 0)
     end
   end
 
