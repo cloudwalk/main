@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.1.4 - 2016-10-10
+
+- Bug fix replace class Screen for SDTOUT (instance of Screen) to get max_y.
+- Update posxml_parser(0.9.5)
+
 ### 1.1.2 - 2016-10-07
 
 - Add gertec main images.
