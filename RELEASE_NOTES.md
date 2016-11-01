@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.1.5 - 2016-11-01
+
+- Added EventHandler for magnetic calls.
+
 ### 1.1.4 - 2016-10-10
 
 - Bug fix replace class Screen for SDTOUT (instance of Screen) to get max_y.
