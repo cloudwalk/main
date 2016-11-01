@@ -8,6 +8,7 @@ class Cloudwalk
     self.setup_listeners
     self.setup_events
     PosxmlParser.setup
+    DaFunk::EventHandler.new :magnetic, nil do end
     if Device::Network.configured? && start_attach
       if attach
         I18n.pt(:setup_notifications)
@@ -31,6 +32,7 @@ class Cloudwalk
       end
 
       event.check do
+        PosxmlParser.setup
         if @mag && @mag.swiped?
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
           handler[1].perform(@mag.track2) if handler
