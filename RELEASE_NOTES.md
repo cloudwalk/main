@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.1.6 - 2016-11-03
+
+- Update posxml_parser(0.9.6)
+
 ### 1.1.5 - 2016-11-01
 
 - Added EventHandler for magnetic calls.
