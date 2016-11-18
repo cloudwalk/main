@@ -85,6 +85,18 @@ class Cloudwalk
         EmvTransaction.clean
       end
     end
+
+    DaFunk::EventListener.new :payment_channel do |event|
+      event.start do
+        PaymentChannel.check
+        true
+      end
+
+      event.check do
+        PaymentChannel.check
+      end
+    end
+
   end
 
   def self.setup_events
