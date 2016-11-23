@@ -38,7 +38,7 @@ class PaymentChannel
   end
 
   def self.alive?
-    @client || @client.connected?
+    @client && @client.connected?
   end
 
   def initialize
@@ -62,7 +62,7 @@ class PaymentChannel
   end
 
   def connected?
-    self.client || self.client.connected?
+    self.client && self.client.connected?
   end
 
   def handshake?
