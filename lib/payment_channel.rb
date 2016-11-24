@@ -6,19 +6,19 @@ class PaymentChannel
   attr_reader :client, :host, :port, :handshake_response
 
   def self.ready?
-    Device::ParamsDat.file["check_sum"] && Device::Setting.logical_number
+    Device::Network.connected? == 0 && Device::ParamsDat.file["access_token"] && Device::Setting.logical_number
   end
 
   def self.handshake_message
     {
-      "token"     => Device::ParamsDat.file["check_sum"],
+      "token"     => Device::ParamsDat.file["access_token"],
       "id"        => Device::Setting.logical_number.to_s,
       "heartbeat" => Device::Setting.heartbeat || DEFAULT_HEARBEAT
     }.to_json
   end
 
   def self.handshake_success_message
-    {"token" => Device::ParamsDat.file["check_sum"]}.to_json
+    {"token" => Device::ParamsDat.file["access_token"]}.to_json
   end
 
   def self.client
@@ -73,7 +73,7 @@ class PaymentChannel
   end
 
   def check
-    if self.connected? && self.handshake?
+    if Device::Network.connected? == 0 && self.connected? && self.handshake?
       self.client.read
     end
   end
