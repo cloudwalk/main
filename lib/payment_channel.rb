@@ -54,7 +54,12 @@ class PaymentChannel
   end
 
   def read
-    @client.read
+    begin
+      @client.read
+    rescue SocketError => e
+      ContextLog.exception(e, e.backtrace, "PaymentChannel error")
+      @client = nil
+    end
   end
 
   def close
