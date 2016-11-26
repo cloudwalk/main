@@ -63,7 +63,7 @@ class Cloudwalk
 
       event.check do
         if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
-          if EmvTransaction.icc.detected?
+          if EmvTransaction.detected?
             EmvTransaction.initialize do |emv|
               time = Time.now
               emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
