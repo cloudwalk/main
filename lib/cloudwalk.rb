@@ -93,7 +93,8 @@ class Cloudwalk
       end
 
       event.check do
-        PaymentChannel.check
+        handler = event.handlers[PaymentChannel.check]
+        handler.perform if handler
       end
     end
 
