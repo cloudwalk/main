@@ -81,7 +81,7 @@ class PaymentChannel
 
   def check
     if Device::Network.connected? == 0 && self.connected? && self.handshake?
-      self.client.read
+      self.read
     end
   end
 
