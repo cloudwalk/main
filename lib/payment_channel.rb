@@ -1,7 +1,7 @@
 class PaymentChannel
   DEFAULT_HEARBEAT = "180"
   class << self
-    attr_reader :client
+    attr_accessor :client
   end
   attr_reader :client, :host, :port, :handshake_response
 
@@ -23,7 +23,7 @@ class PaymentChannel
     {"token" => Device::ParamsDat.file["access_token"]}.to_json
   end
 
-  def self.client
+  def self.connect
     if self.dead? && self.ready?
       @client = PaymentChannel.new
     end
@@ -31,7 +31,7 @@ class PaymentChannel
   end
 
   def self.check
-    PaymentChannel.client if self.dead?
+    PaymentChannel.connect if self.dead?
     @client.check if @client
   end
 
@@ -60,12 +60,15 @@ class PaymentChannel
       @client.read
     rescue SocketError => e
       ContextLog.exception(e, e.backtrace, "PaymentChannel error")
+      PaymentChannel.client = nil
       @client = nil
     end
   end
 
   def close
     @client.close
+    @client = nil
+    PaymentChannel.client = nil
   end
 
   def connected?
