@@ -63,7 +63,7 @@ class Cloudwalk
 
       event.check do
         if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
-          if EmvTransaction.icc.detected?
+          if EmvTransaction.detected?
             EmvTransaction.initialize do |emv|
               time = Time.now
               emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
@@ -85,15 +85,29 @@ class Cloudwalk
         EmvTransaction.clean
       end
     end
+
+    DaFunk::EventListener.new :payment_channel do |event|
+      event.start do
+        PaymentChannel.check
+        true
+      end
+
+      event.check do
+        handler = event.handlers[PaymentChannel.check]
+        handler.perform if handler
+      end
+    end
+
   end
 
   def self.setup_events
-    DaFunk::EventHandler.new :key_main, Device::IO::ENTER do Cloudwalk.start end
-    DaFunk::EventHandler.new :key_main, Device::IO::F1 do AdminConfiguration.perform end
-    DaFunk::EventHandler.new :key_main, Device::IO::F2 do DaFunk::Engine.stop! end
-    DaFunk::EventHandler.new :key_main, Device::IO::FUNC do AdminConfiguration.perform end #PAX s920
-    DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop! end #PAX s920
-    DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed end
+    DaFunk::EventHandler.new :key_main, Device::IO::ENTER do Cloudwalk.start            end
+    DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform end
+    DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!       end
+    DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform end #PAX s920
+    DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
+    DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed  end
+    DaFunk::EventHandler.new :payment_channel, nil        do "Simple declaration"       end
   end
 
   def self.setup_notifications
