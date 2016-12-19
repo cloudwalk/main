@@ -23,15 +23,16 @@ class PaymentChannel
     {"token" => Device::ParamsDat.file["access_token"]}.to_json
   end
 
-  def self.connect
+  def self.connect(display_message = true)
     if self.dead? && self.ready?
+      Device::Display.print(I18n.t(:attach_attaching), STDOUT.max_y - 1, 0) if display_message
       @client = PaymentChannel.new
     end
     @client
   end
 
-  def self.check
-    PaymentChannel.connect if self.dead?
+  def self.check(display_message = true)
+    PaymentChannel.connect(display_message) if self.dead?
     @client.check if @client
   end
 

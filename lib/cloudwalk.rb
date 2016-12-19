@@ -92,7 +92,7 @@ class Cloudwalk
 
     DaFunk::EventListener.new :payment_channel do |event|
       event.start do
-        PaymentChannel.check
+        PaymentChannel.check(false)
         true
       end
 
