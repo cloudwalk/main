@@ -24,12 +24,12 @@ class Cloudwalk
     DaFunk::EventListener.new :magnetic do |event|
       event.start do
         @mag = Device::Magnetic.new
-        @mag.open?
+        true
       end
 
       event.check do
-        PosxmlParser.setup
-        if @mag && @mag.swiped?
+        @mag = Device::Magnetic.new unless @mag.open?
+        if @mag.open? && @mag && @mag.swiped?
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
           handler[1].perform(@mag.track2) if handler
           event.finish
