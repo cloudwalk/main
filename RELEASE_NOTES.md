@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.2.1 - 2016-12-19
+
+- Refactoring magnetic setup to not call PosxmlParser.setup every check.
+- Update posxml_parser (0.11.2).
+
 ### 1.2.0 - 2016-12-19
 
 - Added background images for gpos400 and mp20.
