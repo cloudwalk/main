@@ -2,6 +2,20 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.2.0 - 2016-12-19
+
+- Added background images for gpos400 and mp20.
+- Implement CloudWalk Payment Channel.
+- Disable Notifications.
+- Abstract smart card insert check to EmvTransaction class.
+- Added emv_pin_locked message.
+- Always clean, close and open between emv handlers execution.
+- Fix typo on i18n admin_update_apps message.
+- Update funky-emv(0.5.2).
+- Update da_funk(0.7.18).
+- Update posxml_parser(0.11.1).
+- Update cloudwalk_handshake(0.8.0).
+
 ### 1.1.7 - 2016-11-07
 
 - Update posxml_parser(0.9.7).
