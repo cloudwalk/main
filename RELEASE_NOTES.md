@@ -2,6 +2,9 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.2.2 - 2016-12-21
+- Update posxml_parser (0.11.3).
+
 ### 1.2.1 - 2016-12-19
 
 - Refactoring magnetic setup to not call PosxmlParser.setup every check.
