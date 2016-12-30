@@ -34,6 +34,7 @@ class AdminConfiguration
         I18n.t(:admin_logical_number) => :logical_number,
         I18n.t(:admin_update)         => :update_menu,
         I18n.t(:admin_clear)          => :clear,
+        "LOGS"                        => :logs_menu,
         I18n.t(:admin_back)           => false
       })
       self.send(selected) if selected
@@ -57,13 +58,17 @@ class AdminConfiguration
     selected = true
     while(selected) do
       selected = menu(I18n.t(:admin_update), {
-        I18n.t(:admin_update_apps)   => :apps_update,
         I18n.t(:admin_clear)         => :clear,
+        I18n.t(:admin_update_apps)   => :apps_update,
         I18n.t(:admin_update_system) => :system_update,
         I18n.t(:admin_back)          => false
       })
       self.send(selected) if selected
     end
+  end
+
+  def self.logs_menu
+    LogsMenu.perform
   end
 
   def self.logical_number

@@ -1,5 +1,6 @@
 require 'posxml_parser'
 require 'funky-emv'
+require "funky-simplehttp"
 
 class Main < Device
   include Device::Helper
