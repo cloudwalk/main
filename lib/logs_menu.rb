@@ -43,8 +43,7 @@ class LogsMenu
   end
 
   def self.upload(zip_file)
-    # TODO Check if token exists
-    token = Device::ParamsDat.file["api_token"]
+    return unless token = api_token
     http  = SimpleHttp.new("https", endpoint)
     Device::System.klass = "cw_logs.posxml"
     http.socket = Device::Network.socket.call
@@ -92,6 +91,11 @@ class LogsMenu
     else
       "api.cloudwalk.io"
     end
+  end
+
+  def self.api_token
+    value = Device::ParamsDat.file["api_token"]
+    I18n.pt(:admin_logs_not_configured) unless value
   end
 end
 
