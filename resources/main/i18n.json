@@ -87,7 +87,7 @@
 		"emv_enter_pin":"AMOUNT: $ %s\nENTER PIN: \n",
 		"emv_incorrect_pin":"INCORRECT PIN",
 		"emv_last_chance":"LAST CHANCE",
-		"emv_pin_locked":"\nPIN BLOCKED",
+		"emv_pin_blocked":"\nPIN BLOCKED",
 		"emv_transaction_approved":"ENTER PIN:",
 		"emv_remove_card":"REMOVE CARD"
 	},
@@ -179,7 +179,7 @@
 		"emv_enter_pin":"VALOR: R$ %s\nSENHA: \n",
 		"emv_incorrect_pin":"SENHA INVALIDA",
 		"emv_last_chance":"ULTIMA TENTATIVA",
-		"emv_pin_locked":"\nSENHA BLOQUEADA",
+		"emv_pin_blocked":"\nSENHA BLOQUEADA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
 		"emv_remove_card":"RETIRE CARTAO"
 	}
