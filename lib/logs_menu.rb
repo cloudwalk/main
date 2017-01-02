@@ -96,6 +96,7 @@ class LogsMenu
   def self.api_token
     value = Device::ParamsDat.file["api_token"]
     I18n.pt(:admin_logs_not_configured) unless value
+    value
   end
 end
 
