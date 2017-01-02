@@ -154,7 +154,7 @@
 		"admin_logs_compressing":"COMPACTANDO...",
 		"admin_logs_compressing_error":"ERRO NA COMPACTACAO",
 		"admin_logs_uploading":"ENVIANDO...",
-		"admin_logs_success":"ENVIADO SUCESSO",
+		"admin_logs_success":"ENVIADO COM SUCESSO",
 		"admin_logs_fail":"FALHA NO ENVIO",
 		"admin_logs_cleaned":"LIMPO",
 		"setup_booting":"INICIALIZANDO",
