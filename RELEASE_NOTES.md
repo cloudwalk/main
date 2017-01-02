@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.2.5 - 2017-01-02
+
+- Bug fix api_token getting at LogsMenu.
+- Bug fix LogsMenu.clear entries path.
+- Bug fix I18n admin_logs_success typo.
 
 ### 1.2.4 - 2016-12-27
 
