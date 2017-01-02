@@ -57,7 +57,7 @@ class LogsMenu
   end
 
   def self.clear
-    dirs = Dir.entries("./main").select {|p| p.include?(".log") }
+    dirs = Dir.entries("./main").select {|p| p.include?(".log") }.collect {|p| "./main/#{p}" }
     dirs.each { |file| File.delete(file) if File.file?(file) }
     Device::Display.clear
     I18n.pt(:admin_logs_cleaned)
