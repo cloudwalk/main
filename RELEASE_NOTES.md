@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.2.6 - 2017-01-04
+
+- Update posxml_parser (0.11.4).
+
 ### 1.2.5 - 2017-01-02
 
 - Bug fix api_token getting at LogsMenu.
