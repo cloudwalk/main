@@ -1,6 +1,6 @@
 {
 	"en":{
-		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUÊS\n2.ENGLISH",
+		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUES\n2.ENGLISH",
 		"serial_number_1":"STEP 1 OF 4\n\nFIRST, YOU WILL NEED\nTO REGISTER THE\nSERIALNUMBER OF YOUR\nDEVICE.\n OK TO CONTINUE",
 		"serial_number_2":"RELEASE THIS SERIAL\nNUM. ON YOUR MANAGER\n\n%s\n\nNEED HELP?\nwww.cloudwalk.io/1",
 		"logical_number_1":"STEP 2 OF 4\n\nNOW YOU WILL NEED TO\nREGISTER A LOGICAL\nNUMBER FOR YOUR\nDEVICE.\n OK TO CONTINUE",
@@ -13,7 +13,7 @@
 		"time":" M/d/yy h:m",
 		"yes":"YES",
 		"no":"NO",
-		"scan_wifi":"SCAN  WIFI?",
+		"scan_wifi":"SCAN WIFI?",
 		"scanning":"SCANNING...",
 		"authentication":"AUTHENTICATION",
 		"select_ssid":"SELECT SSID:",
