@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.3.2 - 2017-01-19
+
+- Update posxml_parser (0.12.1).
+
 ### 1.3.1 - 2017-01-17
 
 - Fix scan_wifi and language pt-br i18n message.
