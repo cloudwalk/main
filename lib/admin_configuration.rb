@@ -112,12 +112,10 @@ class AdminConfiguration
   def self.communication_configure
     media = menu(I18n.t(:admin_select_media), {"WIFI" => :wifi, "GPRS" => :gprs})
     if media == :wifi
-      ret = MediaConfiguration.wifi
+      MediaConfiguration.wifi
     elsif media == :gprs
-      ret = MediaConfiguration.gprs
+      MediaConfiguration.gprs
     end
-
-    Device::Setting.network_configured = "1" if ret
   end
 
   def self.magstripe

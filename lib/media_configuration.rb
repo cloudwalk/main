@@ -24,37 +24,37 @@ class MediaConfiguration
   }
 
   def self.wifi
-    Device::Setting.media = Device::Network::MEDIA_WIFI
     ret = menu(I18n.t(:scan_wifi), {I18n.t(:yes) => true, I18n.t(:no) => false})
     return if ret.nil?
     if ret
       Device::Display.clear
       I18n.pt(:scanning)
+      Device::Setting.media = Device::Network::MEDIA_WIFI
       aps = Device::Network.scan
       selection = aps.inject({}) do |selection, hash|
         selection[hash[:essid]] = hash; selection
       end
       if selected = menu(I18n.t(:select_ssid), selection)
-        Device::Setting.authentication = selected[:authentication]
-        Device::Setting.essid          = selected[:essid]
-        Device::Setting.channel        = selected[:channel]
-        Device::Setting.cipher         = selected[:cipher] || Device::Network::PARE_CIPHERS_TKIP
-        Device::Setting.mode           = selected[:mode]
+        selected[:cipher] ||= Device::Network::PARE_CIPHERS_TKIP
         if menu(I18n.t(:add_password), {I18n.t(:yes) => true, I18n.t(:no) => false})
-          Device::Setting.password = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
+          selected[:password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
         else
-          Device::Setting.password = ""
+          selected[:password] = ""
         end
+        self.persist_communication(selected)
       else
         return
       end
     else
-      Device::Setting.authentication = menu(I18n.t(:authentication), WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication)
-      Device::Setting.essid          = form("ESSID", :min => 0, :max => 127, :default => Device::Setting.essid)
-      Device::Setting.password       = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
-      Device::Setting.channel        = form("CHANNEL", :min => 0, :max => 127, :default => Device::Setting.channel)
-      Device::Setting.cipher         = menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher)
-      Device::Setting.mode           = menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode)
+      self.persist_communication({
+        :authentication => menu(I18n.t(:authentication), WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication),
+        :essid          => form("ESSID", :min => 0, :max => 127, :default => Device::Setting.essid),
+        :password       => form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password),
+        :channel        => form("CHANNEL", :min => 0, :max => 127, :default => Device::Setting.channel),
+        :cipher         => menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher),
+        :mode           => menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode),
+        :media          => Device::Network::MEDIA_WIFI
+      })
     end
   end
 
@@ -63,8 +63,28 @@ class MediaConfiguration
     user     = form("USER", :min => 0, :max => 127, :default => Device::Setting.user)
     password = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
 
-    Device::Setting.update_attributes(
-      "apn" => apn, "user" => user, "password" => password,
-      "media" => Device::Network::MEDIA_GPRS)
+    self.persist_communication({
+      :apn => apn, :user => user, :password => password,
+      "media" => Device::Network::MEDIA_GPRS
+    })
+  end
+
+  def self.persist_communication(config)
+    ContextLog.info config.inspect
+    if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
+      Device::Display.clear
+      I18n.pt(:media_check_connection)
+      if Device::Network.connected? == 0
+        Device::Network.disconnect
+        Device::Network.power(0)
+      end
+      Device::Setting.update_attributes(config)
+      Device::Setting.network_configured = "1"
+      Device::Setting.network_configured = "0" unless attach
+    else
+      Device::Setting.update_attributes(config)
+      Device::Setting.network_configured = "1"
+    end
   end
 end
+
