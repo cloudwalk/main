@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.4.0 - 2017-03-14
+
+- Update posxml_parser 0.13.0.
+- Support to cw_apns.dat (api options menu) file.
+
+### 1.3.4 - 2017-03-05
+
+- Refactoring communication configuration flow to try start communication at the end of the flow.
+- Update posxml_parser (0.12.4) e da_funk (0.8.1).
+
 ### 1.3.3 - 2017-01-26
 
 - Update posxml_parser (0.12.3).
