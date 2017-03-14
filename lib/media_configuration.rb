@@ -23,6 +23,8 @@ class MediaConfiguration
     "Station (AP)"  => Device::Network::MODE_STATION
   }
 
+  CW_APNS_FILE = "./shared/cw_apns.dat"
+
   def self.wifi
     ret = menu(I18n.t(:scan_wifi), {I18n.t(:yes) => true, I18n.t(:no) => false})
     return if ret.nil?
@@ -59,9 +61,11 @@ class MediaConfiguration
   end
 
   def self.gprs
-    apn      = form("APN", :min => 0, :max => 127, :default => Device::Setting.apn)
-    user     = form("USER", :min => 0, :max => 127, :default => Device::Setting.user)
-    password = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
+    if File.exists?(CW_APNS_FILE)
+      apn, user, password = self.gprs_menu
+    else
+      apn, user, password = self.gprs_manual
+    end
 
     self.persist_communication({
       :apn => apn, :user => user, :password => password,
@@ -69,8 +73,45 @@ class MediaConfiguration
     })
   end
 
+  def self.gprs_menu
+    file = FileDb.new(CW_APNS_FILE)
+    apns = file.each.inject([]) { |apns, values| apns << parse_apn_line(values[1]) }
+    apns = apns.inject({}) {|hash, apn| hash[apn[check_apn("name")]] = apn; hash}
+
+    input = menu("APNS", apns, default: Device::Setting.apn)
+    if input["name"] == "DEFINE_APN"
+      self.gprs_manual
+    else
+      [input["apn"], input["user"], input["password"]]
+    end
+  end
+
+  def self.check_apn(name)
+    if name == "DEFINE_APN"
+      I18n.t(:admin_define_apn)
+    else
+      name
+    end
+  end
+
+  def self.parse_apn_line(txt)
+    cleaned_string = txt.to_s.gsub('", "', '","').gsub("\"", "").split(',')
+    cleaned_string.inject({}) do |hash, string|
+      parts = string.split("=");
+      hash[parts[0]] = parts[1]
+      hash
+    end
+  end
+
+  def self.gprs_manual
+    [
+      form("APN", :min => 0, :max => 127, :default => Device::Setting.apn),
+      form("USER", :min => 0, :max => 127, :default => Device::Setting.user),
+      form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
+    ]
+  end
+
   def self.persist_communication(config)
-    ContextLog.info config.inspect
     if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
       Device::Display.clear
       I18n.pt(:media_check_connection)
