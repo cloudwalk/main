@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.4.1 - 2017-03-30
+
+- Check if terminal connected to send log.
+- Always set klass main during Engine loop.
+- Update funky-emv (0.5.7).
+
 ### 1.4.0 - 2017-03-14
 
 - Update posxml_parser 0.13.0.
