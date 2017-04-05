@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+
+### 1.4.2 - 2017-04-05
+
+- Display if communication is successful configured.
+- Update posxml_parser (0.13.1).
+
 ### 1.4.1 - 2017-03-30
 
 - Check if terminal connected to send log.
