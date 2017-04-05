@@ -121,10 +121,19 @@ class MediaConfiguration
       end
       Device::Setting.update_attributes(config)
       Device::Setting.network_configured = "1"
-      Device::Setting.network_configured = "0" unless attach
+      if attach
+        Device::Display.clear
+        I18n.pt(:admin_communication_success)
+        getc(2000)
+      else
+        Device::Setting.network_configured = "0"
+      end
     else
       Device::Setting.update_attributes(config)
       Device::Setting.network_configured = "1"
+      Device::Display.clear
+      I18n.pt(:admin_communication_success)
+      getc(2000)
     end
   end
 end
