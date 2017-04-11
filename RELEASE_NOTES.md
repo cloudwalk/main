@@ -2,6 +2,9 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.4.3 - 2017-04-11
+
+- Only configure button to stop engine if Context is in development mode.
 
 ### 1.4.2 - 2017-04-05
 
