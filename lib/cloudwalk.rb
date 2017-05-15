@@ -4,6 +4,7 @@ class Cloudwalk
   def self.boot(start_attach = true)
     I18n.configure("main", Device::Setting.locale)
     I18n.pt(:setup_booting)
+    Device::Setting.boot = "1"
     self.setup_listeners
     self.setup_events
     PosxmlParser.setup
