@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.4.4 - 2017-05-17
+
+- Set Device::Setting.boot = 1 when starting main application.
+- Update posxml_parser (0.14.0).
+
 ### 1.4.3 - 2017-04-11
 
 - Only configure button to stop engine if Context is in development mode.
