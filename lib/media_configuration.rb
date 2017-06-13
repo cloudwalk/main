@@ -31,6 +31,10 @@ class MediaConfiguration
     if ret
       Device::Display.clear
       I18n.pt(:scanning)
+      if Device::Network.connected? == 0
+        Device::Network.disconnect
+        Device::Network.power(0)
+      end
       Device::Setting.media = Device::Network::MEDIA_WIFI
       aps = Device::Network.scan
       selection = aps.inject({}) do |selection, hash|
