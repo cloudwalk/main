@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.4.8 - 2017-06-13
+
+- Update posxml_parser (0.14.7).
+- Update funky-emv (0.5.8).
+- Increase listener getc timeout to 700 milliseconds.
+- Disconnect interface before scanning.
+- Update da_funk (0.8.4).
+
 ### 1.4.7 - 2017-05-30
 
 - Update posxml_parser (0.14.5).
