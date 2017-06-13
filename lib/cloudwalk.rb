@@ -17,7 +17,7 @@ class Cloudwalk
   def self.setup_listeners
     DaFunk::EventListener.new :key_main do |event|
       event.check do
-        handler = event.handlers[getc(400)]
+        handler = event.handlers[getc(700)]
         handler.perform if handler
       end
     end
