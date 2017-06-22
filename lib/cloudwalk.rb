@@ -8,6 +8,7 @@ class Cloudwalk
     self.setup_listeners
     self.setup_events
     PosxmlParser.setup
+    BacklightControl.setup
     DaFunk::EventHandler.new :magnetic, nil do end
     if Device::Network.configured? && start_attach
       attach
@@ -18,7 +19,10 @@ class Cloudwalk
     DaFunk::EventListener.new :key_main do |event|
       event.check do
         handler = event.handlers[getc(700)]
-        handler.perform if handler
+        if handler
+          BacklightControl.on
+          handler.perform
+        end
       end
     end
 
@@ -32,7 +36,10 @@ class Cloudwalk
         @mag = Device::Magnetic.new unless @mag.open?
         if @mag.open? && @mag && @mag.swiped?
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
-          handler[1].perform(@mag.track2) if handler
+          if handler
+            BacklightControl.on
+            handler[1].perform(@mag.track2)
+          end
           event.finish
           event.start
         end
@@ -61,6 +68,7 @@ class Cloudwalk
       event.check do
         if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
           if EmvTransaction.detected?
+            BacklightControl.on
             EmvTransaction.clean
             EmvTransaction.initialize do |emv|
               time = Time.now
