@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.5.0 - 2017-06-22
+
+- Update da_funk (0.8.5).
+- Support GPOS400 keys on hide menus.
+- Implement backlight control for Gertec.
+
 ### 1.4.11 - 2017-06-21
 
 - Update posxml_parser (0.14.10).
