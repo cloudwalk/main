@@ -171,7 +171,8 @@ class AdminConfiguration
     show << "\nAPPLICATION: #{Main.version}"
     Device::Display.clear
     puts show
-    if getc == Device::IO::F2
+    key = getc
+    if key == Device::IO::F2 || key == Device::IO::FUNC
       password = Device::IO.get_format(1, 6, options = {:mode => :secret})
       if password == "999999"
         env = menu("SELECT:", {
