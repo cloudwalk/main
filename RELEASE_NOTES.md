@@ -2,6 +2,18 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.7.0 - 2017-07-05
+
+- Exclude bmp platform files from format.
+- Apply backlight control for all models.
+- Turn the backlight after Handler execution.
+- Update da_funk (0.9.0).
+
+### 1.6.0 - 2017-06-30
+
+- Update posxml_parser (0.15.1).
+- Update da_funk (0.8.6).
+
 ### 1.5.0 - 2017-06-22
 
 - Update da_funk (0.8.5).
