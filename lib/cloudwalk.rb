@@ -22,6 +22,7 @@ class Cloudwalk
         if handler
           BacklightControl.on
           handler.perform
+          BacklightControl.on
         end
       end
     end
@@ -39,6 +40,7 @@ class Cloudwalk
           if handler
             BacklightControl.on
             handler[1].perform(@mag.track2)
+            BacklightControl.on
           end
           event.finish
           event.start
@@ -79,6 +81,7 @@ class Cloudwalk
               EmvTransaction.close
               EmvTransaction.open("01")
             end
+            BacklightControl.on
           end
         else
           if File.exists?("./shared/emv_acquirer_aids_04.dat") && Device::ParamsDat.file["emv_enabled"] == "1"
