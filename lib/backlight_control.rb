@@ -4,11 +4,9 @@ class BacklightControl
   end
 
   def self.setup
-    if Device::System.brand == "gertec"
-      self.setup_event
-      self.managment = true
-      BacklightControl.on
-    end
+    self.setup_event
+    self.managment = true
+    BacklightControl.on
   end
 
   def self.setup_event
