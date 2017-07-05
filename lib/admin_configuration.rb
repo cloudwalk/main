@@ -143,7 +143,7 @@ class AdminConfiguration
     I18n.pt(:admin_question_clear)
     if getc == Device::IO::ENTER
       Device::ParamsDat.parse
-      Device::ParamsDat.format!
+      Device::ParamsDat.format!(true)
     end
   end
 
