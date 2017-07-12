@@ -143,7 +143,7 @@ class AdminConfiguration
     I18n.pt(:admin_question_clear)
     if getc == Device::IO::ENTER
       Device::ParamsDat.parse
-      Device::ParamsDat.format!(true)
+      Device::ParamsDat.format!(true, ["./shared/cw_apns.dat"])
     end
   end
 
