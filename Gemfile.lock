@@ -11,8 +11,8 @@ GEM
     funky-emv (0.5.8)
       funky-tlv (~> 0.2)
     funky-simplehttp (0.4.4)
-    posxml_parser (0.15.1)
     funky-tlv (0.2.3)
+    posxml_parser (0.15.2)
       funky-emv (~> 0.3)
     rake (10.5.0)
 
