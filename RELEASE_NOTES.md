@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.8.0 - 2017-07-12
+
+- Update da_funk(0.9.1).
+- Do not exclude cw_apns.dat.
+- Update funky-tlv (0.2.3).
+- Update posxml_parser (0.15.2).
+
 ### 1.7.0 - 2017-07-05
 
 - Exclude bmp platform files from format.

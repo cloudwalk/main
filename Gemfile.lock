@@ -26,3 +26,6 @@ DEPENDENCIES
   funky-simplehttp
   funky-tlv
   rake
+
+BUNDLED WITH
+   1.15.1
