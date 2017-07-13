@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.8.0 - 2017-07-13
+
+- Add all files from resources to keep in format process.
+
 ### 1.8.0 - 2017-07-12
 
 - Update da_funk(0.9.1).
