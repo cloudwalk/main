@@ -1,6 +1,8 @@
 class AdminConfiguration
   include Device::Helper
 
+  KEEP_FILES = %w(background_gpos400.bmp battery100.png battery75.png gprs_gpos400.bmp main_mp20.bmp mobile20.png wifi0.png wifi_gpos400.bmp background_mp20.bmp battery100c.png battery_gpos400.bmp gprs_mp20.bmp main_s920.bmp mobile40.png wifi100.png wifi_mp20.bmp battery0.png battery25.png battery_mp20.bmp main.bmp mobile0.png mobile60.png wifi30.png battery0c.png battery50.png cw_apns.dat main_gpos400.bmp mobile100.png mobile80.png wifi60.png)
+
   def self.perform
     Device::Display.clear
     I18n.pt(:admin_password)
@@ -143,7 +145,8 @@ class AdminConfiguration
     I18n.pt(:admin_question_clear)
     if getc == Device::IO::ENTER
       Device::ParamsDat.parse
-      Device::ParamsDat.format!(true, ["./shared/cw_apns.dat"])
+      files = KEEP_FILES.collect {|f| "./shared/#{f}"}
+      Device::ParamsDat.format!(true, files)
     end
   end
 
