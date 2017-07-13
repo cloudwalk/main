@@ -2,7 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
-### 1.8.0 - 2017-07-13
+### 1.10.0 - 2017-07-13
+
+- Update funky-emv (0.5.9).
+
+### 1.9.0 - 2017-07-13
 
 - Add all files from resources to keep in format process.
 
