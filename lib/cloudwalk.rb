@@ -108,7 +108,6 @@ class Cloudwalk
         handler.perform if handler
       end
     end
-
   end
 
   def self.setup_events
@@ -116,10 +115,36 @@ class Cloudwalk
     DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform end
     DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform end #PAX s920
     DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed  end
-    DaFunk::EventHandler.new :payment_channel, nil        do "Simple declaration"       end
     if Context.development?
       DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!       end
       DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
+    end
+    DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
+      (1..5).to_a.reverse.each do |second|
+        PaymentChannel.print(I18n.t(:attach_registration_fail, :args => second), true)
+        AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
+      end
+      attach
+    end
+    DaFunk::EventHandler.new :payment_channel, :fallback_communication do
+      if ConnectionManagement.fallback_valid?
+        Device::Network.disconnect
+        Device::Network.power(0)
+        if ConnectionManagement.recover_fallback
+          PaymentChannel.print(I18n.t(:attach_configure_fallback), true)
+          attach
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :payment_channel, :primary_communication do
+      if ConnectionManagement.fallback_valid?
+        Device::Network.disconnect
+        Device::Network.power(0)
+        if ConnectionManagement.recover_primary
+          attach
+        end
+      end
     end
   end
 

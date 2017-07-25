@@ -25,15 +25,41 @@ class PaymentChannel
 
   def self.connect(display_message = true)
     if self.dead? && self.ready?
-      Device::Display.print(I18n.t(:attach_attaching), STDOUT.max_y - 1, 0) if display_message
+      self.print(I18n.t(:attach_attaching), display_message)
       @client = PaymentChannel.new
+      self.print(I18n.t(:attach_authenticate), display_message)
+      @client.handshake
     end
     @client
   end
 
+  def self.error
+    if ConnectionManagement.fallback?
+      :fallback_communication
+    elsif ConnectionManagement.conn_automatic_management?
+      :attach_registration_fail
+    end
+  end
+
   def self.check(display_message = true)
-    PaymentChannel.connect(display_message) if self.dead?
-    @client.check if @client
+    if self.dead?
+      PaymentChannel.connect(display_message)
+      if @client
+        self.print(I18n.t(:attach_waiting), display_message)
+        if message = @client.check
+          self.print(I18n.t(:attach_connected), display_message)
+          message
+        else
+          self.error
+        end
+      else
+        self.error
+      end
+    else
+      if @client
+        @client.check
+      end
+    end
   end
 
   def self.dead?
@@ -44,12 +70,14 @@ class PaymentChannel
     @client && @client.connected?
   end
 
+  def self.print(message, display = true)
+    Device::Display.print(message, STDOUT.max_y - 1, 0) if display
+  end
+
   def initialize
     @host   = Device::Setting.host
     @port   = (Device::Setting.apn == "gprsnac.com.br") ? 32304 : 443
     @client = CwWebSocket::Client.new(@host, @port)
-
-    self.handshake
   end
 
   def write(value)
@@ -84,9 +112,11 @@ class PaymentChannel
   end
 
   def check
-    if Device::Network.connected? == 0 && self.connected? && self.handshake?
-      self.read
+    if Device::Network.connected? && self.connected? && self.handshake?
+      message = self.read
     end
+    return :primary_communication if message.nil? && ConnectionManagement.primary_try?
+    message
   end
 
   private
