@@ -15,7 +15,7 @@ class LogsMenu
       Device::Display.clear
       I18n.pt(:admin_logs_file_not_found)
       getc(2000)
-    elsif Device::Network.connected? != 0
+    elsif ! Device::Network.connected?
       Device::Display.clear
       I18n.pt(:attach_device_not_configured)
       getc(2000)

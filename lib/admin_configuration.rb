@@ -89,10 +89,10 @@ class AdminConfiguration
   end
 
   def self.communication_show
-    if (ret = Device::Network.connected?) == 0
+    if Device::Network.connected?
       show = I18n.t(:attach_connected)
     else
-      show = I18n.t(:attach_fail, :args => ret)
+      show = I18n.t(:attach_fail, :args => Device::Network.code)
     end
 
     if Device::Setting.media == Device::Network::MEDIA_WIFI

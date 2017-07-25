@@ -31,7 +31,7 @@ class MediaConfiguration
     if ret
       Device::Display.clear
       I18n.pt(:scanning)
-      if Device::Network.connected? == 0
+      if Device::Network.connected?
         Device::Network.disconnect
         Device::Network.power(0)
       end
@@ -43,9 +43,9 @@ class MediaConfiguration
       if selected = menu(I18n.t(:select_ssid), selection)
         selected[:cipher] ||= Device::Network::PARE_CIPHERS_TKIP
         if menu(I18n.t(:add_password), {I18n.t(:yes) => true, I18n.t(:no) => false})
-          selected[:password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
+          selected[:wifi_password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password)
         else
-          selected[:password] = ""
+          selected[:wifi_password] = ""
         end
         self.persist_communication(selected)
       else
@@ -55,11 +55,12 @@ class MediaConfiguration
       self.persist_communication({
         :authentication => menu(I18n.t(:authentication), WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication),
         :essid          => form("ESSID", :min => 0, :max => 127, :default => Device::Setting.essid),
-        :password       => form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password),
+        :wifi_password  => form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password),
         :channel        => form("CHANNEL", :min => 0, :max => 127, :default => Device::Setting.channel),
         :cipher         => menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher),
         :mode           => menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode),
-        :media          => Device::Network::MEDIA_WIFI
+        :media          => Device::Network::MEDIA_WIFI,
+        :media_primary  => Device::Network::MEDIA_WIFI
       })
     end
   end
@@ -72,8 +73,9 @@ class MediaConfiguration
     end
 
     self.persist_communication({
-      :apn => apn, :user => user, :password => password,
-      "media" => Device::Network::MEDIA_GPRS
+      :apn => apn, :user => user, :apn_password => password,
+      :media => Device::Network::MEDIA_GPRS,
+      :media_primary => Device::Network::MEDIA_GPRS
     })
   end
 
@@ -111,7 +113,7 @@ class MediaConfiguration
     [
       form("APN", :min => 0, :max => 127, :default => Device::Setting.apn),
       form("USER", :min => 0, :max => 127, :default => Device::Setting.user),
-      form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.password)
+      form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.apn_password)
     ]
   end
 
@@ -119,7 +121,7 @@ class MediaConfiguration
     if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
       Device::Display.clear
       I18n.pt(:media_check_connection)
-      if Device::Network.connected? == 0
+      if Device::Network.connected?
         Device::Network.disconnect
         Device::Network.power(0)
       end

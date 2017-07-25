@@ -41,7 +41,7 @@ class CloudwalkWizard < DaFunk::ScreenFlow
 
   screen :communication_2 do |result|
     ret = false
-    unless (ret = (Device::Network.connected? == 0))
+    unless (ret = Device::Network.connected?)
       case(menu("Select Media:", {"WIFI" => :wifi, "GPRS" => :gprs}))
       when :wifi; ret = MediaConfiguration.wifi
       when :gprs; ret = MediaConfiguration.gprs
@@ -58,9 +58,13 @@ class CloudwalkWizard < DaFunk::ScreenFlow
 
   screen :activation_2 do |result|
     I18n.pt(:activation_2)
-    connected = Device::Network.connected?
-    connected = Device::Network.attach if connected != Device::Network::SUCCESS
-    params = Device::ParamsDat.download if connected == Device::Network::SUCCESS
+    unless Device::Network.connected?
+      if Device::Network.attach == Device::Network::SUCCESS
+        params = Device::ParamsDat.download
+      end
+    else
+      params = Device::ParamsDat.download
+    end
     if params && Device::ParamsDat.exists?
       true
     else

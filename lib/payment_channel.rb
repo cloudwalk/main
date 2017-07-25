@@ -6,7 +6,7 @@ class PaymentChannel
   attr_reader :client, :host, :port, :handshake_response
 
   def self.ready?
-    Device::Network.connected? == 0 && Device::ParamsDat.file["access_token"] &&
+    Device::Network.connected? && Device::ParamsDat.file["access_token"] &&
       Device::ParamsDat.file["payment_channel_enabled"] == "1" &&
       Device::Setting.logical_number
   end
