@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.11.0 - 2017-07-25
+
+- Update da_funk(0.9.2) posxml_parser(0.15.3) and funky-emv(0.6.0).
+- Adopt da_funk 0.9.2: - Device::Setting.wifi_password; - Device::Setting.media_primary; - Bool return for Device::Network.connected?
+- Refactoring Connection Management and Payment Channel handlers to support fallback communication.
+
 ### 1.10.0 - 2017-07-13
 
 - Update funky-emv (0.5.9).
