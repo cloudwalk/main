@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.12.0 - 2017-08-02
+
+- Update funky-emv (0.7.0).
+
 ### 1.11.0 - 2017-07-25
 
 - Update da_funk(0.9.2) posxml_parser(0.15.3) and funky-emv(0.6.0).
