@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.13.0 - 2017-08-03
+
+- Fix exception when connection management fallback not available.
+
 ### 1.12.0 - 2017-08-02
 
 - Update funky-emv (0.7.0).
