@@ -43,6 +43,10 @@ class ConnectionManagement
     0
   end
 
+  class << self
+    alias :config :conn_fallback_config
+  end
+
   def self.primary_try?
     if ! Device::Setting.media_primary.empty? &&
       Device::Setting.media_primary != Device::Setting.media
@@ -56,7 +60,7 @@ class ConnectionManagement
 
   def self.fallback_valid?
     self.conn_fallback_config && self.conn_fallback_timer &&
-      (config.include?("WIFI") || config.include?("GPRS"))
+      (self.config.include?("WIFI") || self.config.include?("GPRS"))
   end
 
   def self.recover_fallback
@@ -67,7 +71,7 @@ class ConnectionManagement
       if media ==  "WIFI"
         # WIFI|uclwifinetwork|uclwifisecurity|uclwifichannel|uclwifikey
         essid, authentication, channel, password = parameters.split("|")
-        config = {
+        configuration = {
           :network_configured => "1",
           :authentication     => authentication,
           :essid              => essid,
@@ -81,7 +85,7 @@ class ConnectionManagement
       else
         # GPRS|APN|USER|PASSWORD
         apn, user, password = parameters.split("|")
-        config = {
+        configuration = {
           :network_configured => "1",
           :apn                => apn,
           :user               => user,
@@ -89,7 +93,7 @@ class ConnectionManagement
           :media              => Device::Network::MEDIA_GPRS
         }
       end
-      Device::Setting.update_attributes(config)
+      Device::Setting.update_attributes(configuration)
     end
   end
 
