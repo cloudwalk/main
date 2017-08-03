@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.14.0 - 2017-08-03
+
+- Create alias for conn_fallback_config as config at ConnectionManagement.
+
 ### 1.13.0 - 2017-08-03
 
 - Fix exception when connection management fallback not available.
