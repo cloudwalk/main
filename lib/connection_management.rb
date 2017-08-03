@@ -38,8 +38,9 @@ class ConnectionManagement
   def self.conn_fallback_timer
     value = Device::ParamsDat.file["conn_fallback_timer"]
     if value && ! value.empty?
-      value.to_i
+      return value.to_i
     end
+    0
   end
 
   def self.primary_try?
