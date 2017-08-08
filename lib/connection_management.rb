@@ -49,8 +49,7 @@ class ConnectionManagement
   end
 
   def self.primary_try?
-    if ! Device::Setting.media_primary.empty? &&
-      Device::Setting.media_primary != Device::Setting.media
+    if ! Device::Setting.media_primary.to_s.empty? && Device::Setting.media_primary != Device::Setting.media
       if self.primary_timeout.nil? || Time.now > self.primary_timeout
         self.schedule_primary_timeout
         return true
