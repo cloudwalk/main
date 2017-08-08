@@ -40,8 +40,10 @@ class MediaConfiguration
       selection = aps.inject({}) do |selection, hash|
         selection[hash[:essid]] = hash; selection
       end
+
       if selected = menu(I18n.t(:select_ssid), selection)
         selected[:cipher] ||= Device::Network::PARE_CIPHERS_TKIP
+        selected[:media_primary] = Device::Network::MEDIA_WIFI
         if menu(I18n.t(:add_password), {I18n.t(:yes) => true, I18n.t(:no) => false})
           selected[:wifi_password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password)
         else
