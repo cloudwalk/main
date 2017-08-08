@@ -25,9 +25,9 @@ class PaymentChannel
 
   def self.connect(display_message = true)
     if self.dead? && self.ready?
-      self.print(I18n.t(:attach_attaching), display_message)
+      self.print_info(I18n.t(:attach_attaching), display_message)
       @client = PaymentChannel.new
-      self.print(I18n.t(:attach_authenticate), display_message)
+      self.print_info(I18n.t(:attach_authenticate), display_message)
       @client.handshake
     end
     @client
@@ -45,9 +45,9 @@ class PaymentChannel
     if self.dead?
       PaymentChannel.connect(display_message)
       if @client
-        self.print(I18n.t(:attach_waiting), display_message)
+        self.print_info(I18n.t(:attach_waiting), display_message)
         if message = @client.check
-          self.print(I18n.t(:attach_connected), display_message)
+          self.print_info(I18n.t(:attach_connected), display_message)
           message
         else
           self.error
@@ -70,8 +70,8 @@ class PaymentChannel
     @client && @client.connected?
   end
 
-  def self.print(message, display = true)
-    Device::Display.print(message, STDOUT.max_y - 1, 0) if display
+  def self.print_info(message, display = true)
+    print_last(message) if display
   end
 
   def initialize
