@@ -67,7 +67,7 @@ class PaymentChannel
   end
 
   def self.alive?
-    @client && @client.connected?
+    Device::Network.connected? && @client && @client.connected?
   end
 
   def self.print_info(message, display = true)
