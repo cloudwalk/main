@@ -115,7 +115,9 @@ class PaymentChannel
     if Device::Network.connected? && self.connected? && self.handshake?
       message = self.read
     end
-    return :primary_communication if message.nil? && ConnectionManagement.primary_try?
+    if message.nil? && ConnectionManagement.primary_try?
+      return :primary_communication
+    end
     message
   end
 
