@@ -122,7 +122,7 @@ class MediaConfiguration
   def self.persist_communication(config)
     if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
       Device::Display.clear
-      I18n.pt(:media_check_connection)
+      print_last(I18n.t(:media_check_connection))
       if Device::Network.connected?
         Device::Network.disconnect
         Device::Network.power(0)

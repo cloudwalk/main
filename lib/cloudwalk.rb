@@ -121,7 +121,7 @@ class Cloudwalk
     end
     DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
       (1..5).to_a.reverse.each do |second|
-        PaymentChannel.print(I18n.t(:attach_registration_fail, :args => second), true)
+        PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
         AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
       end
       attach
@@ -130,7 +130,7 @@ class Cloudwalk
       if ConnectionManagement.fallback_valid?
         Device::Network.shutdown
         if ConnectionManagement.recover_fallback
-          PaymentChannel.print(I18n.t(:attach_configure_fallback), true)
+          PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
           attach
         end
       end
