@@ -2,6 +2,18 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.15.0 - 2017-08-08
+
+- Update cloudwalk_handshake (0.9.0), da_funk(0.10.0) and posxml_parser (0.16.0).
+- Adopt print_last for PaymentChannel displays.
+- Check if Device is connected on PaymentChannel life check.
+- Refactoring primary_communication label return on PaymentChannel.
+- Bug fix set media_primary on media configuration.
+- Check if is main connection is running to validate fallback at ConnectionManagement.
+- Additional check to ConnectionManagement before try primary connection recovery.
+- Adopt Device::Network.shutdown at payment channel handlers and trigger fallback recovery if primary communication try has failed.
+- Adopt print_last at CloudWalk and MediaConfiguration.
+
 ### 1.14.0 - 2017-08-03
 
 - Create alias for conn_fallback_config as config at ConnectionManagement.
