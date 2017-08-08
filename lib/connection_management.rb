@@ -6,7 +6,8 @@ class ConnectionManagement
   DEFAULT_DROP_LIMIT = 2
 
   def self.fallback?
-    if ! Device::Network.connected? && self.fallback_valid? && self.conn_automatic_management?
+    if ! Device::Network.connected? && self.fallback_valid? && self.conn_automatic_management? &&
+      Device::Setting.media_primary == Device::Setting.media
       self.drops += 1
       if self.drops >= self.conn_fallback_drops_limit
         return true
