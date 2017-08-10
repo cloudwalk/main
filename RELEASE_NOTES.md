@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.16.0 - 2017-08-10
+
+- Decrease getc wait milliseconds of key_main handler from 700 to 200.
+- Bug fix, only close PaymentChannel client if it was created.
+- Rescue SocketError at PaymentChannel.
+- Fix connection management flag.
+
 ### 1.15.0 - 2017-08-08
 
 - Update cloudwalk_handshake (0.9.0), da_funk(0.10.0) and posxml_parser (0.16.0).
