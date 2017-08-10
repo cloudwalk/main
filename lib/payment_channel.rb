@@ -95,7 +95,7 @@ class PaymentChannel
   end
 
   def close
-    @client.close
+    @client.close if @client
     @client = nil
     PaymentChannel.client = nil
   end
