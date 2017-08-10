@@ -17,7 +17,7 @@ class ConnectionManagement
   end
 
   def self.conn_automatic_management?
-    Device::ParamsDat.file["connection_managment"] == "1"
+    Device::ParamsDat.file["connection_management"] == "1"
   end
 
   def self.conn_fallback_drops_limit
