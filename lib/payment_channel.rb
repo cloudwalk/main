@@ -78,6 +78,8 @@ class PaymentChannel
     @host   = Device::Setting.host
     @port   = (Device::Setting.apn == "gprsnac.com.br") ? 32304 : 443
     @client = CwWebSocket::Client.new(@host, @port)
+  rescue SocketError => e
+    self.error(e)
   end
 
   def write(value)
@@ -88,9 +90,7 @@ class PaymentChannel
     begin
       @client.read
     rescue SocketError => e
-      ContextLog.exception(e, e.backtrace, "PaymentChannel error")
-      PaymentChannel.client = nil
-      @client = nil
+      self.error(e)
     end
   end
 
@@ -122,6 +122,14 @@ class PaymentChannel
   end
 
   private
+  def error(exception)
+    if Context.development?
+      ContextLog.exception(exception, exception.backtrace, "PaymentChannel error")
+    end
+    PaymentChannel.client = nil
+    @client = nil
+  end
+
   def handshake
     if self.connected?
       @client.write(PaymentChannel.handshake_message)
