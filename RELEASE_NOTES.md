@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.17.0 - 2017-08-14
+
+- Update da_funk (0.12.0).
+
 ### 1.16.0 - 2017-08-10
 
 - Decrease getc wait milliseconds of key_main handler from 700 to 200.
