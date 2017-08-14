@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     cloudwalk_handshake (0.10.0)
-    da_funk (0.11.0)
+    da_funk (0.12.0)
       bundler (~> 1.7)
       cloudwalk_handshake (~> 0.6)
       funky-emv (~> 0.3)
