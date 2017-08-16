@@ -10,7 +10,9 @@ class Main < Device
     DaFunk::Engine.app_loop do
       Device::System.klass = "main"
       Device::Display.print_main_image
-      Device::Display.print(I18n.t(:time, :time => Time.now), STDOUT.max_y - 1, 0)
+      if Device::ParamsDat.file["disable_datetime"] != "1"
+        print_last(I18n.t(:time, :time => Time.now))
+      end
     end
   end
 
