@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.18.0 - 2017-08-16
+
+- Support disable_datetime flag.
+- Update da_funk (0.13.0) and posxml_parser (0.19.0).
+
 ### 1.17.0 - 2017-08-14
 
 - Update da_funk (0.12.0).
