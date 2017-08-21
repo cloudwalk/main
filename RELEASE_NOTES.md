@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.21.0 - 2017-08-21
+
+- Check if handshake was performed to display successful message on Paymentchannel reconnect.
+- Add timeout read loop to payment channel handshake.
+- Update posxml_parser (0.22.0).
+
 ### 1.20.0 - 2017-08-18
 
 - Update posxml_parser (0.21.0).
