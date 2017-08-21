@@ -46,7 +46,7 @@ class PaymentChannel
       PaymentChannel.connect(display_message)
       if @client
         self.print_info(I18n.t(:attach_waiting), display_message)
-        if message = @client.check
+        if message = @client.check || @client.handshake?
           self.print_info(I18n.t(:attach_connected), display_message)
           message
         else
