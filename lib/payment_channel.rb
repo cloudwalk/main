@@ -1,8 +1,10 @@
 class PaymentChannel
   DEFAULT_HEARBEAT = "180"
+
   class << self
     attr_accessor :client
   end
+
   attr_reader :client, :host, :port, :handshake_response
 
   def self.ready?
@@ -106,7 +108,11 @@ class PaymentChannel
 
   def handshake?
     if self.connected? && ! @handshake_response
-      @handshake_response = self.client.read
+      timeout = Time.now + Device::Setting.tcp_recv_timeout.to_i
+      loop do
+        break if @handshake_response = self.client.read
+        break if Time.now > timeout || getc(200) == Device::IO::CANCEL
+      end
     end
     !! @handshake_response
   end
