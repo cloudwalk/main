@@ -1,6 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    cloudwalk (0.6.0)
+      bundler
+      rake
     cloudwalk_handshake (0.10.0)
     da_funk (0.13.0)
       bundler (~> 1.7)
@@ -21,6 +24,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  cloudwalk
   da_funk
   funky-emv
   funky-simplehttp
