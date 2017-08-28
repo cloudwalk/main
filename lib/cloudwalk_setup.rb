@@ -1,4 +1,4 @@
-class Cloudwalk
+class CloudwalkSetup
   include DaFunk::Helper
 
   def self.boot(start_attach = true)
@@ -111,7 +111,7 @@ class Cloudwalk
   end
 
   def self.setup_events
-    DaFunk::EventHandler.new :key_main, Device::IO::ENTER do Cloudwalk.start            end
+    DaFunk::EventHandler.new :key_main, Device::IO::ENTER do CloudwalkSetup.start            end
     DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform end
     DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform end #PAX s920
     DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed  end

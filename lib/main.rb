@@ -6,7 +6,7 @@ class Main < Device
   include Device::Helper
 
   def self.call
-    Cloudwalk.boot
+    CloudwalkSetup.boot
     DaFunk::Engine.app_loop do
       Device::System.klass = "main"
       Device::Display.print_main_image
