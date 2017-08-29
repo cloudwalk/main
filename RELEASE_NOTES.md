@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.22.0 - 2017-08-29
+
+- Move cloudwalk.rb to cloudwalk_setup.rb.
+- Add cloudwalk gem.
+- Update da_funk (0.14.0).
+
 ### 1.21.0 - 2017-08-21
 
 - Check if handshake was performed to display successful message on Paymentchannel reconnect.
