@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.23.0 - 2017-08-30
+
+- Adopt cloudwlak 0.7.1.
+- Update da_funk (0.15.0)
+
 ### 1.22.0 - 2017-08-29
 
 - Move cloudwalk.rb to cloudwalk_setup.rb.
