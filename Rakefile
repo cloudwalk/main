@@ -6,6 +6,8 @@ require 'bundler/setup'
 
 Bundler.require(:default)
 
+Cloudwalk::Ruby::RakeTask.new
+
 DaFunk::RakeTask.new do |conf|
   conf.resources = FileList["./resources/**/*"]
   conf.mruby = "cloudwalk run -b"
