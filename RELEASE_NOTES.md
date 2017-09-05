@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.24.0 - 2017-09-05
+
+- Update posxml_parser (0.23.0).
+    - Move EventListener to main application.
+- Bug fix logical number form at initialisation flow.
+- Support to custom font.
+
 ### 1.23.0 - 2017-08-30
 
 - Adopt cloudwlak 0.7.1.
