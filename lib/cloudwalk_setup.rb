@@ -7,6 +7,7 @@ class CloudwalkSetup
     Device::Setting.boot = "1"
     self.setup_listeners
     self.setup_events
+    CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::EventHandler.new :magnetic, nil do end
@@ -18,7 +19,7 @@ class CloudwalkSetup
   def self.setup_listeners
     DaFunk::EventListener.new :key_main do |event|
       event.check do
-        handler = event.handlers[getc(200)]
+        handler = event.handlers[getc(100)]
         if handler
           BacklightControl.on
           handler.perform
@@ -106,6 +107,19 @@ class CloudwalkSetup
       event.check do
         handler = event.handlers[PaymentChannel.check]
         handler.perform if handler
+      end
+    end
+
+    DaFunk::EventListener.new :file_exists_once do |event|
+      event.start do @file_exists_once = {}; true end
+
+      event.check do
+        event.handlers.each do |option, handler|
+          if @file_exists_once[option].nil? && File.exists?(option)
+            @file_exists_once[option] = true
+            handler.perform
+          end
+        end
       end
     end
   end
