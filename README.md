@@ -8,6 +8,10 @@ Funky application responsible for start DaFunk ecosystem.
 - Example test cases.
 - All the scripts needed to make it work.
 
+## Flags
+
+- emv_application_name_table - If "1" display application name by params.dat
+
 ## Setup
 
 1. Install Ruby
