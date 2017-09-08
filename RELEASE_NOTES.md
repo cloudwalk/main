@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.28.0 - 2017-09-08
+
+- Bug Fix check if font file exist to update it.
+
 ### 1.27.0 - 2017-09-06
 
 - Update funky-emv (0.9.1).
