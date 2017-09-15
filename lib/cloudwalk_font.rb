@@ -23,14 +23,16 @@ class CloudwalkFont
 
   def load
     # TODO Scalone temporary
-    if File.exists?(file_path) && File.exists?(self.path)
+    if File.exists?(file_path)
       self.file = FileDb.new(file_path)
-      if Device::Display.adapter.respond_to? :font
-        Device::Display.adapter.font(r, g, b, a, width, height, path)
-      end
+      if File.exists?(self.path)
+        if Device::Display.adapter.respond_to? :font
+          Device::Display.adapter.font(r, g, b, a, width, height, path)
+        end
 
-      STDOUT.max_x = columns
-      STDOUT.max_y = lines
+        STDOUT.max_x = columns
+        STDOUT.max_y = lines
+      end
     end
   end
 
