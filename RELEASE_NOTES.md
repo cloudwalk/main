@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.29.0 - 2017-09-15
+
+- Add MIT License to README.
+- Fix display font setup.
+
 ### 1.28.0 - 2017-09-08
 
 - Bug Fix check if font file exist to update it.
