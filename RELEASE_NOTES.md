@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.30.0 - 2017-09-26
+
+- Update funky-emv (0.10.0).
+- Update da_funk (0.19.0).
+- Update cloudwalk (0.9.0).
+
 ### 1.29.0 - 2017-09-15
 
 - Add MIT License to README.
