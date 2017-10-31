@@ -134,7 +134,7 @@ class MediaConfiguration
         I18n.pt(:admin_communication_success)
         getc(2000)
       else
-        Device::Setting.network_configured = "0" if Device::ParamsDat.file["connection_management"] != "1"
+        Device::Setting.network_configured = "0" unless ConnectionManagement.conn_automatic_management?
       end
     else
       Device::Setting.update_attributes(config)
