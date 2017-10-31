@@ -103,7 +103,7 @@ class AdminConfiguration
     else
       show << "\nAPN: #{Device::Setting.apn}"
       show << "\nUSER: #{Device::Setting.user}"
-      show << "\nPW: #{Device::Setting.password}"
+      show << "\nPW: #{Device::Setting.apn_password}"
     end
 
     Device::Display.clear
