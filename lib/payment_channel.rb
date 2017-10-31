@@ -31,6 +31,8 @@ class PaymentChannel
       @client = PaymentChannel.new
       self.print_info(I18n.t(:attach_authenticate), display_message)
       @client.handshake
+    else
+      @client = nil
     end
     @client
   end
