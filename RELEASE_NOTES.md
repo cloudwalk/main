@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.34.0 - 2017-10-31
+
+- Update posxml_parser (0.24.0).
+- Bugfix apn password method call.
+- Fix PaymentChannel failure check to remove client instance and try again.
+- Adopt connection_management default as 1.
+- Update da_funk (0.20.0).
+
 ### 1.33.0 - 2017-10-30
 
 - Uodate funky-emv (0.13.0)
