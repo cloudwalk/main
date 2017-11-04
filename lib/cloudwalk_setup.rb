@@ -40,7 +40,9 @@ class CloudwalkSetup
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
           if handler
             BacklightControl.on
-            handler[1].perform(@mag.track2)
+            if check_connection
+              handler[1].perform(@mag.track2)
+            end
             BacklightControl.on
           end
           event.finish
@@ -72,15 +74,17 @@ class CloudwalkSetup
         if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
           if EmvTransaction.detected?
             BacklightControl.on
-            EmvTransaction.clean
-            EmvTransaction.initialize do |emv|
-              time = Time.now
-              emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
-              emv.init_data.initial_value = "000000000000"
-              handler = event.handlers.first
-              handler[1].perform(emv.select) if handler && handler[1]
-              EmvTransaction.close
-              EmvTransaction.open("01")
+            if CloudwalkSetup.check_connection
+              EmvTransaction.clean
+              EmvTransaction.initialize do |emv|
+                time = Time.now
+                emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
+                emv.init_data.initial_value = "000000000000"
+                handler = event.handlers.first
+                handler[1].perform(emv.select) if handler && handler[1]
+                EmvTransaction.close
+                EmvTransaction.open("01")
+              end
             end
             BacklightControl.on
           end
@@ -178,6 +182,21 @@ class CloudwalkSetup
       Device::Display.print_line("#{message}", 2)
       getc(0)
     }
+  end
+
+  def self.check_connection
+    if Device::ParamsDat.file["transaction_conn_check"] == "1"
+      if Device::Network.connected?
+        true
+      else
+        Device::Display.clear
+        I18n.pt(:transaction_no_connection)
+        getc(5000)
+        false
+      end
+    else
+      true
+    end
   end
 
   def self.execute

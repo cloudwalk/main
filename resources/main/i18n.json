@@ -98,7 +98,8 @@
 		"emv_last_chance":"LAST CHANCE",
 		"emv_pin_blocked":"\nPIN BLOCKED",
 		"emv_transaction_approved":"ENTER PIN:",
-		"emv_remove_card":"REMOVE CARD"
+		"emv_remove_card":"REMOVE CARD",
+		"transaction_no_connection":"TERMINAL NOT CONNECTED"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUÊS\n2.ENGLISH",
@@ -199,6 +200,7 @@
 		"emv_last_chance":"ULTIMA TENTATIVA",
 		"emv_pin_blocked":"\nSENHA BLOQUEADA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
-		"emv_remove_card":"RETIRE CARTAO"
+		"emv_remove_card":"RETIRE CARTAO",
+		"transaction_no_connection":"TERMINAL SEM CONEXAO"
 	}
 }
