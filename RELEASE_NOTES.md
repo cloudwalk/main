@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.35.0 - 2017-11-03
+
+- Check connection before execute mag or emv transaction.
+- Bug fix the primary connection try logic after reboot.
+- Update da_funk (0.21.0).
+- Update posxml_parser (0.25.0).
+- Add all flags to README.
+
 ### 1.34.0 - 2017-10-31
 
 - Update posxml_parser (0.24.0).
