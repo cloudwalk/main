@@ -8,9 +8,22 @@ Funky application responsible for start DaFunk ecosystem.
 - Example test cases.
 - All the scripts needed to make it work.
 
-## Flags
+## Flags from params.dat
 
-- emv_application_name_table - If "1" display application name by params.dat
+- `emv_application_name_table` - If 1 display application name by params.dat;
+- `connection_management` (Default 1) - If 1 connection management will be turned on and the main application will keep the communication up based on the last configuration. If any communication issue the main application will attempt in loop;
+- `conn_fallback_drops_limit` (Default 0: disable) - Drop limit of primary connection to start a fallback;
+- `conn_fallback_config` (Default "": disable) - Fallback configuration, ei.: `GPRS|chili|chili|`;
+- `conn_fallback_timer` (Default 0: disable) - Time until try the primary connection again (seconds);
+- `api_token` (Default "": disable) - Manager api token to upload any log file;
+- `disable_datetime` (Default 0: disable) - If 1 Disable date time display at main idle screen;
+- `emv_enabled` (Default 0: disable) - If 1 module EMV will be loaded and EMV transactions will be accepted;
+- `transaction_conn_check` (Default 0: disable) - If 1 check if terminal is connected to perform transactions (Mag or EMV) and reversals;
+- `access_token` (Default "": disable) - Payment channel access token;
+- `payment_channel_enabled` (Default 0: disable) - If 1 payment channel will be handle by the main application, access_token must to exist.
+- `encrypt_card` (Default 0: disable) - If 1 the PAN will be encrypted using 3DES injected keys to share between modules;
+- `emv_application` (Default "": disable) - Application that will be called after a EMV(insert card) input;
+- `attach_gprs_timeout` (Default "": disable) - timeout in miliseconds
 
 ## Setup
 
