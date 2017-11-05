@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.36.0 - 2017-11-04
+
+- Update da_funk (0.22.0).
+
 ### 1.35.0 - 2017-11-03
 
 - Check connection before execute mag or emv transaction.
