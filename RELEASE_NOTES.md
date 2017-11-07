@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.37.0 - 2017-11-07
+
+- Force close payment channel after communication management fail.
+
 ### 1.36.0 - 2017-11-04
 
 - Update da_funk (0.22.0).
