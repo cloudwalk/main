@@ -74,6 +74,10 @@ class PaymentChannel
     Device::Network.connected? && @client && @client.connected?
   end
 
+  def self.close!
+    @client && @client.close && @client = nil
+  end
+
   def self.print_info(message, display = true)
     print_last(message) if display
   end

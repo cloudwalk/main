@@ -146,6 +146,7 @@ class CloudwalkSetup
     end
     DaFunk::EventHandler.new :payment_channel, :fallback_communication do
       if ConnectionManagement.fallback_valid?
+        PaymentChannel.close!
         Device::Network.shutdown
         if ConnectionManagement.recover_fallback
           PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
@@ -156,6 +157,7 @@ class CloudwalkSetup
 
     DaFunk::EventHandler.new :payment_channel, :primary_communication do
       if ConnectionManagement.fallback_valid?
+        PaymentChannel.close!
         Device::Network.shutdown
         if ConnectionManagement.recover_primary
           unless attach
