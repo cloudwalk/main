@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.38.0 - 2017-11-08
+
+- Update posxml_parser (0.26.0).
+- Update cloudwalk_handshake (0.11.0).
+- Update da_funk (0.23.0).
+
 ### 1.37.0 - 2017-11-07
 
 - Force close payment channel after communication management fail.
