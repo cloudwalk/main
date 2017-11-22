@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.40.0 - 2017-11-22
+
+- Check if cw_app_keys has “DEFINIR_APN” for manual entry too.
+- Update posxml_parser (0.27.0).
+
 ### 1.39.0 - 2017-11-08
 
 - Update da_funk (0.24.0).
