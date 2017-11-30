@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+
+### 1.43.0 - 2017-11-30
+
+- Update posxml_parser (0.29.0).
+
 ### 1.42.0 - 2017-11-30
 
 - Check if params.dat exists before return connection_management flag.
