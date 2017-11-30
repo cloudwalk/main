@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.42.0 - 2017-11-30
+
+- Check if params.dat exists before return connection_management flag.
+
 ### 1.41.0 - 2017-11-28
 
 - Update da_funk (0.26.0).
