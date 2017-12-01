@@ -138,25 +138,30 @@ class CloudwalkSetup
       DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
     end
     DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
+      BacklightControl.on
       (1..5).to_a.reverse.each do |second|
         PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
         AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
       end
       attach
+      BacklightControl.on
     end
     DaFunk::EventHandler.new :payment_channel, :fallback_communication do
       if ConnectionManagement.fallback_valid?
+        BacklightControl.on
         PaymentChannel.close!
         Device::Network.shutdown
         if ConnectionManagement.recover_fallback
           PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
           attach
         end
+        BacklightControl.on
       end
     end
 
     DaFunk::EventHandler.new :payment_channel, :primary_communication do
       if ConnectionManagement.fallback_valid?
+        BacklightControl.on
         PaymentChannel.close!
         Device::Network.shutdown
         if ConnectionManagement.recover_primary
@@ -165,6 +170,7 @@ class CloudwalkSetup
             attach if ConnectionManagement.recover_fallback
           end
         end
+        BacklightControl.on
       end
     end
   end
