@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.45.0 - 2017-12-04
+
+- Update da_funk (0.27.0).
+
 ### 1.44.0 - 2017-12-01
 
 - Support to display merchant name.
