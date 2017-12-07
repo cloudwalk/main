@@ -1,11 +1,10 @@
 class BacklightControl
   class << self
-    attr_accessor :managment, :handler
+    attr_accessor :handler
   end
 
   def self.setup
     self.setup_event
-    self.managment = true
     BacklightControl.on
   end
 
@@ -13,28 +12,37 @@ class BacklightControl
     DaFunk::EventListener.new :backlight do |event|
       event.check do
         event.handlers.each do |option, handler|
-          handler.perform
+          handler.perform if self.enabled?
         end
       end
     end
 
-    self.handler = DaFunk::EventHandler.new(:backlight, seconds: 120) do
+    self.handler = DaFunk::EventHandler.new(:backlight, seconds: self.timeout) do
       BacklightControl.off
     end
   end
 
-  def self.on
-    if self.managment
-      self.handler.schedule_timer
-      Device::System.backlight = 100
+  def self.enabled?
+    Device::ParamsDat.file["backlight_control"] != "0"
+  end
+
+  def self.timeout
+    value = Device::ParamsDat.file["backlight_control"].to_s.strip
+    if value.empty?
+      120
+    else
+      value.to_i
     end
   end
 
+  def self.on
+    self.handler.schedule_timer
+    Device::System.backlight = 100
+  end
+
   def self.off
-    if self.managment
-      self.handler.schedule_timer
-      Device::System.backlight = 0
-    end
+    self.handler.schedule_timer
+    Device::System.backlight = 0
   end
 end
 
