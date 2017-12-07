@@ -128,6 +128,13 @@ class CloudwalkSetup
     end
   end
 
+  def self.countdown_menu
+    (1..5).to_a.reverse.each do |second|
+      PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
+      AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
+    end
+  end
+
   def self.setup_events
     DaFunk::EventHandler.new :key_main, Device::IO::ENTER do CloudwalkSetup.start            end
     DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform end
@@ -139,10 +146,7 @@ class CloudwalkSetup
     end
     DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
       BacklightControl.on
-      (1..5).to_a.reverse.each do |second|
-        PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
-        AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
-      end
+      self.countdown_menu
       attach
       BacklightControl.on
     end
@@ -153,7 +157,7 @@ class CloudwalkSetup
         Device::Network.shutdown
         if ConnectionManagement.recover_fallback
           PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
-          attach
+          self.countdown_menu unless attach
         end
         BacklightControl.on
       end
@@ -167,7 +171,9 @@ class CloudwalkSetup
         if ConnectionManagement.recover_primary
           unless attach
             Device::Network.shutdown
-            attach if ConnectionManagement.recover_fallback
+            if ConnectionManagement.recover_fallback
+              attach 
+            end
           end
         end
         BacklightControl.on
