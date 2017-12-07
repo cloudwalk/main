@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.46.0 - 2017-12-07
+
+- Add support to backlight control configuration from parameters.
+- Add countdown menu entry when communication fail on fallback recovery.
+- Update da_funk (0.28.0).
+
 ### 1.45.0 - 2017-12-04
 
 - Update da_funk (0.27.0).
