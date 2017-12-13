@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.47.0 - 2017-12-13
+
+- Update posxml_parser (0.30.0).
+
 ### 1.46.0 - 2017-12-07
 
 - Add support to backlight control configuration from parameters.
