@@ -86,7 +86,7 @@ class PaymentChannel
     @host   = Device::Setting.host
     @port   = (Device::Setting.apn == "gprsnac.com.br") ? 32304 : 443
     @client = CwWebSocket::Client.new(@host, @port)
-  rescue SocketError => e
+  rescue SocketError, PolarSSL::SSL::Error => e
     self.error(e)
   end
 
@@ -97,7 +97,7 @@ class PaymentChannel
   def read
     begin
       @client.read
-    rescue SocketError => e
+    rescue SocketError, PolarSSL::SSL::Error => e
       self.error(e)
     end
   end
