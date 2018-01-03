@@ -5,6 +5,7 @@ class CloudwalkSetup
     I18n.configure("main", Device::Setting.locale)
     I18n.pt(:setup_booting)
     Device::Setting.boot = "1"
+    self.setup_notifications
     self.setup_listeners
     self.setup_events
     CloudwalkFont.setup
@@ -109,8 +110,11 @@ class CloudwalkSetup
       end
 
       event.check do
-        handler = event.handlers[PaymentChannel.check]
-        handler.perform if handler
+        if (payload = PaymentChannel.check)
+          payload, notification = Device::Notification.check(payload)
+          handler = event.handlers[payload]
+          handler.perform(notification) if handler
+        end
       end
     end
 
@@ -172,12 +176,17 @@ class CloudwalkSetup
           unless attach
             Device::Network.shutdown
             if ConnectionManagement.recover_fallback
-              attach 
+              attach
             end
           end
         end
         BacklightControl.on
       end
+    end
+    DaFunk::EventHandler.new :payment_channel, :notification do |notification|
+      BacklightControl.on
+      notification.perform
+      BacklightControl.on
     end
   end
 
@@ -186,7 +195,7 @@ class CloudwalkSetup
     Device::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.update_apps(true) }
     Device::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.format! }
 
-    Device::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { |file| }
+    Device::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { SystemUpdate.new.start }
     Device::NotificationCallback.new "CANCEL_SYSTEM_UPDATE", :on => Proc.new { }
     Device::NotificationCallback.new "TIMEZONE_UPDATE", :on => Proc.new { Device::Setting.cw_pos_timezone = "" }
     Device::NotificationCallback.new "SHOW_MESSAGE", :on => Proc.new { |message, datetime|
@@ -195,6 +204,15 @@ class CloudwalkSetup
       Device::Display.print_line("#{date[1]}/#{date[0]}/#{date[2]} #{date[3]}", 0)
       Device::Display.print_line("#{message}", 2)
       getc(0)
+    }
+    Device::NotificationCallback.new "PROCESSING", :on => Proc.new { |app,params|
+      file, ext = app.split(".")
+      if ext == "posxml"
+        FileDb.new("./shared/#{file}.dat")["notification"] = params
+        Device::Runtime.execute(app)
+      else
+        Device::Runtime.execute(app, params)
+      end
     }
   end
 
