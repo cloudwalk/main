@@ -69,12 +69,12 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def download_device_dat
-    ret = Device::Transaction::Download.request_file(
+    ret = DaFunk::Transaction::Download.request_file(
       REMOTE_UPDATE_DAT,
       PATH_UPDATE_DAT,
       Device::Crypto.file_crc16_hex(PATH_UPDATE_DAT)
     )
-    if validation = Device::Transaction::Download.check(ret)
+    if validation = DaFunk::Transaction::Download.check(ret)
       parse_device_dat
     end
     validation
@@ -202,8 +202,8 @@ class SystemUpdate < DaFunk::ScreenFlow
     if check(path, crc)
       true
     else
-      ret = Device::Transaction::Download.request_file(filename, path, "0000")
-      Device::Transaction::Download.check(ret)
+      ret = DaFunk::Transaction::Download.request_file(filename, path, "0000")
+      DaFunk::Transaction::Download.check(ret)
     end
   end
 
