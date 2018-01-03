@@ -111,7 +111,7 @@ class CloudwalkSetup
 
       event.check do
         if (payload = PaymentChannel.check)
-          payload, notification = Device::Notification.check(payload)
+          payload, notification = DaFunk::Notification.check(payload)
           handler = event.handlers[payload]
           handler.perform(notification) if handler
         end
@@ -191,21 +191,21 @@ class CloudwalkSetup
   end
 
   def self.setup_notifications
-    Device::NotificationCallback.new "APP_UPDATE", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
-    Device::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
-    Device::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.format! }
+    DaFunk::NotificationCallback.new "APP_UPDATE", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
+    DaFunk::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
+    DaFunk::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.format! }
 
-    Device::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { SystemUpdate.new.start }
-    Device::NotificationCallback.new "CANCEL_SYSTEM_UPDATE", :on => Proc.new { }
-    Device::NotificationCallback.new "TIMEZONE_UPDATE", :on => Proc.new { Device::Setting.cw_pos_timezone = "" }
-    Device::NotificationCallback.new "SHOW_MESSAGE", :on => Proc.new { |message, datetime|
+    DaFunk::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { SystemUpdate.new.start }
+    DaFunk::NotificationCallback.new "CANCEL_SYSTEM_UPDATE", :on => Proc.new { }
+    DaFunk::NotificationCallback.new "TIMEZONE_UPDATE", :on => Proc.new { Device::Setting.cw_pos_timezone = "" }
+    DaFunk::NotificationCallback.new "SHOW_MESSAGE", :on => Proc.new { |message, datetime|
       Device::Display.clear
       date = datetime.sub(" ", "-").split("-")
       Device::Display.print_line("#{date[1]}/#{date[0]}/#{date[2]} #{date[3]}", 0)
       Device::Display.print_line("#{message}", 2)
       getc(0)
     }
-    Device::NotificationCallback.new "PROCESSING", :on => Proc.new { |app,params|
+    DaFunk::NotificationCallback.new "PROCESSING", :on => Proc.new { |app,params|
       file, ext = app.split(".")
       if ext == "posxml"
         FileDb.new("./shared/#{file}.dat")["notification"] = params
