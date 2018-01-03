@@ -26,10 +26,10 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   screen :parts_download do |result|
     block_success = -> {
-      I18n.pt(:system_update_success, :line => 4)
+      I18n.pt(:system_update_success, :line => 5)
     }
     block_fail = -> {
-      I18n.pt(:system_update_fail, :line => 4)
+      I18n.pt(:system_update_fail, :line => 5)
       sleep 1
     }
     I18n.pt(:system_update_downloading_parts, :line => 3)
