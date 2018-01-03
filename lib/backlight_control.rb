@@ -23,11 +23,11 @@ class BacklightControl
   end
 
   def self.enabled?
-    Device::ParamsDat.file["backlight_control"] != "0"
+    DaFunk::ParamsDat.file["backlight_control"] != "0"
   end
 
   def self.timeout
-    value = Device::ParamsDat.file["backlight_control"].to_s.strip
+    value = DaFunk::ParamsDat.file["backlight_control"].to_s.strip
     if value.empty?
       120
     else

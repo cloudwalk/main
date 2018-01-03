@@ -17,11 +17,11 @@ class ConnectionManagement
   end
 
   def self.conn_automatic_management?
-    Device::ParamsDat.exists? && Device::ParamsDat.file["connection_management"] != "0"
+    DaFunk::ParamsDat.exists? && DaFunk::ParamsDat.file["connection_management"] != "0"
   end
 
   def self.conn_fallback_drops_limit
-    value = Device::ParamsDat.file["conn_fallback_drops_limit"]
+    value = DaFunk::ParamsDat.file["conn_fallback_drops_limit"]
     if value && ! value.empty?
       value.to_i
     else
@@ -30,14 +30,14 @@ class ConnectionManagement
   end
 
   def self.conn_fallback_config
-    value = Device::ParamsDat.file["conn_fallback_config"]
+    value = DaFunk::ParamsDat.file["conn_fallback_config"]
     if value && !value.empty?
       value
     end
   end
 
   def self.conn_fallback_timer
-    value = Device::ParamsDat.file["conn_fallback_timer"]
+    value = DaFunk::ParamsDat.file["conn_fallback_timer"]
     if value && ! value.empty?
       return value.to_i
     end

@@ -145,15 +145,15 @@ class AdminConfiguration
     Device::Display.clear
     I18n.pt(:admin_question_clear)
     if getc == Device::IO::ENTER
-      Device::ParamsDat.parse
+      DaFunk::ParamsDat.parse
       files = KEEP_FILES.collect {|f| "./shared/#{f}"}
-      Device::ParamsDat.format!(true, files)
+      DaFunk::ParamsDat.format!(true, files)
     end
   end
 
 
   def self.apps_update
-    Device::ParamsDat.update_apps(true) if attach
+    DaFunk::ParamsDat.update_apps(true) if attach
   end
 
   def self.force_apps_update

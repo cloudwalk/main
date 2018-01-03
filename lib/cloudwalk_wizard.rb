@@ -65,12 +65,12 @@ class CloudwalkWizard < DaFunk::ScreenFlow
     I18n.pt(:activation_2)
     unless Device::Network.connected?
       if Device::Network.attach == Device::Network::SUCCESS
-        params = Device::ParamsDat.download
+        params = DaFunk::ParamsDat.download
       end
     else
-      params = Device::ParamsDat.download
+      params = DaFunk::ParamsDat.download
     end
-    if params && Device::ParamsDat.exists?
+    if params && DaFunk::ParamsDat.exists?
       true
     else
       Device::Display.clear

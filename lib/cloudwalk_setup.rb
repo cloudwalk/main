@@ -72,7 +72,7 @@ class CloudwalkSetup
       end
 
       event.check do
-        if EmvTransaction.opened? && Device::ParamsDat.file["emv_enabled"] == "1"
+        if EmvTransaction.opened? && DaFunk::ParamsDat.file["emv_enabled"] == "1"
           if EmvTransaction.detected?
             BacklightControl.on
             if CloudwalkSetup.check_connection
@@ -90,7 +90,7 @@ class CloudwalkSetup
             BacklightControl.on
           end
         else
-          if File.exists?("./shared/emv_acquirer_aids_04.dat") && Device::ParamsDat.file["emv_enabled"] == "1"
+          if File.exists?("./shared/emv_acquirer_aids_04.dat") && DaFunk::ParamsDat.file["emv_enabled"] == "1"
             EmvTransaction.open("01")
             EmvTransaction.clean
             EmvTransaction.load("4")
@@ -191,9 +191,9 @@ class CloudwalkSetup
   end
 
   def self.setup_notifications
-    Device::NotificationCallback.new "APP_UPDATE", :on => Proc.new { Device::ParamsDat.update_apps(true) }
-    Device::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.update_apps(true) }
-    Device::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { Device::ParamsDat.format! }
+    Device::NotificationCallback.new "APP_UPDATE", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
+    Device::NotificationCallback.new "SETUP_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.update_apps(true) }
+    Device::NotificationCallback.new "RESET_DEVICE_CONFIG", :on => Proc.new { DaFunk::ParamsDat.format! }
 
     Device::NotificationCallback.new "SYSTEM_UPDATE", :on => Proc.new { SystemUpdate.new.start }
     Device::NotificationCallback.new "CANCEL_SYSTEM_UPDATE", :on => Proc.new { }
@@ -217,7 +217,7 @@ class CloudwalkSetup
   end
 
   def self.check_connection
-    if Device::ParamsDat.file["transaction_conn_check"] == "1"
+    if DaFunk::ParamsDat.file["transaction_conn_check"] == "1"
       if Device::Network.connected?
         true
       else
@@ -232,17 +232,17 @@ class CloudwalkSetup
   end
 
   def self.execute
-    unless application = Device::ParamsDat.executable_app
-      application = Device::ParamsDat.application_menu
+    unless application = DaFunk::ParamsDat.executable_app
+      application = DaFunk::ParamsDat.application_menu
     end
     application.execute if application
   end
 
   def self.start
-    if Device::ParamsDat.ready?
+    if DaFunk::ParamsDat.ready?
       self.execute
-    elsif Device::ParamsDat.exists?
-      Device::ParamsDat.update_apps
+    elsif DaFunk::ParamsDat.exists?
+      DaFunk::ParamsDat.update_apps
     else
       CloudwalkWizard.new.start
     end

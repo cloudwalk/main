@@ -11,7 +11,7 @@ class Main < Device
       Device::System.klass = "main"
       Device::Display.print_main_image
       MerchantName.display
-      if Device::ParamsDat.file["disable_datetime"] != "1"
+      if DaFunk::ParamsDat.file["disable_datetime"] != "1"
         print_last(I18n.t(:time, :time => Time.now))
       end
     end

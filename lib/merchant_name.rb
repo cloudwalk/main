@@ -1,6 +1,6 @@
 class MerchantName
   def self.display
-    if (merchant_name = "#{Device::ParamsDat.file["merchant_name"]}") != ""
+    if (merchant_name = "#{DaFunk::ParamsDat.file["merchant_name"]}") != ""
       Device::Display.print_line(merchant_name, self.line, self.align(merchant_name))
     end
   end

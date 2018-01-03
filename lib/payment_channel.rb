@@ -12,21 +12,21 @@ class PaymentChannel
   end
 
   def self.configured?
-    Device::ParamsDat.file["access_token"] &&
-      Device::ParamsDat.file["payment_channel_enabled"] == "1" &&
+    DaFunk::ParamsDat.file["access_token"] &&
+      DaFunk::ParamsDat.file["payment_channel_enabled"] == "1" &&
       Device::Setting.logical_number
   end
 
   def self.handshake_message
     {
-      "token"     => Device::ParamsDat.file["access_token"],
+      "token"     => DaFunk::ParamsDat.file["access_token"],
       "id"        => Device::Setting.logical_number.to_s,
       "heartbeat" => Device::Setting.heartbeat || DEFAULT_HEARBEAT
     }.to_json
   end
 
   def self.handshake_success_message
-    {"token" => Device::ParamsDat.file["access_token"]}.to_json
+    {"token" => DaFunk::ParamsDat.file["access_token"]}.to_json
   end
 
   def self.connect(display_message = true)
