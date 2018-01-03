@@ -8,7 +8,11 @@ class PaymentChannel
   attr_reader :client, :host, :port, :handshake_response
 
   def self.ready?
-    Device::Network.connected? && Device::ParamsDat.file["access_token"] &&
+    Device::Network.connected? && self.configured?
+  end
+
+  def self.configured?
+    Device::ParamsDat.file["access_token"] &&
       Device::ParamsDat.file["payment_channel_enabled"] == "1" &&
       Device::Setting.logical_number
   end
@@ -38,10 +42,12 @@ class PaymentChannel
   end
 
   def self.error
-    if ConnectionManagement.fallback?
-      :fallback_communication
-    elsif ConnectionManagement.conn_automatic_management?
-      :attach_registration_fail
+    if self.configured?
+      if ConnectionManagement.fallback?
+        :fallback_communication
+      elsif ConnectionManagement.conn_automatic_management?
+        :attach_registration_fail
+      end
     end
   end
 
