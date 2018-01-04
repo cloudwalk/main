@@ -5,7 +5,7 @@ require "funky-simplehttp"
 class Main < Device
   include DaFunk::Helper
 
-  def self.call
+  def self.call(json = nil)
     CloudwalkSetup.boot
     DaFunk::Engine.app_loop do
       Device::System.klass = "main"
