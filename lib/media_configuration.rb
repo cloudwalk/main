@@ -1,5 +1,5 @@
 class MediaConfiguration
-  include Device::Helper
+  include DaFunk::Helper
 
   WIFI_AUTHENTICATION_OPTIONS = {
     "None"         => Device::Network::AUTH_NONE_OPEN,

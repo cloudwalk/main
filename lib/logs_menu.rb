@@ -1,5 +1,5 @@
 class LogsMenu
-  include Device::Helper
+  include DaFunk::Helper
 
   def self.perform
     action = true
