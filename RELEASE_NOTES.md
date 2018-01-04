@@ -2,6 +2,21 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.48.0 - 2018-01-04
+
+- Implement menu entry to force app update with crc check (without cache) and force update all files.
+- Turn on Notification and Notification Callbacks.
+- Remove chars no ascii table at i18n.json.
+- Fix system update return line display.
+- PaymentChannel rescue SocketError and PolarSSL::SSL::Error.
+- Implement PaymentChannel::configured? to check error.
+- Replace Device:: for DaFunk:: on Transaction, ParamsDat and Notication.
+- Receive json on main.
+- Update cloudwalk_handshake (0.12.0).
+- Update posxml_parser (0.31.0).
+- Update funky-emv (0.15.0).
+- Update da_funk (1.0.0).
+
 ### 1.47.0 - 2017-12-13
 
 - Update posxml_parser (0.30.0).
