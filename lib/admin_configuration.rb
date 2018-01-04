@@ -60,11 +60,12 @@ class AdminConfiguration
     selected = true
     while(selected) do
       selected = menu(I18n.t(:admin_update), {
-        I18n.t(:admin_clear)             => :clear,
-        I18n.t(:admin_update_apps)       => :apps_update,
-        I18n.t(:admin_update_system)     => :system_update,
-        I18n.t(:admin_force_update_apps) => :force_apps_update,
-        I18n.t(:admin_back)              => false
+        I18n.t(:admin_clear)         => :clear,
+        I18n.t(:admin_update_apps)   => :apps_update,
+        I18n.t(:admin_update_system) => :system_update,
+        I18n.t(:admin_update_check)  => :apps_update_check,
+        I18n.t(:admin_update_force)  => :apps_update_force,
+        I18n.t(:admin_back)          => false
       })
       self.send(selected) if selected
     end
@@ -156,10 +157,13 @@ class AdminConfiguration
     DaFunk::ParamsDat.update_apps(true) if attach
   end
 
-  def self.force_apps_update
+  def self.apps_update_check
     DaFunk::ParamsDat.update_apps(true, true) if attach
   end
 
+  def self.apps_update_force
+    DaFunk::ParamsDat.update_apps(true, true, true) if attach
+  end
 
   def self.system_update
     SystemUpdate.new.start
