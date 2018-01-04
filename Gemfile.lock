@@ -6,8 +6,8 @@ GEM
     cloudwalk (0.9.0)
       bundler
       rake
-    da_funk (0.28.0)
     cloudwalk_handshake (0.12.0)
+    da_funk (1.0.0)
       archive-zip (~> 0.5)
       bundler (~> 1.7)
       cloudwalk_handshake (~> 0.6)
@@ -36,4 +36,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
