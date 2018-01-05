@@ -6,6 +6,17 @@ class Main < Device
   include DaFunk::Helper
 
   def self.call(json = nil)
+    case self.execute(json)
+    when :admin_configuration
+      AdminConfiguration.perform
+    when :normal
+      perform
+    else
+      perform
+    end
+  end
+
+  def self.perform
     CloudwalkSetup.boot
     DaFunk::Engine.app_loop do
       Device::System.klass = "main"
@@ -14,6 +25,24 @@ class Main < Device
       if DaFunk::ParamsDat.file["disable_datetime"] != "1"
         print_last(I18n.t(:time, :time => Time.now))
       end
+    end
+  end
+
+  def self.execute(json)
+    unless json
+      :normal
+    else
+      if (hash = JSON.parse(json)) && hash["initialize"] == "admin_configuration"
+        :admin_configuration
+      else
+        :normal
+      end
+    end
+  rescue ArgumentError => e
+    if e.messsage == "invalid json"
+      :normal
+    else
+      raise
     end
   end
 
