@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'cloudwalk'
+gem 'posxml_parser'
 gem 'da_funk'
 gem 'funky-simplehttp'
 gem 'funky-emv'
