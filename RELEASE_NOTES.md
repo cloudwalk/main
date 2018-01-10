@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.49.0 - 2018-01-10
+
+-  Main::call receives Json to execute normal or admin menu.
+- Add menu option to delete only zip files.
+- Update posxml_parser (1.0.0).
+- Update cloudwalk (1.1.0).
+- Update da_funk (1.1.1).
+- Add menu option to delete only zip files.
+
 ### 1.48.0 - 2018-01-04
 
 - Implement menu entry to force app update with crc check (without cache) and force update all files.
