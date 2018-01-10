@@ -65,6 +65,7 @@ class AdminConfiguration
         I18n.t(:admin_update_system) => :system_update,
         I18n.t(:admin_update_check)  => :apps_update_check,
         I18n.t(:admin_update_force)  => :apps_update_force,
+        I18n.t(:admin_clear_zip)     => :clear_zip,
         I18n.t(:admin_back)          => false
       })
       self.send(selected) if selected
@@ -152,6 +153,16 @@ class AdminConfiguration
     end
   end
 
+  def self.clear_zip
+    Device::Display.clear
+    I18n.pt(:admin_question_clear_zip)
+    if getc == Device::IO::ENTER
+      Dir.entries("./shared/").each do |f|
+        path = "./shared/#{f}"
+        File.delete(path) if f.include?(".zip") && File.file?(path)
+      end
+    end
+  end
 
   def self.apps_update
     DaFunk::ParamsDat.update_apps(true) if attach
