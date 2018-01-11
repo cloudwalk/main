@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.50.0 - 2018-01-11
+
+- Update da_funk (1.2.0).
+
 ### 1.49.0 - 2018-01-10
 
 -  Main::call receives Json to execute normal or admin menu.
