@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.52.0 - 2018-01-16
+
+- Update I18n emv_enter_pin text.
+- Update cloudwalk (1.4.0).
+- Update da_funk (1.4.0).
+- Update funky-emv (0.16.0).
+- Update funky-simplehttp (0.5.0).
+- Update posxml_parser (1.2.0).
+
 ### 1.51.0 - 2018-01-12
 
 - Update posxml_parser (1.1.0).
