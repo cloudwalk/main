@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.54.0 - 2018-01-17
+
+- Fix countdown application configuration and implement generic parameter from params.dat.
+- Update cloudwalk (1.4.2).
+- Update da_funk (1.4.2).
+- Update posxml_parser (1.2.2).
+
 ### 1.53.0 - 2018-01-17
 
 - Add wait message before EMVTransaction start.
