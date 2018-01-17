@@ -78,6 +78,7 @@ class CloudwalkSetup
             if CloudwalkSetup.check_connection
               EmvTransaction.clean
               EmvTransaction.initialize do |emv|
+                FunkyEmv::Ui.display(:emv_processing, :line => 2, :column => 1)
                 time = Time.now
                 emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
                 emv.init_data.initial_value = "000000000000"
