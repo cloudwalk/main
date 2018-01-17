@@ -25,6 +25,7 @@ Funky application responsible for start DaFunk ecosystem.
 - `emv_application` (Default "": disable) - Application that will be called after a EMV(insert card) input;
 - `attach_gprs_timeout` (Default "": disable) - timeout in miliseconds
 - `backlight_control` (Default "120": enable, seconds) - If enable ( > 0) perform backlight control and turn off the backlight based on the time in seconds of this parameter if any event happen, if disable (0) keep backlight always on.
+- `countdown_application` (Default "": AdministrationMenu) - Application to be called if communication failure countdown.
 
 ## Setup
 

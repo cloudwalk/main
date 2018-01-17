@@ -136,7 +136,13 @@ class CloudwalkSetup
   def self.countdown_menu
     (1..5).to_a.reverse.each do |second|
       PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
-      AdminConfiguration.perform if getc(1000) == Device::IO::ENTER
+      if getc(1000) == Device::IO::ENTER
+        if (app = DaFunk::ParamsDat.file["countdown_application"])
+          Device::Runtime.execute(app)
+        else
+          AdminConfiguration.perform
+        end
+      end
     end
   end
 
