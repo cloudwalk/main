@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.53.0 - 2018-01-17
+
+- Add wait message before EMVTransaction start.
+- Update da_funk (1.4.1).
+- Update posxml_parser (1.2.1).
+
 ### 1.52.0 - 2018-01-16
 
 - Update I18n emv_enter_pin text.
