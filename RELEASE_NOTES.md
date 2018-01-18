@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.55.0 - 2018-01-18
+
+- Update da_funk (1.4.3).
+
 ### 1.54.0 - 2018-01-17
 
 - Fix countdown application configuration and implement generic parameter from params.dat.
