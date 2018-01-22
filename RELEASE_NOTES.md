@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.57.0 - 2018-01-22
+
+- Bug fix timeout on APN menu.
+- Replace disconnect and power off functions for shutdown at communication menu.
+- Support to change terminal signature in about entry.
+
 ### 1.56.0 - 2018-01-18
 
 - Update funky-emv (0.16.1).
