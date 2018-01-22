@@ -211,6 +211,12 @@ class AdminConfiguration
         end
       elsif password == "777777"
         DaFunk::Engine.stop!
+      elsif password == "666666"
+        env = menu("SELECT SIGNATURE:", {
+          "PRODUCTION" => "production",
+          "MOCKUP"    => "mockup"
+        })
+        FileDb.new("./shared/device.sig")["signer"] = env if env
       end
     end
   end
