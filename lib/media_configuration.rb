@@ -31,10 +31,7 @@ class MediaConfiguration
     if ret
       Device::Display.clear
       I18n.pt(:scanning)
-      if Device::Network.connected?
-        Device::Network.disconnect
-        Device::Network.power(0)
-      end
+      Device::Network.shutdown
       Device::Setting.media = Device::Network::MEDIA_WIFI
       aps = Device::Network.scan
       selection = aps.inject({}) do |selection, hash|
@@ -123,10 +120,7 @@ class MediaConfiguration
     if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
       Device::Display.clear
       print_last(I18n.t(:media_check_connection))
-      if Device::Network.connected?
-        Device::Network.disconnect
-        Device::Network.power(0)
-      end
+      Device::Network.shutdown
       Device::Setting.update_attributes(config)
       Device::Setting.network_configured = "1"
       if attach
