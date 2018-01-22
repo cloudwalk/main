@@ -87,7 +87,7 @@ class MediaConfiguration
     apns = apns.inject({}) {|hash, apn| hash[apn[check_apn("name")]] = apn; hash}
 
     input = menu("APNS", apns, default: Device::Setting.apn)
-    if input["name"] == "DEFINE_APN" || input["name"] == "DEFINIR_APN"
+    if input.nil? || input["name"] == "DEFINE_APN" || input["name"] == "DEFINIR_APN"
       self.gprs_manual
     else
       [input["apn"], input["user"], input["password"]]
