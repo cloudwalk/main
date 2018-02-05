@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.61.0 - 2018-02-05
+
+- Send notification reply to notification.
+- Fix “AGUARDE” message during system update.
+- Fix system update message.
+
 ### 1.60.0 - 2018-01-26
 
 - Update funky-emv (0.16.2).
