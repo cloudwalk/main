@@ -26,6 +26,7 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   screen :parts_download do |result|
     block_success = -> {
+      Device::Display.clear(5)
       I18n.pt(:system_update_success, :line => 5)
     }
     block_fail = -> {
