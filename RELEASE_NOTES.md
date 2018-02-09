@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.62.0 - 2018-02-09
+
+- Update da_funk (1.7.1) and remove payment channel files, which was moved to da_funk.
+- Support key menu.
+
 ### 1.61.0 - 2018-02-05
 
 - Send notification reply to notification.

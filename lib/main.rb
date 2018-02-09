@@ -1,6 +1,7 @@
 require 'posxml_parser'
 require 'funky-emv'
-require "funky-simplehttp" 
+require "funky-simplehttp"
+
 class Main < Device
   include DaFunk::Helper
 
@@ -46,7 +47,7 @@ class Main < Device
   end
 
   def self.version
-    "1.61.0"
+    "1.62.0"
   end
 end
 
