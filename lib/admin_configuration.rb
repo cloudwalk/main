@@ -50,9 +50,80 @@ class AdminConfiguration
         I18n.t(:admin_communication) => :communication,
         I18n.t(:admin_magstripe)     => :magstripe,
         I18n.t(:admin_serial_number) => :serial_number,
+        I18n.t(:admin_key_menu)      => :key_menu,
         I18n.t(:admin_back)          => false
       })
       self.send(selected) if selected
+    end
+  end
+
+  def self.key_menu
+    selected = true
+    while(selected) do
+      selected = menu(I18n.t(:admin_key_menu), {
+        I18n.t(:admin_key_list_all) => :key_list_all,
+        I18n.t(:admin_key_slot)     => :key_slot,
+        I18n.t(:admin_back)         => false
+      })
+      self.send(selected) if selected
+    end
+  end
+
+  def self.key_list_all
+    Device::Display.clear
+    I18n.pt(:admin_key_processing)
+    all = (0..100).to_a.inject({}) do |hash, slot|
+      ksn = Device::Pinpad.key_ksn(slot)
+      kcv = Device::Pinpad.key_kcv(slot)
+
+      hash[slot] = {}
+      hash[slot][:ksn] = ksn
+      hash[slot][:kcv] = kcv
+
+      if (ksn[:pin][0] == 0 || ksn[:data][0] == 0)
+        hash[slot][:ksn][:ret] = 0
+      else
+        hash[slot][:ksn][:ret] = -1
+      end
+      if (kcv[:pin][0] == 0 || kcv[:data][0] == 0)
+        hash[slot][:kcv][:ret] = 0
+      else
+        hash[slot][:kcv][:ret] = -1
+      end
+      hash[slot][:string] = "Slot #{slot} PIN #{hash[slot][:ksn][:ret]} Data #{hash[slot][:kcv][:ret]}"
+
+      hash
+    end
+
+    selection = all.inject({}) do |hash, value|
+      ContextLog.info "#{value.inspect}"
+      hash[value[1][:string]] = value[0]
+      hash
+    end
+
+   selected = menu(I18n.t(:admin_key_slot), selection)
+   if all[selected]
+     ksn = all[selected][:ksn]
+     kcv = all[selected][:kcv]
+     Device::Display.clear
+     puts "SLOT #{selected}"
+     puts "PIN KCV [#{kcv[:pin][1]}]\nKSN [#{ksn[:pin][1]}]"
+     puts "DATA KCV [#{kcv[:data][1]}]\nKSN [#{ksn[:data][1]}]"
+     getc(0)
+   end
+  end
+
+  def self.key_slot
+    Device::Display.clear
+    slot = form("SLOT", :min => 1, :max => 3)
+    if slot && !slot.to_s.empty? && slot != Device::IO::CANCEL
+      Device::Display.clear
+      ksn = Device::Pinpad.key_ksn(slot.to_i)
+      kcv = Device::Pinpad.key_kcv(slot.to_i)
+      puts "SLOT #{slot}"
+      puts "PIN KCV [#{kcv[:pin][1]}]\nKSN [#{ksn[:pin][1]}]"
+      puts "DATA KCV [#{kcv[:data][1]}]\nKSN [#{ksn[:data][1]}]"
+      getc(0)
     end
   end
 
