@@ -106,14 +106,14 @@ class CloudwalkSetup
 
     DaFunk::EventListener.new :payment_channel do |event|
       event.start do
-        PaymentChannel.check(false)
+        DaFunk::PaymentChannel.check(false)
         true
       end
 
       event.check do
-        if (payload = PaymentChannel.check)
+        if (payload = DaFunk::PaymentChannel.check)
           payload, notification = DaFunk::Notification.check(payload)
-          PaymentChannel.write(notification.reply) if notification && notification.reply
+          DaFunk::PaymentChannel.write(notification.reply) if notification && notification.reply
           handler = event.handlers[payload]
           handler.perform(notification) if handler
         end
@@ -136,7 +136,7 @@ class CloudwalkSetup
 
   def self.countdown_menu
     (1..5).to_a.reverse.each do |second|
-      PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
+      DaFunk::PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
       if getc(1000) == Device::IO::ENTER
         if (app = DaFunk::ParamsDat.file["countdown_application"])
           Device::Runtime.execute(app)
@@ -163,12 +163,12 @@ class CloudwalkSetup
       BacklightControl.on
     end
     DaFunk::EventHandler.new :payment_channel, :fallback_communication do
-      if ConnectionManagement.fallback_valid?
+      if DaFunk::ConnectionManagement.fallback_valid?
         BacklightControl.on
-        PaymentChannel.close!
+        DaFunk::PaymentChannel.close!
         Device::Network.shutdown
-        if ConnectionManagement.recover_fallback
-          PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
+        if DaFunk::ConnectionManagement.recover_fallback
+          DaFunk::PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
           self.countdown_menu unless attach
         end
         BacklightControl.on
@@ -176,14 +176,14 @@ class CloudwalkSetup
     end
 
     DaFunk::EventHandler.new :payment_channel, :primary_communication do
-      if ConnectionManagement.fallback_valid?
+      if DaFunk::ConnectionManagement.fallback_valid?
         BacklightControl.on
-        PaymentChannel.close!
+        DaFunk::PaymentChannel.close!
         Device::Network.shutdown
-        if ConnectionManagement.recover_primary
+        if DaFunk::ConnectionManagement.recover_primary
           unless attach
             Device::Network.shutdown
-            if ConnectionManagement.recover_fallback
+            if DaFunk::ConnectionManagement.recover_fallback
               attach
             end
           end
