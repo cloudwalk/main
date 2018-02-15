@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.63.0 - 2018-02-15
+
+- Update posxml_parser (1.3.1).
+
 ### 1.62.0 - 2018-02-09
 
 - Update da_funk (1.7.1) and remove payment channel files, which was moved to da_funk.
