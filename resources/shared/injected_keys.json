@@ -1,0 +1,67 @@
+[
+  {
+    "ksi": "2015092100",
+    "acquirer_name": "Stone",
+    "type": "Prd"
+  },
+  {
+    "ksi": "4950555441",
+    "acquirer_name": "Stone",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFFF93100",
+    "acquirer_name": "GP",
+    "type": "Tst"
+  },
+  {
+    "ksi": "FFFFF13000",
+    "acquirer_name": "GP",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFF553000",
+    "acquirer_name": "GP",
+    "type": "Tst"
+  },
+  {
+    "ksi": "FFFFF23100",
+    "acquirer_name": "GP",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFFF53300",
+    "acquirer_name": "GP",
+    "type": "Tst"
+  },
+  {
+    "ksi": "FFFF654321",
+    "acquirer_name": "Elavon",
+    "type": "Tst"
+  },
+  {
+    "ksi": "FFFF617015",
+    "acquirer_name": "Elavon",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFFF00010",
+    "acquirer_name": "Adiq",
+    "type": "Tst"
+  },
+  {
+    "ksi": "FFFFF00011",
+    "acquirer_name": "Adiq",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFFFFFF10",
+    "acquirer_name": "CW",
+    "type": "Prd"
+  },
+  {
+    "ksi": "FFFFFFFF11",
+    "acquirer_name": "CW",
+    "type": "Prd"
+  }
+]
