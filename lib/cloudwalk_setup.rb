@@ -20,11 +20,14 @@ class CloudwalkSetup
   def self.setup_listeners
     DaFunk::EventListener.new :key_main do |event|
       event.check do
-        handler = event.handlers[getc(100)]
-        if handler
+        key = getc(100)
+        if key != Device::IO::KEY_TIMEOUT
           BacklightControl.on
-          handler.perform
-          BacklightControl.on
+          handler = event.handlers[key]
+          if handler
+            handler.perform
+            BacklightControl.on
+          end
         end
       end
     end
