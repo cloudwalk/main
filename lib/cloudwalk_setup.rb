@@ -12,9 +12,8 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::EventHandler.new :magnetic, nil do end
-    if Device::Network.configured? && start_attach
-      attach
-    end
+    attach if Device::Network.configured? && start_attach
+    Diagnostic::KeysInjected.setup
   end
 
   def self.setup_listeners
@@ -259,4 +258,3 @@ class CloudwalkSetup
     end
   end
 end
-

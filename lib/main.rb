@@ -1,6 +1,7 @@
 require 'posxml_parser'
 require 'funky-emv'
-require "funky-simplehttp"
+require 'funky-simplehttp'
+require 'cloudwalk_handshake'
 
 class Main < Device
   include DaFunk::Helper
@@ -50,4 +51,3 @@ class Main < Device
     "1.67.0"
   end
 end
-
