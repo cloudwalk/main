@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.68.0 - 2018-03-15
+
+- Update posxml_parser (2.3.0).
+
 ### 1.67.0 - 2018-03-09
 
 - Turn on display if any key is pressed.
