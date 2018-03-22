@@ -7,7 +7,7 @@ GEM
       bundler
       rake
     cloudwalk_handshake (0.12.0)
-    da_funk (1.9.0)
+    da_funk (1.10.0)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
@@ -21,7 +21,7 @@ GEM
     io-like (0.3.0)
     posxml_parser (2.3.1)
       funky-emv (~> 0.3)
-    rake (12.3.0)
+    rake (12.3.1)
 
 PLATFORMS
   ruby
