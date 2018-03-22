@@ -116,7 +116,9 @@ class CloudwalkSetup
       event.check do
         if (payload = DaFunk::PaymentChannel.check)
           payload, notification = DaFunk::Notification.check(payload)
-          DaFunk::PaymentChannel.write(notification.reply) if notification && notification.reply
+          if notification && notification.reply
+            DaFunk::PaymentChannel.client.write(notification.reply)
+          end
           handler = event.handlers[payload]
           handler.perform(notification) if handler
         end
