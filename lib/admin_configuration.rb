@@ -285,9 +285,12 @@ class AdminConfiguration
       elsif password == "666666"
         env = menu("SELECT SIGNATURE:", {
           "PRODUCTION" => "production",
-          "MOCKUP"    => "mockup"
+          "MOCKUP"     => "mockup"
         })
-        FileDb.new("./shared/device.sig")["signer"] = env if env
+        if env && env != Device::IO::CANCEL
+          FileDb.new("./shared/device.sig")["signer"] = env
+          restart
+        end
       end
     end
   end
