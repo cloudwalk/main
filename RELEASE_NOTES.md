@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.71.0 - 2018-03-27
+
+- Update posxml_parser (2.3.2).
+- Restart if signature change.
+
 ### 1.70.0 - 2018-03-22
 
 - Fix Notification reply.
