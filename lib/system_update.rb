@@ -14,12 +14,18 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   screen :device_dat_download do |result|
     I18n.pt(:system_update_check, :line => 3)
-    if self.download_device_dat
-      I18n.pt(:system_update_available, :line => 4)
-      true
+    if Device::Network.connected?
+      if self.download_device_dat
+        I18n.pt(:system_update_available, :line => 4)
+        true
+      else
+        I18n.pt(:system_update_not_available, :line => 4)
+        getc(5000)
+        nil
+      end
     else
-      I18n.pt(:system_update_not_available, :line => 4)
-      getc(2000)
+      I18n.pt(:attach_device_not_configured, :line => 4)
+      getc(5000)
       nil
     end
   end
@@ -70,15 +76,18 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def download_device_dat
-    ret = DaFunk::Transaction::Download.request_file(
-      REMOTE_UPDATE_DAT,
-      PATH_UPDATE_DAT,
-      Device::Crypto.file_crc16_hex(PATH_UPDATE_DAT)
-    )
-    if validation = DaFunk::Transaction::Download.check(ret)
+    result = try(3) do |attempt|
+      ret = DaFunk::Transaction::Download.request_file(
+        REMOTE_UPDATE_DAT,
+        PATH_UPDATE_DAT,
+        Device::Crypto.file_crc16_hex(PATH_UPDATE_DAT)
+      )
+      DaFunk::Transaction::Download.check(ret)
+    end
+    if result
       parse_device_dat
     end
-    validation
+    result
   end
 
   def parse_device_dat
