@@ -96,7 +96,6 @@ class AdminConfiguration
     end
 
     selection = all.inject({}) do |hash, value|
-      ContextLog.info "#{value.inspect}"
       hash[value[1][:string]] = value[0]
       hash
     end
