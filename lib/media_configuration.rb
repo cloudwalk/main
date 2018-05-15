@@ -78,17 +78,46 @@ class MediaConfiguration
     })
   end
 
+  def self.parse_apn_operators(hash)
+    if hash.include?('imsi_name') && hash.include?('imsi_id')
+      operators = {}
+      hash['imsi_name'].split(';').each_with_index do |item, index|
+        operators[item] = hash['imsi_id'].split(';')[index]
+      end
+      hash['imsi_name'] = operators
+      hash.delete('imsi_id')
+    end
+    hash
+  end
+
   def self.gprs_menu
     file = FileDb.new(CW_APNS_FILE)
     apns = file.each.inject([]) { |apns, values| apns << parse_apn_line(values[1]) }
+    apns = apns.inject([]) { |apns, hash| apns << parse_apn_operators(hash) }
     apns = apns.inject({}) {|hash, apn| hash[apn[check_apn("name")]] = apn; hash}
 
     input = menu("APNS", apns, default: Device::Setting.apn)
     if input.nil? || input["name"] == "DEFINE_APN" || input["name"] == "DEFINIR_APN"
       self.gprs_manual
+
+    elsif input.include?('imsi_name')
+      imsi_id = menu("Networks", input['imsi_name'], default: Device::Setting.apn)
+      self.select_network_and_attach(imsi_id)
+      [input["apn"], input["user"], input["password"]]
     else
       [input["apn"], input["user"], input["password"]]
     end
+  end
+
+  def self.select_network_and_attach(imsi_id)
+    Device::Display.clear
+    Device::Display.print("Conectando...",3,3)
+    ret = Device::Network.init("GPRS", {})
+    ContextLog.info "START: #{ret}"
+    ret = Device::Network::Gprs.power(1)
+    ContextLog.info "POWER: #{ret}"
+    Device::Display.print("Selecionando Rede...",3,0)
+    Network::Gprs.select_network(imsi_id)
   end
 
   def self.check_apn(name)
@@ -139,4 +168,3 @@ class MediaConfiguration
     end
   end
 end
-
