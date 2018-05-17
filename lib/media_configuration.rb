@@ -102,22 +102,30 @@ class MediaConfiguration
 
     elsif input.include?('imsi_name')
       imsi_id = menu("Networks", input['imsi_name'], default: Device::Setting.apn)
-      self.select_network_and_attach(imsi_id)
+      self.select_network(imsi_id, input["apn"], input["user"], input["password"])
       [input["apn"], input["user"], input["password"]]
     else
       [input["apn"], input["user"], input["password"]]
     end
   end
 
-  def self.select_network_and_attach(imsi_id)
+  def self.select_network(imsi_id, apn, user, password)
     Device::Display.clear
-    Device::Display.print("Conectando...",3,3)
-    ret = Device::Network.init("GPRS", {})
-    ContextLog.info "START: #{ret}"
-    ret = Device::Network::Gprs.power(1)
-    ContextLog.info "POWER: #{ret}"
-    Device::Display.print("Selecionando Rede...",3,0)
-    Network::Gprs.select_network(imsi_id)
+    print_line(I18n.t(:attach_network), 3, 0)
+
+    unless Device::Network.connected?
+      Device::Network.init(:gprs, apn: apn, user: user, pass: password)
+      Device::Network::Gprs.power(1)
+    end
+
+    response = Network::Gprs.select_attach_network(imsi_id)
+    Device::Display.clear
+    if response.nil? || response[:result] != "OK"
+      print_line(I18n.t(:attach_registration_fail).gsub("%d",'').strip!, 3, 0)
+    else
+      print_line(I18n.t(:attach_connected), 3, 0)
+    end
+    getc(3000)
   end
 
   def self.check_apn(name)
