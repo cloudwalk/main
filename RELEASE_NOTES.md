@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.74.0 - 2018-05-18
+
+- Add 3 password attempts to menu.
+- Refactoring communication error countdown.
+- Update funky-emv (0.17.0).
+- Update cloudwalk (1.9.1).
+
 ### 1.73.0 - 2018-05-09
 
 - Update posxml_parser (2.3.3).
