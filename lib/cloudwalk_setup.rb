@@ -140,14 +140,20 @@ class CloudwalkSetup
   end
 
   def self.countdown_menu
-    (1..5).to_a.reverse.each do |second|
+    if timeout = DaFunk::ParamsDat.file["countdown_max_timeout"] && timeout.integer?
+      timeout = timeout.to_i
+    end
+    (1..(timeout || 5)).to_a.reverse.each do |second|
       DaFunk::PaymentChannel.print_info(I18n.t(:attach_registration_fail, :args => second), true)
-      if getc(1000) == Device::IO::ENTER
+      key = getc(1000)
+      if key == Device::IO::ENTER
         if (app = DaFunk::ParamsDat.file["countdown_application"])
           Device::Runtime.execute(app)
         else
           AdminConfiguration.perform
         end
+      elsif key == Device::IO::F1 || key == Device::IO::FUNC
+        AdminConfiguration.perform
       end
     end
   end

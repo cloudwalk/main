@@ -26,6 +26,7 @@ Funky application responsible for start DaFunk ecosystem.
 - `attach_gprs_timeout` (Default "": disable) - timeout in miliseconds
 - `backlight_control` (Default "120": enable, seconds) - If enable ( > 0) perform backlight control and turn off the backlight based on the time in seconds of this parameter if any event happen, if disable (0) keep backlight always on.
 - `countdown_application` (Default "": AdministrationMenu) - Application to be called if communication failure countdown.
+- `countdown_max_timeout` (Default "5") - countdown timeout.
 
 ## Setup
 
