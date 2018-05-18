@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.75.0 - 2018-05-18
+
+- Update da_funk (1.11.0).
+
 ### 1.74.0 - 2018-05-18
 
 - Add 3 password attempts to menu.
