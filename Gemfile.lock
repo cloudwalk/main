@@ -3,18 +3,18 @@ GEM
   specs:
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
-    cloudwalk (1.9.0)
+    cloudwalk (1.9.1)
       bundler
       rake
     cloudwalk_handshake (0.12.0)
-    da_funk (1.10.0)
+    da_funk (1.11.0)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
       funky-emv
       posxml_parser
       rake
-    funky-emv (0.16.2)
+    funky-emv (0.17.0)
       funky-tlv (~> 0.2)
     funky-simplehttp (0.5.0)
     funky-tlv (0.2.3)
