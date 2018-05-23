@@ -102,7 +102,9 @@ class MediaConfiguration
 
     elsif input.include?('imsi_name')
       imsi_id = menu(I18n.t(:networks), input['imsi_name'], default: Device::Setting.apn)
-      self.select_network(imsi_id, input["apn"], input["user"], input["password"])
+      unless imsi_id.nil? || imsi_id.empty?
+        self.select_network(imsi_id, input["apn"], input["user"], input["password"])
+      end
       [input["apn"], input["user"], input["password"]]
     else
       [input["apn"], input["user"], input["password"]]
