@@ -101,9 +101,11 @@ class MediaConfiguration
       self.gprs_manual
 
     elsif input.include?('imsi_name')
-      imsi_id = menu(I18n.t(:networks), input['imsi_name'], default: Device::Setting.apn)
-      unless imsi_id.nil? || imsi_id.empty?
-        self.select_network(imsi_id, input["apn"], input["user"], input["password"])
+      if menu(I18n.t(:media_select_operator), {I18n.t(:yes) => true, I18n.t(:no) => false})
+        imsi_id = menu(I18n.t(:networks), input['imsi_name'], default: Device::Setting.apn)
+        unless imsi_id.nil? || imsi_id.empty?
+          self.select_network(imsi_id, input["apn"], input["user"], input["password"])
+        end
       end
       [input["apn"], input["user"], input["password"]]
     else
