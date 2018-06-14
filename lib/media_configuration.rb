@@ -78,17 +78,58 @@ class MediaConfiguration
     })
   end
 
+  def self.parse_apn_operators(hash)
+    if hash.include?('imsi_name') && hash.include?('imsi_id')
+      operators = {}
+      hash['imsi_name'].split(';').each_with_index do |item, index|
+        operators[item] = hash['imsi_id'].split(';')[index]
+      end
+      hash['imsi_name'] = operators
+      hash.delete('imsi_id')
+    end
+    hash
+  end
+
   def self.gprs_menu
     file = FileDb.new(CW_APNS_FILE)
     apns = file.each.inject([]) { |apns, values| apns << parse_apn_line(values[1]) }
+    apns = apns.inject([]) { |apns, hash| apns << parse_apn_operators(hash) }
     apns = apns.inject({}) {|hash, apn| hash[apn[check_apn("name")]] = apn; hash}
 
     input = menu("APNS", apns, default: Device::Setting.apn)
     if input.nil? || input["name"] == "DEFINE_APN" || input["name"] == "DEFINIR_APN"
       self.gprs_manual
+
+    elsif input.include?('imsi_name')
+      if menu(I18n.t(:media_select_operator), {I18n.t(:yes) => true, I18n.t(:no) => false})
+        imsi_id = menu(I18n.t(:networks), input['imsi_name'], default: Device::Setting.apn)
+        unless imsi_id.nil? || imsi_id.empty?
+          self.select_network(imsi_id, input["apn"], input["user"], input["password"])
+        end
+      end
+      [input["apn"], input["user"], input["password"]]
     else
       [input["apn"], input["user"], input["password"]]
     end
+  end
+
+  def self.select_network(imsi_id, apn, user, password)
+    Device::Display.clear
+    print_line(I18n.t(:attach_network), 3, 0)
+
+    unless Device::Network.connected?
+      Device::Network.init(:gprs, apn: apn, user: user, pass: password)
+      Device::Network::Gprs.power(1)
+    end
+
+    response = Network::Gprs.select_attach_network(imsi_id)
+    Device::Display.clear
+    if response.nil? || response[:result] != "OK"
+      print_line(I18n.t(:attach_registration_fail).gsub("%d",'').strip!, 3, 0)
+    else
+      print_line(I18n.t(:attach_connected), 3, 0)
+    end
+    getc(3000)
   end
 
   def self.check_apn(name)
@@ -139,4 +180,3 @@ class MediaConfiguration
     end
   end
 end
-

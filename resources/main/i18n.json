@@ -19,8 +19,10 @@
 		"select_ssid":"SELECT SSID:",
 		"add_password":"ADD PASSWORD?",
 		"media_try_connection":"TRY CONNECTION?",
+		"media_select_operator":"SELECT AN OPERATOR?",
 		"media_check_connection":"CHECK CONNECTION...",
 		"downloading_content":"DOWNLOADING\n%s\n%d OF %d\n\nPLEASE, WAIT...",
+		"attach_network": "ATTACHING TO NETWORK\nPLEASE WAIT...",
 		"attach_connecting":"CONNECTING...",
 		"attach_attaching":"CHANNEL ATTACHING...",
 		"attach_authenticate":"CHANNEL AUTHENTICATE.",
@@ -108,7 +110,8 @@
 		"emv_pin_blocked":"\nPIN BLOCKED",
 		"emv_transaction_approved":"ENTER PIN:",
 		"emv_remove_card":"REMOVE CARD",
-		"transaction_no_connection":"TERMINAL NOT CONNECTED"
+		"transaction_no_connection":"TERMINAL NOT CONNECTED",
+		"networks": "NETWORKS"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUES\n2.ENGLISH",
@@ -130,8 +133,10 @@
 		"select_ssid":"SELECIONE SSID:",
 		"add_password":"ADICIONAR PASSWORD?",
 		"media_try_connection":"TENTAR CONECTAR?",
+		"media_select_operator":"SELECIONAR OPERADORA?",
 		"media_check_connection":"VERIFICA CONEXAO...",
 		"downloading_content":"BAIXANDO %s\n\n%d DE %d\n\nPOR FAVOR, AGUARDE..",
+		"attach_network": "REGISTRANDO NA REDE\nPOR FAVOR AGUARDE...",
 		"attach_connecting":"VERIFICANDO CONEXAO..",
 		"attach_attaching":"CONECTANDO NO CANAL..",
 		"attach_authenticate":"AUTENTICANDO NO CANAL",
@@ -219,6 +224,7 @@
 		"emv_pin_blocked":"\nSENHA BLOQUEADA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
 		"emv_remove_card":"RETIRE CARTAO",
-		"transaction_no_connection":"TERMINAL SEM CONEXAO"
+		"transaction_no_connection":"TERMINAL SEM CONEXAO",
+		"networks": "REDES"
 	}
 }
