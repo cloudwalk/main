@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.76.0 - 2018-07-02
+
+- Support selection of operator when dealing with multioperator chip.
+- Update da_funk (1.11.2).
+
 ### 1.75.1 - 2018-05-22
 
 - Update posxml_parser (2.3.4).
