@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.77.0 - 2018-07-02
+
+- Update funky-emv (0.17.1).
+
 ### 1.76.0 - 2018-07-02
 
 - Support selection of operator when dealing with multioperator chip.
