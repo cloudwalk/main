@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.80.0 - 2018-08-09
+
+- Add debug flag as false to compilation config.
+- Implement new update strategy that supports multiple files.
+- Update cloudwalk (1.10.0).
+- Update da_funk (1.12.0).
+- Update funky-emv (0.17.2).
+- Update posxml_parser (2.6.0).
+
 ### 1.79.0 - 2018-07-31
 
 - Update posxml_parser (2.5.0).
