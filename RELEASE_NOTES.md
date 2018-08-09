@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.81.0 - 2018-08-09
+
+- Update posxml_parser (2.6.1).
+
 ### 1.80.0 - 2018-08-09
 
 - Add debug flag as false to compilation config.

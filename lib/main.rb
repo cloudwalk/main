@@ -47,7 +47,7 @@ class Main < Device
   end
 
   def self.version
-    "1.80.0"
+    "1.81.0"
   end
 end
 
