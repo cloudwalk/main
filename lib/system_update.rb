@@ -166,20 +166,26 @@ class SystemUpdate < DaFunk::ScreenFlow
     parse_device_dat unless self.dat
 
     files = FileDb.new(PATH_UPDATE_FILES)["content"]
+
     ContextLog.info "System Update - Files #{files.inspect}"
     if files
-      files.split(",").each do |file|
+      delete_zip = true
+      files.split(",").each do |entry|
+
+        file, type = entry.split(";")
         path = "./shared/#{file}"
-        if File.exists?(path) && Device::System.update(path)
+
+        if delete_zip && File.exists?(path) && Device::System.update("./shared/#{entry}")
           File.delete(path) if File.exists?(path)
-          File.delete(self.zip_path) if File.exists?(self.zip_path)
           block_success.call
         else
+          delete_zip = false
           block_fail.call
           File.delete(path) if File.exists?(path)
           false
         end
       end
+      File.delete(self.zip_path) if File.exists?(self.zip_path)
     end
   end
 
