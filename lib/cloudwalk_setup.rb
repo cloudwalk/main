@@ -11,6 +11,7 @@ class CloudwalkSetup
     CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup
+    DaFunk::ParamsDat.parameters_load
     DaFunk::EventHandler.new :magnetic, nil do end
     if Device::Network.configured? && start_attach
       attach
@@ -259,13 +260,14 @@ class CloudwalkSetup
   end
 
   def self.start
-    if DaFunk::ParamsDat.ready?
-      self.execute
-    elsif DaFunk::ParamsDat.exists?
-      DaFunk::ParamsDat.update_apps
-    else
-      CloudwalkWizard.new.start
+    applications = DaFunk::ParamsDat.executable_apps
+    application = DaFunk::ParamsDat.executable_app
+    if DaFunk::ParamsDat.exists?
+      if (applications && applications.size > 1) || (application && application.exists?)
+        return self.execute
+      end
     end
+    CloudwalkWizard.new.start
   end
 end
 

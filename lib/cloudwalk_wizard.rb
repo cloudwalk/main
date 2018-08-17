@@ -80,7 +80,9 @@ class CloudwalkWizard < DaFunk::ScreenFlow
   end
 
   screen :activation_3 do |result|
-    confirm I18n.t(:activation_success)
+    if confirm I18n.t(:activation_success)
+      DaFunk::ParamsDat.update_apps
+    end
   end
 end
 
