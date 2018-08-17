@@ -9,6 +9,8 @@ class Main < Device
     case self.execute(json)
     when :admin_configuration
       AdminConfiguration.perform
+    when :admin_communication
+      AdminConfiguration.communication
     when :normal
       perform
     else
@@ -34,6 +36,8 @@ class Main < Device
     else
       if (hash = JSON.parse(json)) && hash["initialize"] == "admin_configuration"
         :admin_configuration
+      elsif (hash = JSON.parse(json)) && hash["initialize"] == "admin_communication"
+        :admin_communication
       else
         :normal
       end
