@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.82.0 - 2018-08-17
+
+- Update cloudwalk_handshake (0.13.0).
+- Implement Notification to reboot system.
+- Reboot system after remote update.
+- Refactoring wizard and application menu check adding application update at the end of wizard and moving crc check from first ENTER press to boot, speeding up key press on idle.
+- Support update interval feature, if not configured the default is 7 days interval.
+- Update posxml_parser (2.7.0).
+- Add admin_communication main entry option.
+
 ### 1.81.0 - 2018-08-09
 
 - Update posxml_parser (2.6.1).
