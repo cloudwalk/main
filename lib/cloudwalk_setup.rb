@@ -208,6 +208,12 @@ class CloudwalkSetup
       notification.perform
       BacklightControl.on
     end
+
+    value = DaFunk::ParamsDat.file["update_interval"]
+    interval = (value.to_s.empty? ? 168 : value.to_i)
+    DaFunk::EventHandler.new :schedule, hours: interval, slot: "update_interval" do
+      CloudwalkUpdate.perform
+    end
   end
 
   def self.setup_notifications
@@ -252,8 +258,9 @@ class CloudwalkSetup
     end
   end
 
-  def self.execute
-    unless application = DaFunk::ParamsDat.executable_app
+  def self.execute(application = nil)
+    application ||= DaFunk::ParamsDat.executable_app
+    unless application
       application = DaFunk::ParamsDat.application_menu
     end
     application.execute if application
