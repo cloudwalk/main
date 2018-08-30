@@ -156,11 +156,14 @@ class AdminConfiguration
   end
 
   def self.communication
-    if menu(I18n.t(:admin_communication), { I18n.t(:admin_configure) => true,
-              I18n.t(:admin_show) => false })
+    case menu(I18n.t(:admin_communication), {I18n.t(:admin_configure) => :config,
+      I18n.t(:admin_show) => :show, I18n.t(:media_connect) => :test})
+    when :config
       communication_configure
-    else
+    when :show
       communication_show
+    when :test
+      communication_test
     end
   end
 
@@ -194,6 +197,24 @@ class AdminConfiguration
     elsif media == :gprs
       MediaConfiguration.gprs
     end
+  end
+
+  def self.communication_test
+    Device::Display.clear
+    print_last(I18n.t(:media_check_connection))
+    Device::Network.setup
+    Device::Network.shutdown
+    DaFunk::PaymentChannel.close!
+    if attach
+      Device::Display.clear
+      I18n.pt(:attach_connected)
+      getc(1000)
+      if DaFunk::PaymentChannel.ready?
+        Device::Display.clear
+        DaFunk::PaymentChannel.check(true)
+      end
+    end
+    getc(0)
   end
 
   def self.magstripe
