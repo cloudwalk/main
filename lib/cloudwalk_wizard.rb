@@ -5,14 +5,16 @@ class CloudwalkWizard < DaFunk::ScreenFlow
 
   screen :language do |result|
     I18n.pt :language
-    # TODO Language
-    if (try_key(["1","2"], 0) == "1")
+    key = try_key(["1","2",Device::IO::CANCEL], 0)
+    if (key == "1")
       I18n.locale = "pt-br"
-    else
+      Device::Setting.locale = I18n.locale
+    elsif key == "2"
       I18n.locale = "en"
+      Device::Setting.locale = I18n.locale
+    else
+      Device::IO::CANCEL
     end
-    Device::Setting.locale = I18n.locale
-    true
   end
 
   screen :serial_number_1 do |result|
