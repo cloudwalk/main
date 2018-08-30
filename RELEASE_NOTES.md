@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.83.0 - 2018-08-30
+
+- Implement communication test at admin menu.
+- Update da_funk (1.13.1).
+- Update posxml_parser (2.8.0).
+- Update cloudwalk_handshake (0.13.1).
+- Refactoring media configuration to support device reboot and communication test after configuration.
+- Adopt da_funk confirm helper at wizard.
+- Refactoring language form at wizard to support exit.
+
 ### 1.82.0 - 2018-08-17
 
 - Update cloudwalk_handshake (0.13.0).
