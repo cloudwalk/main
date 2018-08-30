@@ -158,25 +158,33 @@ class MediaConfiguration
   end
 
   def self.persist_communication(config)
-    if menu(I18n.t(:media_try_connection), {I18n.t(:yes) => true, I18n.t(:no) => false})
+    value = menu(I18n.t(:media_try_connection), {I18n.t(:media_reboot) => true,
+      I18n.t(:media_connect) => false})
+
+    if value
+      Device::Display.clear
+      self.configure(config)
+      I18n.pt(:admin_communication_success)
+      getc(2000)
+      Device::System.restart
+    else
       Device::Display.clear
       print_last(I18n.t(:media_check_connection))
       Device::Network.shutdown
-      Device::Setting.update_attributes(config)
-      Device::Setting.network_configured = "1"
+      self.configure(config)
       if attach
         Device::Display.clear
         I18n.pt(:admin_communication_success)
         getc(2000)
       else
         Device::Setting.network_configured = "0" unless DaFunk::ConnectionManagement.conn_automatic_management?
+        getc(0)
       end
-    else
-      Device::Setting.update_attributes(config)
-      Device::Setting.network_configured = "1"
-      Device::Display.clear
-      I18n.pt(:admin_communication_success)
-      getc(2000)
     end
+  end
+
+  def self.configure(config)
+    Device::Setting.update_attributes(config)
+    Device::Setting.network_configured = "1"
   end
 end
