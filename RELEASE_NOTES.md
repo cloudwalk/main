@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.84.0 - 2018-09-10
+
+- Update cloudwalk_handshake (0.13.2).
+- Update posxml_parser (2.8.3).
+
 ### 1.83.0 - 2018-08-30
 
 - Implement communication test at admin menu.
