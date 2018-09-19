@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.86.0 - 2018-09-18
+
+- Update funky-emv (0.18.1).
+
 ### 1.85.0 - 2018-09-17
 
 - Update funky-emv (0.18.0).
