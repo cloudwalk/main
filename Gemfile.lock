@@ -3,7 +3,7 @@ GEM
   specs:
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
-    cloudwalk (1.10.0)
+    cloudwalk (1.11.2)
       bundler
       rake
     cloudwalk_handshake (0.13.2)
