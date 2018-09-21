@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 1.87.0 - 2018-09-21
+
+- Update cloudwalk (1.11.2).
+- Update funky-emv (0.19.0).
+
 ### 1.86.0 - 2018-09-18
 
 - Update funky-emv (0.18.1).
