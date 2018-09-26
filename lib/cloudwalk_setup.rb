@@ -8,6 +8,7 @@ class CloudwalkSetup
     self.setup_notifications
     self.setup_listeners
     self.setup_events
+    self.delete_old_logs
     CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup
@@ -276,5 +277,28 @@ class CloudwalkSetup
     end
     CloudwalkWizard.new.start
   end
-end
 
+  def self.compare_dates(text1, text2)
+    date = text1.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
+    greaterdate = text2.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
+    unless date || greaterdate
+      return nil
+    end
+    (Time.local(greaterdate[1].to_i, greaterdate[2].to_i, greaterdate[3].to_i) - Time.local(date[1].to_i, date[2].to_i, date[3].to_i)).to_i
+  end
+
+  def self.get_date_today
+    time = Time.now
+    "%d-%02d-%02d %02d:%02d:%02d:%06d" % [time.year, time.month, time.day, time.hour, time.min, time.sec, time.usec]
+  end
+
+  def self.delete_old_logs
+    dirs = Dir.entries("./main").select { |p| p.include?(".log") }
+    date_today = self.get_date_today
+    dirs.each do |file|
+      if self.compare_dates(date_today, file[0..(file.index('.') - 1)]) > 1296000
+        File.delete("./main/#{file}")
+      end
+    end
+  end
+end
