@@ -138,7 +138,7 @@ class CloudwalkSetup
     DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
       BacklightControl.on
       self.countdown_menu
-      attach(false)
+      attach(print_last: false)
       BacklightControl.on
     end
 
@@ -149,7 +149,7 @@ class CloudwalkSetup
         Device::Network.shutdown
         if DaFunk::ConnectionManagement.recover_fallback
           DaFunk::PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
-          self.countdown_menu unless attach(false)
+          self.countdown_menu unless attach(print_last: false)
         end
         BacklightControl.on
       end
@@ -161,10 +161,10 @@ class CloudwalkSetup
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
         if DaFunk::ConnectionManagement.recover_primary
-          unless attach(false)
+          unless attach(print_last: false)
             Device::Network.shutdown
             if DaFunk::ConnectionManagement.recover_fallback
-              attach(false)
+              attach(print_last: false)
             end
           end
         end

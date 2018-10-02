@@ -70,8 +70,7 @@ class Main < Device
   def self.thread_communication
     DaFunk::PaymentChannel.client = nil
     begin
-      attach(false) if Device::Network.configured?
-      # TODO Scalone: how to fix notification?
+      attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
       loop do
         break if ThreadScheduler.die?(:communication)
