@@ -13,9 +13,7 @@ class CloudwalkSetup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
     DaFunk::EventHandler.new :magnetic, nil do end
-    if Device::Network.configured? && start_attach
-      attach
-    end
+    ThreadScheduler.start
   end
 
   def self.setup_listeners
@@ -108,24 +106,6 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventListener.new :payment_channel do |event|
-      event.start do
-        DaFunk::PaymentChannel.check(false)
-        true
-      end
-
-      event.check do
-        if (payload = DaFunk::PaymentChannel.check)
-          payload, notification = DaFunk::Notification.check(payload)
-          if notification && notification.reply
-            DaFunk::PaymentChannel.client.write(notification.reply)
-          end
-          handler = event.handlers[payload]
-          handler.perform(notification) if handler
-        end
-      end
-    end
-
     DaFunk::EventListener.new :file_exists_once do |event|
       event.start do @file_exists_once = {}; true end
 
@@ -136,6 +116,59 @@ class CloudwalkSetup
             handler.perform
           end
         end
+      end
+    end
+  end
+
+  def self.setup_communication_listeners
+    DaFunk::EventListener.new :payment_channel do |event|
+      event.start do
+        DaFunk::PaymentChannel.check(false)
+        ContextLog.info "PaymentChannel start"
+        true
+      end
+
+      event.check do
+        if (payload = DaFunk::PaymentChannel.check(false))
+          Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_COMMUNICATION, payload)
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
+      BacklightControl.on
+      self.countdown_menu
+      attach(false)
+      BacklightControl.on
+    end
+
+    DaFunk::EventHandler.new :payment_channel, :fallback_communication do
+      if DaFunk::ConnectionManagement.fallback_valid?
+        BacklightControl.on
+        DaFunk::PaymentChannel.close!
+        Device::Network.shutdown
+        if DaFunk::ConnectionManagement.recover_fallback
+          DaFunk::PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
+          self.countdown_menu unless attach(false)
+        end
+        BacklightControl.on
+      end
+    end
+
+    DaFunk::EventHandler.new :payment_channel, :primary_communication do
+      if DaFunk::ConnectionManagement.fallback_valid?
+        BacklightControl.on
+        DaFunk::PaymentChannel.close!
+        Device::Network.shutdown
+        if DaFunk::ConnectionManagement.recover_primary
+          unless attach(false)
+            Device::Network.shutdown
+            if DaFunk::ConnectionManagement.recover_fallback
+              attach(false)
+            end
+          end
+        end
+        BacklightControl.on
       end
     end
   end
@@ -168,41 +201,8 @@ class CloudwalkSetup
       DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!       end
       DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
     end
-    DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
-      BacklightControl.on
-      self.countdown_menu
-      attach
-      BacklightControl.on
-    end
-    DaFunk::EventHandler.new :payment_channel, :fallback_communication do
-      if DaFunk::ConnectionManagement.fallback_valid?
-        BacklightControl.on
-        DaFunk::PaymentChannel.close!
-        Device::Network.shutdown
-        if DaFunk::ConnectionManagement.recover_fallback
-          DaFunk::PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
-          self.countdown_menu unless attach
-        end
-        BacklightControl.on
-      end
-    end
 
-    DaFunk::EventHandler.new :payment_channel, :primary_communication do
-      if DaFunk::ConnectionManagement.fallback_valid?
-        BacklightControl.on
-        DaFunk::PaymentChannel.close!
-        Device::Network.shutdown
-        if DaFunk::ConnectionManagement.recover_primary
-          unless attach
-            Device::Network.shutdown
-            if DaFunk::ConnectionManagement.recover_fallback
-              attach
-            end
-          end
-        end
-        BacklightControl.on
-      end
-    end
+    # check
     DaFunk::EventHandler.new :payment_channel, :notification do |notification|
       BacklightControl.on
       notification.perform
@@ -213,6 +213,12 @@ class CloudwalkSetup
     interval = (value.to_s.empty? ? 168 : value.to_i)
     DaFunk::EventHandler.new :schedule, hours: interval, slot: "update_interval" do
       CloudwalkUpdate.perform
+    end
+
+    DaFunk::EventHandler.new :payment_channel, :notification do |notification|
+      BacklightControl.on
+      notification.perform
+      BacklightControl.on
     end
   end
 
