@@ -296,7 +296,7 @@ class CloudwalkSetup
     dirs = Dir.entries("./main").select { |p| p.include?(".log") }
     date_today = self.get_date_today
     dirs.each do |file|
-      if self.compare_dates(date_today, file[0..(file.index('.') - 1)]) > 1296000
+      if self.compare_dates(file[0..(file.index('.') - 1)], date_today) > 1296000
         File.delete("./main/#{file}")
       end
     end
