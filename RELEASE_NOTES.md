@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.0.0 - 2018-10-02
+
+- Add ThreadScheduler interface to handle threads on communication and status bar operation;
+- Support Thread scheduling on boot;
+- Stop/start communication threads between network reconfiguration;
+- Add link/unlink image to payment channel status;
+- Fix communication thread printing;
+- Update da_funk (2.0.0).
+
 ### 1.87.0 - 2018-09-21
 
 - Update cloudwalk (1.11.2).
