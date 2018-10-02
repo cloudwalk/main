@@ -25,36 +25,57 @@ class LogsMenu
   end
 
   def self.send_file(filename)
-    path = "./main/#{filename}"
-    zip  = "./main/#{Device::System.serial}-#{filename}.zip"
-    if filename && File.exists?(path)
-      Device::Display.clear
-      I18n.pt(:admin_logs_compressing)
-      if Zip.compress(zip, path)
-        I18n.pt(:admin_logs_uploading)
-        if self.upload(zip)
-          I18n.pt(:admin_logs_success)
+    selected = menu(I18n.t(:log_types), {"TXT" => "TXT", "JSON" => "JSON"})
+    if selected == "TXT"
+      path = "./main/#{filename}"
+      zip  = "./main/#{Device::System.serial}-#{filename}.zip"
+      if filename && File.exists?(path)
+        Device::Display.clear
+        I18n.pt(:admin_logs_compressing)
+        if Zip.compress(zip, path)
+          I18n.pt(:admin_logs_uploading)
+          if self.upload(zip)
+            I18n.pt(:admin_logs_success)
+          else
+            I18n.pt(:admin_logs_fail)
+          end
+          File.delete(zip) if File.exists?(zip)
+          getc(2000)
         else
-          I18n.pt(:admin_logs_fail)
+          I18n.pt(:admin_logs_compressing_error)
+          getc(2000)
         end
-        File.delete(zip) if File.exists?(zip)
-        getc(2000)
-      else
-        I18n.pt(:admin_logs_compressing_error)
-        getc(2000)
       end
+    else
+      content = JsonLog.log_txt_to_json(filename)
+      Device::Display.clear
+      I18n.pt(:admin_logs_uploading)
+      if self.upload(content, "/v1/devices/", false)
+        Device::Display.clear
+        I18n.pt(:admin_logs_success)
+      else
+        Device::Display.clear
+        I18n.pt(:admin_logs_fail)
+      end
+      getc(2000)
     end
   end
 
-  def self.upload(zip_file)
-    return unless token = api_token
-    http  = SimpleHttp.new("https", endpoint)
+  def self.upload(content, path="/v1/files/", zip_file=true)
+    req = {
+      "Content-Type" => "application/json"
+    }
+    http = SimpleHttp.new("https", endpoint)
     Device::System.klass = "cw_logs.posxml"
     http.socket = Device::Network.socket.call
-    response = http.request("POST", "/v1/files", {
-      "Content-Type" => "application/json",
-      "Body" => body(zip_file.split("/").last, zip_file, token)
-    })
+    if zip_file
+      return unless token = api_token
+      req["Body"] = body(content.split("/").last, content, token)
+    else
+      path+="#{access_token}/metrics"
+      req["Body"] = content
+    end
+    response = http.request("POST", path, req)
     response.code == 201 || response.code == 200
   ensure
     Device::System.klass = "main"
@@ -102,5 +123,8 @@ class LogsMenu
     I18n.pt(:admin_logs_not_configured) unless value
     value
   end
-end
 
+  def self.access_token
+    DaFunk::ParamsDat.file["access_token"]
+  end
+end
