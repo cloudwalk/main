@@ -146,7 +146,12 @@ class CloudwalkSetup
 
       event.check do
         if (payload = DaFunk::PaymentChannel.check(false))
-          Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_COMMUNICATION, payload)
+          handler = event.handlers[payload]
+          if handler
+            handler.perform
+          else
+            Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_COMMUNICATION, payload)
+          end
         end
       end
     end
