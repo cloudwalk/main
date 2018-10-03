@@ -23,17 +23,17 @@ class ThreadScheduler
 
   def self.dispatch_status_bar
     _start(THREAD_STATUS_BAR)
+    str = "Context.start('main', '#{Device.adapter}', '{\"initialize\":\"status_bar\"}')"
     self.status_bar = Thread.new do
-      json = {"initialize" => "status_bar"}.to_json
-      execution_ret = mrb_eval("Context.start('main', 'PAX', '#{json}')")
+      mrb_eval(str)
     end
   end
 
   def self.dispatch_communication
     _start(THREAD_COMMUNICATION)
+    str = "Context.start('main', '#{Device.adapter}', '{\"initialize\":\"communication\"}')"
     self.communication = Thread.new do
-      json = {"initialize" => "communication"}.to_json
-      execution_ret = mrb_eval("Context.start('main', 'PAX', '#{json}')")
+      mrb_eval(str)
     end
   end
 
