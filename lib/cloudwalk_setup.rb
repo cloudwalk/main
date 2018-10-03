@@ -118,6 +118,23 @@ class CloudwalkSetup
         end
       end
     end
+
+    DaFunk::EventListener.new :payment_channel do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        if (payload = DaFunk::PaymentChannel.client.check)
+          payload, notification = DaFunk::Notification.check(payload)
+          if notification && notification.reply
+            DaFunk::PaymentChannel.client.write(notification.reply)
+          end
+          handler = event.handlers[payload]
+          handler.perform(notification) if handler
+        end
+      end
+    end
   end
 
   def self.setup_communication_listeners
