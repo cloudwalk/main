@@ -124,7 +124,6 @@ class CloudwalkSetup
     DaFunk::EventListener.new :payment_channel do |event|
       event.start do
         DaFunk::PaymentChannel.check(false)
-        ContextLog.info "PaymentChannel start"
         true
       end
 
@@ -136,28 +135,21 @@ class CloudwalkSetup
     end
 
     DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
-      BacklightControl.on
-      self.countdown_menu
       attach(print_last: false)
-      BacklightControl.on
     end
 
     DaFunk::EventHandler.new :payment_channel, :fallback_communication do
       if DaFunk::ConnectionManagement.fallback_valid?
-        BacklightControl.on
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
         if DaFunk::ConnectionManagement.recover_fallback
-          DaFunk::PaymentChannel.print_info(I18n.t(:attach_configure_fallback), true)
           self.countdown_menu unless attach(print_last: false)
         end
-        BacklightControl.on
       end
     end
 
     DaFunk::EventHandler.new :payment_channel, :primary_communication do
       if DaFunk::ConnectionManagement.fallback_valid?
-        BacklightControl.on
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
         if DaFunk::ConnectionManagement.recover_primary
@@ -168,7 +160,6 @@ class CloudwalkSetup
             end
           end
         end
-        BacklightControl.on
       end
     end
   end
