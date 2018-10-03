@@ -63,7 +63,7 @@ class Main < Device
     loop do
       break if ThreadScheduler.die?(:status_bar)
       DaFunk::Helper::StatusBar.check
-      usleep(400_000)
+      usleep(1000_000)
     end
   end
 
