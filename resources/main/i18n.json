@@ -115,8 +115,7 @@
 		"emv_transaction_approved":"ENTER PIN:",
 		"emv_remove_card":"REMOVE CARD",
 		"transaction_no_connection":"TERMINAL NOT CONNECTED",
-		"networks": "NETWORKS",
-		"log_types": "SELECT LOG TYPE"
+		"networks": "NETWORKS"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUES\n2.ENGLISH",
@@ -234,7 +233,6 @@
 		"emv_transaction_approved":"TRANSACAO APROVADA",
 		"emv_remove_card":"RETIRE CARTAO",
 		"transaction_no_connection":"TERMINAL SEM CONEXAO",
-		"networks": "REDES",
-		"log_types": "SELECIONE TIPO DE LOG"
+		"networks": "REDES"
 	}
 }

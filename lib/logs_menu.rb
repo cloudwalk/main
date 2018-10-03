@@ -25,40 +25,17 @@ class LogsMenu
   end
 
   def self.send_file(filename)
-    selected = menu(I18n.t(:log_types), {"TXT" => "TXT", "JSON" => "JSON"})
-    if selected == "TXT"
-      path = "./main/#{filename}"
-      zip  = "./main/#{Device::System.serial}-#{filename}.zip"
-      if filename && File.exists?(path)
-        Device::Display.clear
-        I18n.pt(:admin_logs_compressing)
-        if Zip.compress(zip, path)
-          I18n.pt(:admin_logs_uploading)
-          if self.upload(zip)
-            I18n.pt(:admin_logs_success)
-          else
-            I18n.pt(:admin_logs_fail)
-          end
-          File.delete(zip) if File.exists?(zip)
-          getc(2000)
-        else
-          I18n.pt(:admin_logs_compressing_error)
-          getc(2000)
-        end
-      end
-    else
-      content = JsonLog.log_txt_to_json(filename)
+    content = JsonLog.log_txt_to_json(filename)
+    Device::Display.clear
+    I18n.pt(:admin_logs_uploading)
+    if self.upload(content, "/v1/devices/", false)
       Device::Display.clear
-      I18n.pt(:admin_logs_uploading)
-      if self.upload(content, "/v1/devices/", false)
-        Device::Display.clear
-        I18n.pt(:admin_logs_success)
-      else
-        Device::Display.clear
-        I18n.pt(:admin_logs_fail)
-      end
-      getc(2000)
+      I18n.pt(:admin_logs_success)
+    else
+      Device::Display.clear
+      I18n.pt(:admin_logs_fail)
     end
+    getc(2000)
   end
 
   def self.upload(content, path="/v1/files/", zip_file=true)
