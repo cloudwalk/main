@@ -38,11 +38,12 @@ class ThreadScheduler
   end
 
   def self.command(id, string)
+    self.cache[id] ||= {}
+
     value = ThreadScheduler._command(id, string)
     if value != "cache"
-      eval(value)
+      self.cache[id][string] = eval(value)
     else
-      self.cache[id] ||= {}
       self.cache[id][string] ||= false
     end
   end
