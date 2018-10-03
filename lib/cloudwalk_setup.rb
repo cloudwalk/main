@@ -193,7 +193,6 @@ class CloudwalkSetup
       DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
     end
 
-    # check
     DaFunk::EventHandler.new :payment_channel, :notification do |notification|
       BacklightControl.on
       notification.perform
@@ -204,12 +203,6 @@ class CloudwalkSetup
     interval = (value.to_s.empty? ? 168 : value.to_i)
     DaFunk::EventHandler.new :schedule, hours: interval, slot: "update_interval" do
       CloudwalkUpdate.perform
-    end
-
-    DaFunk::EventHandler.new :payment_channel, :notification do |notification|
-      BacklightControl.on
-      notification.perform
-      BacklightControl.on
     end
   end
 
