@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.1.1 - 2018-10-03
+
+- Increased timeout on getc during idle key waiting loop.
+
 ### 2.1.0 - 2018-10-03
 
 - Remove backlight control in thread;
