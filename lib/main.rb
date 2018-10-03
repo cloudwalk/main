@@ -83,7 +83,7 @@ class Main < Device
         usleep(50_000)
       end
     rescue => e
-      ContextLog.exception(e, e.backtrace, "ERRROU")
+      ContextLog.exception(e, e.backtrace, "Communication thread")
     end
   end
 
