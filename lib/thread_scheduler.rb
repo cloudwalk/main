@@ -56,14 +56,18 @@ class ThreadScheduler
 
   def self.execute(id)
     self._execute(id) do |str|
-      if DaFunk::PaymentChannel.client
-        if str == "check"
-          DaFunk::PaymentChannel.client.check(false).to_s
-        else
-          DaFunk::PaymentChannel.client.send(str).to_s
-        end
+      if str == "connect"
+        (!! DaFunk::PaymentChannel.client.connect(false)).to_s
       else
-        "false"
+        if DaFunk::PaymentChannel.client
+          if str == "check"
+            DaFunk::PaymentChannel.client.check(false).to_s
+          else
+            DaFunk::PaymentChannel.client.send(str).to_s
+          end
+        else
+          "false"
+        end
       end
     end
   end
