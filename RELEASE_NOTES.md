@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.1.2 - 2018-10-05
+
+- Check if threads were created to stop them at ThreadScheduler;
+- ThreadScheduler only start status bar if applicable;
+- Support payment channel connect between threads;
+- Remove countdown menu from payment channel handler because this handler is being handle in thread;
+- Refactoring main execution parser.
+
 ### 2.1.1 - 2018-10-03
 
 - Increased timeout on getc during idle key waiting loop.
