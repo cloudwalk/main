@@ -36,16 +36,17 @@ class Main < Device
   end
 
   def self.execute(json)
-    unless json
+    if json.nil? || json.to_s.empty?
       :normal
     else
-      if (hash = JSON.parse(json)) && hash["initialize"] == "admin_configuration"
+      options = JSON.parse(json)
+      if options["initialize"] == "admin_configuration"
         :admin_configuration
-      elsif (hash = JSON.parse(json)) && hash["initialize"] == "admin_communication"
+      elsif options["initialize"] == "admin_communication"
         :admin_communication
-      elsif (hash = JSON.parse(json)) && hash["initialize"] == "status_bar"
+      elsif options["initialize"] == "status_bar"
         :status_bar
-      elsif (hash = JSON.parse(json)) && hash["initialize"] == "communication"
+      elsif options["initialize"] == "communication"
         :communication
       else
         :normal
