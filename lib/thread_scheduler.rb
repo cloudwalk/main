@@ -26,10 +26,12 @@ class ThreadScheduler
   end
 
   def self.dispatch_status_bar
-    _start(THREAD_STATUS_BAR)
-    str = "Context.start('main', '#{Device.adapter}', '{\"initialize\":\"status_bar\"}')"
-    self.status_bar = Thread.new do
-      mrb_eval(str)
+    if DaFunk::Helper::StatusBar.valid?
+      _start(THREAD_STATUS_BAR)
+      str = "Context.start('main', '#{Device.adapter}', '{\"initialize\":\"status_bar\"}')"
+      self.status_bar = Thread.new do
+        mrb_eval(str)
+      end
     end
   end
 
