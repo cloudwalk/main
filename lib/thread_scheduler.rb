@@ -13,12 +13,16 @@ class ThreadScheduler
   end
 
   def self.stop
-    _stop(THREAD_STATUS_BAR)
-    _stop(THREAD_COMMUNICATION)
-    self.status_bar.join
-    self.communication.join
-    self.status_bar = nil
-    self.communication = nil
+    if self.status_bar
+      _stop(THREAD_STATUS_BAR)
+      self.status_bar.join
+      self.status_bar = nil
+    end
+    if self.communication
+      _stop(THREAD_COMMUNICATION)
+      self.communication.join
+      self.communication = nil
+    end
   end
 
   def self.dispatch_status_bar
