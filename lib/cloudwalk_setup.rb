@@ -165,7 +165,7 @@ class CloudwalkSetup
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
         if DaFunk::ConnectionManagement.recover_fallback
-          self.countdown_menu unless attach(print_last: false)
+          attach(print_last: false)
         end
       end
     end
