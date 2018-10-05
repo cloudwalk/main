@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.1.3 - 2018-10-05
+
+- Update funky-emv (0.20.0);
+- Update da_funk (2.0.1).
+
 ### 2.1.2 - 2018-10-05
 
 - Check if threads were created to stop them at ThreadScheduler;
