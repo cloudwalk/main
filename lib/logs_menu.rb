@@ -25,7 +25,8 @@ class LogsMenu
   end
 
   def self.send_file(filename)
-    content = JsonLog.log_txt_to_json(filename)
+    InjectedKeys.write_injected_keys_on_log
+    content = self.get_log_content(filename)
     Device::Display.clear
     I18n.pt(:admin_logs_uploading)
     if self.upload(content, "/v1/devices/", false)
@@ -103,5 +104,12 @@ class LogsMenu
 
   def self.access_token
     DaFunk::ParamsDat.file["access_token"]
+  end
+
+  def self.get_log_content(filename)
+    content = {}
+    content[:log_date] = filename[0..(filename.index("log") - 2)]
+    content[:log] = File.read("./main/#{filename}")
+    content.to_json
   end
 end
