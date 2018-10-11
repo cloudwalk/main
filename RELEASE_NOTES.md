@@ -2,9 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.2.0 - 2018-10-11
+
+- Update posxml_parser (2.8.5);
+- Update da_funk (2.0.4);
+- Update funky-emv (0.20.1);
+- Review key_main events to link2500 terminals.
+
 ### 2.1.4 - 2018-10-05
 
-- Update posxml_parser (2.8.4)
+- Update posxml_parser (2.8.4).
 
 ### 2.1.3 - 2018-10-05
 

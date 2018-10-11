@@ -7,19 +7,19 @@ GEM
       bundler
       rake
     cloudwalk_handshake (0.13.2)
-    da_funk (2.0.1)
+    da_funk (2.0.4)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
       funky-emv
       posxml_parser
       rake
-    funky-emv (0.20.0)
+    funky-emv (0.20.1)
       funky-tlv (~> 0.2)
     funky-simplehttp (0.5.0)
     funky-tlv (0.2.3)
     io-like (0.3.0)
-    posxml_parser (2.8.4)
+    posxml_parser (2.8.5)
       funky-emv (~> 0.3)
     rake (10.5.0)
 
@@ -37,4 +37,4 @@ DEPENDENCIES
   rake (= 10.5.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.4
