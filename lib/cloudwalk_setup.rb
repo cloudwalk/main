@@ -207,12 +207,17 @@ class CloudwalkSetup
 
   def self.setup_events
     DaFunk::EventHandler.new :key_main, Device::IO::ENTER do CloudwalkSetup.start            end
-    DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform end
-    DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform end #PAX s920
-    DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed  end
+    DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform      end
+    if Device::System.model == "link2500"
+      DaFunk::EventHandler.new :key_main, Device::IO::ALPHA    do AdminConfiguration.perform end
+    end
+    DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform      end
+    DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed       end
     if Context.development?
-      DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!       end
-      DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!       end #PAX s920
+      DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!          end
+      if Device::System.model != "link2500"
+        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!        end
+      end
     end
 
     DaFunk::EventHandler.new :payment_channel, :notification do |notification|
