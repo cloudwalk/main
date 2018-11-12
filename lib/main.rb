@@ -63,6 +63,7 @@ class Main < Device
   def self.thread_status_bar
     loop do
       break if ThreadScheduler.die?(:status_bar)
+      Device::Setting.set_new_media if Device::Setting.media_changed?
       DaFunk::Helper::StatusBar.check
       usleep(1000_000)
     end
@@ -92,4 +93,3 @@ class Main < Device
     "2.1.4"
   end
 end
-
