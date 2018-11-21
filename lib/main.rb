@@ -75,11 +75,13 @@ class Main < Device
       CloudwalkSetup.setup_communication_listeners
       loop do
         break if ThreadScheduler.die?(:communication)
-        DaFunk::EventListener.check(:payment_channel)
-        Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
+        if ! ThreadScheduler.pause?(:communication)
+          DaFunk::EventListener.check(:payment_channel)
+          Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
 
-        if buf = Context::ThreadChannel.queue_read(ThreadScheduler::THREAD_COMMUNICATION)
-          DaFunk::PaymentChannel.client.write(buf)
+          if buf = Context::ThreadChannel.queue_read(ThreadScheduler::THREAD_COMMUNICATION)
+            DaFunk::PaymentChannel.client.write(buf)
+          end
         end
         usleep(50_000)
       end
