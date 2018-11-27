@@ -125,7 +125,8 @@ class CloudwalkSetup
       end
 
       event.check do
-        if (payload = DaFunk::PaymentChannel.client.check)
+        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION) &&
+            payload = DaFunk::PaymentChannel.client.check)
           payload, notification = DaFunk::Notification.check(payload)
           if notification && notification.reply
             DaFunk::PaymentChannel.client.write(notification.reply)
@@ -145,7 +146,8 @@ class CloudwalkSetup
       end
 
       event.check do
-        if (payload = DaFunk::PaymentChannel.check(false))
+        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION) &&
+            payload = DaFunk::PaymentChannel.check(false))
           handler = event.handlers[payload]
           if handler
             handler.perform
