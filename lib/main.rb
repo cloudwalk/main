@@ -6,7 +6,6 @@ class Main < Device
   include DaFunk::Helper
 
   def self.call(json = nil)
-    DaFunk::PaymentChannel.client = Context::CommunicationChannel
     case self.execute(json)
     when :admin_configuration
       AdminConfiguration.perform
