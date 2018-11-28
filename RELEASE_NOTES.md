@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.3.0 - 2018-11-28
+
+- Support ThreadScheduler.pause at communication thread to not execute any event handler during other threads connection attempts;
+- Move ThreadScheduler to mruby-context;
+- Check if communication thread is sleeping before checking any communication object;
+- Remove DaFunk::PaymentChannel.client definition at call and move to mruby-context;
+- Support to ThreadPubSub subscription performing system reload on communication update event;
+- Update da_funk (2.1.0);
+- Update posxml_parser (2.8.6).
+
 ### 2.2.0 - 2018-10-11
 
 - Update posxml_parser (2.8.5);
