@@ -60,9 +60,13 @@ class Main < Device
   end
 
   def self.thread_status_bar
+    id = Context::ThreadPubSub.subscribe
     loop do
       break if ThreadScheduler.die?(:status_bar)
       DaFunk::Helper::StatusBar.check
+      if Context::ThreadPubSub.listen(id) == "communication_update"
+        Device::Runtime.system_reload
+      end
       usleep(1000_000)
     end
   end
@@ -70,11 +74,16 @@ class Main < Device
   def self.thread_communication
     DaFunk::PaymentChannel.client = nil
     begin
+      id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
       loop do
         break if ThreadScheduler.die?(:communication)
-        if ! ThreadScheduler.pause?(:communication)
+        if (! ThreadScheduler.pause?(:communication))
+          if Context::ThreadPubSub.listen(id) == "communication_update"
+            Device::Runtime.system_reload
+            DaFunk::PaymentChannel.close!
+          end
           DaFunk::EventListener.check(:payment_channel)
           Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
 
