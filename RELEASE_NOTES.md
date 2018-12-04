@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.4.0 - 2018-12-04
+
+- Refactoring PAX S920 key map inverting ALPHA by FUNC;
+- Update da_funk (2.2.0);
+- Update cloudwalk (1.11.4).
+
 ### 2.3.0 - 2018-11-28
 
 - Support ThreadScheduler.pause at communication thread to not execute any event handler during other threads connection attempts;
