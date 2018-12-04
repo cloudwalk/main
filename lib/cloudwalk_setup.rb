@@ -213,12 +213,20 @@ class CloudwalkSetup
     if Device::System.model == "link2500"
       DaFunk::EventHandler.new :key_main, Device::IO::ALPHA    do AdminConfiguration.perform end
     end
-    DaFunk::EventHandler.new :key_main, Device::IO::FUNC  do AdminConfiguration.perform      end
+
+    if Device::System.model == "s920"
+      DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do AdminConfiguration.perform      end
+    end
+
     DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed       end
     if Context.development?
       DaFunk::EventHandler.new :key_main, Device::IO::F2    do DaFunk::Engine.stop!          end
       if Device::System.model != "link2500"
-        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!        end
+        if Device::System.model == "s920"
+          DaFunk::EventHandler.new :key_main, Device::IO::FUNC do DaFunk::Engine.stop!        end
+        else
+          DaFunk::EventHandler.new :key_main, Device::IO::ALPHA do DaFunk::Engine.stop!        end
+        end
       end
     end
 
