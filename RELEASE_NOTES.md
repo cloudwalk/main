@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.5.0 - 2018-12-13
+
+- Update posxml_parser (2.9.0).
+
 ### 2.4.0 - 2018-12-04
 
 - Refactoring PAX S920 key map inverting ALPHA by FUNC;
