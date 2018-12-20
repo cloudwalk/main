@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.6.0 - 2018-12-20
+
+- Update posxml_parser (2.10.0).
+
 ### 2.5.0 - 2018-12-13
 
 - Update posxml_parser (2.9.0).
