@@ -15,6 +15,10 @@ class Main < Device
       self.thread_status_bar
     when :communication
       self.thread_communication
+    when :apps_update
+      AdminConfiguration.apps_update
+    when :update_system
+      AdminConfiguration.system_update
     when :normal
       perform
     else
@@ -47,6 +51,10 @@ class Main < Device
         :status_bar
       elsif options["initialize"] == "communication"
         :communication
+      elsif options["initialize"] == "apps_update"
+        :apps_update
+      elsif options["initialize"] == "system_update"
+        :system_update
       else
         :normal
       end
