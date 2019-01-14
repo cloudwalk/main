@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.8.1 - 2019-01-14
+
+- Update posxml_parser.
+
 ### 2.8.0 - 2019-01-14
 
 - Add MAC address to communication show;
