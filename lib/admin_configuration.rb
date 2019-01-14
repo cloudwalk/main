@@ -184,6 +184,7 @@ class AdminConfiguration
       show << "\nUSER: #{Device::Setting.user}"
       show << "\nPW: #{Device::Setting.apn_password}"
     end
+    show << "\nMAC: #{Device::Network.mac_address}"
 
     Device::Display.clear
     puts show
