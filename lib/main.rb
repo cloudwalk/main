@@ -17,7 +17,7 @@ class Main < Device
       self.thread_communication
     when :apps_update
       AdminConfiguration.apps_update
-    when :update_system
+    when :system_update
       AdminConfiguration.system_update
     when :normal
       perform
