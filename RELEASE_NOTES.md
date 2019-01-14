@@ -2,7 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
-### 2.7.0 - 2018-01-08
+### 2.8.0 - 2019-01-14
+
+- Add MAC address to communication show;
+- Update da_funk (2.4.0);
+- fix symbol name on case.
+
+### 2.7.0 - 2019-01-08
 
 - Update da_funk (2.3.0);
 - Update posxml_parser (2.11.0);
