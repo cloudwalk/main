@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.9.0 - 2019-01-23
+
+- Implement CloudwalkUpdate.system routine, first implementation of UX system update improvement process;
+- User can cancel automatic update in 10 seconds;
+- Update handlers to update and system update; - Set default update interval to 24 hours; - Set default system update interval to 168 (week).
+
 ### 2.8.1 - 2019-01-14
 
 - Update posxml_parser.
