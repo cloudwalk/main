@@ -1,5 +1,5 @@
 class CloudwalkUpdate
-  def self.perform
+  def self.application
     return unless Device::Network.connected?
 
     Device::Display.clear
@@ -8,8 +8,8 @@ class CloudwalkUpdate
     Device::Display.print("", 3)
     key = Device::IO::KEY_TIMEOUT
 
-    5.times do |i|
-      Device::Display.print((5 - i).to_s, 5, 11)
+    10.times do |i|
+      Device::Display.print((10 - i).to_s, 5, 11)
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
