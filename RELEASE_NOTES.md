@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.10.0 - 2019-02-05
+
+- Update da_funk (2.5.0);
+- Update funky-emv (0.20.2).
+
 ### 2.9.0 - 2019-01-23
 
 - Implement CloudwalkUpdate.system routine, first implementation of UX system update improvement process;
