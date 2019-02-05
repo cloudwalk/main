@@ -27,6 +27,8 @@ Funky application responsible for start DaFunk ecosystem.
 - `backlight_control` (Default "120": enable, seconds) - If enable ( > 0) perform backlight control and turn off the backlight based on the time in seconds of this parameter if any event happen, if disable (0) keep backlight always on.
 - `countdown_application` (Default "": AdministrationMenu) - Application to be called if communication failure countdown.
 - `countdown_max_timeout` (Default "5") - countdown timeout.
+- `update_interval` (Default "24") - .
+- `system_update_interval` (Default "168") - .
 
 ## Setup
 
