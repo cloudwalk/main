@@ -89,8 +89,10 @@ class Main < Device
         break if ThreadScheduler.die?(:communication)
         if (! ThreadScheduler.pause?(:communication))
           if Context::ThreadPubSub.listen(id) == "communication_update"
+            media_before = Device::Network.config
             Device::Runtime.system_reload
-            DaFunk::PaymentChannel.close!
+            media_after = Device::Network.config
+            DaFunk::PaymentChannel.close! if media_before != media_after
           end
           DaFunk::EventListener.check(:payment_channel)
           Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
