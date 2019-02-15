@@ -2,7 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
-### 2.11.1 - 2019-02-07
+### 2.13.0 - 2019-02-15
+
+- Update posxml_parser (2.14.0).
+
+### 2.12.0 - 2019-02-07
 
 - Bug fix during communication update between threads to only close the socket if media configuration was changed;
 - Update da_funk (2.5.1);
