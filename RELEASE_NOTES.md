@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.14.1 - 2019-02-16
+
+- Bug fix set payment channel limit disable as default;
+
 ### 2.14.0 - 2019-02-16
 
 - Adopt GC.start run on status bar thread;
