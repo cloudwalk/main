@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 2.14.0 - 2019-02-16
+
+- Adopt GC.start run on status bar thread;
+- Bug fix stuck screen before persist new media config;
+- Run GC.star every 10 minutes on communication thread;
+- Run GC.star every 10 minutes on main thread;
+- Reload runtime engine every 24 hours and if memory reaches 14mb;
+- Call PaymentChannel.connect on mag and emv listener events, this start the payment channel creation (on communication thread) even if limit is exceed;
+- Force payment channel creation if it doesn’t exists on comm thread. Logic is trigged if a write message (from main thread) is queued.
+
 ### 2.13.0 - 2019-02-15
 
 - Update posxml_parser (2.14.0).
