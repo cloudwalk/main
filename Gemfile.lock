@@ -7,7 +7,7 @@ GEM
       bundler
       rake
     cloudwalk_handshake (0.13.2)
-    da_funk (2.5.1)
+    da_funk (2.7.0)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
