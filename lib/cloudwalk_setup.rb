@@ -40,6 +40,7 @@ class CloudwalkSetup
       event.check do
         @mag = Device::Magnetic.new unless @mag.open?
         if @mag.open? && @mag && @mag.swiped?
+          DaFunk::PaymentChannel.connect(false) if DaFunk::PaymentChannel.channel_limit_exceed?
           handler = event.handlers.find { |option, h| @mag.bin?(h.option) }
           if handler
             BacklightControl.on
@@ -76,6 +77,7 @@ class CloudwalkSetup
       event.check do
         if EmvTransaction.opened? && DaFunk::ParamsDat.file["emv_enabled"] == "1"
           if EmvTransaction.detected?
+            DaFunk::PaymentChannel.connect(false) if DaFunk::PaymentChannel.channel_limit_exceed?
             BacklightControl.on
             if CloudwalkSetup.check_connection
               EmvTransaction.clean
