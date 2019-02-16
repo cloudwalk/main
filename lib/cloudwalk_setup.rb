@@ -186,6 +186,21 @@ class CloudwalkSetup
         end
       end
     end
+
+    DaFunk::EventListener.new :schedule do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        handler = event.handlers.find { |option, h| h.execute? }
+        handler[1].perform if handler
+      end
+    end
+
+    DaFunk::EventHandler.new :schedule, minutes: 10 do
+      GC.start
+    end
   end
 
   def self.countdown_menu
