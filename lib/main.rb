@@ -69,11 +69,17 @@ class Main < Device
 
   def self.thread_status_bar
     id = Context::ThreadPubSub.subscribe
+    time = nil
     loop do
       break if ThreadScheduler.die?(:status_bar)
       DaFunk::Helper::StatusBar.check
       if Context::ThreadPubSub.listen(id) == "communication_update"
         Device::Runtime.system_reload
+      end
+
+      if time.nil? || time < Time.now
+        time = (Time.now + 600)
+        GC.start
       end
       usleep(1000_000)
     end
