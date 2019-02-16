@@ -262,6 +262,10 @@ class CloudwalkSetup
     DaFunk::EventHandler.new :schedule, hours: interval, slot: "system_update_interval" do
       CloudwalkUpdate.system
     end
+
+    DaFunk::EventHandler.new :schedule, minutes: 10 do
+      GC.start
+    end
   end
 
   def self.setup_notifications
