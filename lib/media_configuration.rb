@@ -158,6 +158,7 @@ class MediaConfiguration
   end
 
   def self.persist_communication(config)
+    Device::Display.clear
     ThreadScheduler.stop
     value = menu(I18n.t(:media_try_connection), {I18n.t(:media_reboot) => true,
       I18n.t(:media_connect) => false})
