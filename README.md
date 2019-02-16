@@ -24,11 +24,13 @@ Funky application responsible for start DaFunk ecosystem.
 - `encrypt_card` (Default 0: disable) - If 1 the PAN will be encrypted using 3DES injected keys to share between modules;
 - `emv_application` (Default "": disable) - Application that will be called after a EMV(insert card) input;
 - `attach_gprs_timeout` (Default "": disable) - timeout in miliseconds
-- `backlight_control` (Default "120": enable, seconds) - If enable ( > 0) perform backlight control and turn off the backlight based on the time in seconds of this parameter if any event happen, if disable (0) keep backlight always on.
-- `countdown_application` (Default "": AdministrationMenu) - Application to be called if communication failure countdown.
-- `countdown_max_timeout` (Default "5") - countdown timeout.
-- `update_interval` (Default "24") - .
-- `system_update_interval` (Default "168") - .
+- `backlight_control` (Default "120": enable, seconds) - If enable ( > 0) perform backlight control and turn off the backlight based on the time in seconds of this parameter if any event happen, if disable (0) keep backlight always on;
+- `countdown_application` (Default "": AdministrationMenu) - Application to be called if communication failure countdown;
+- `countdown_max_timeout` (Default "5") - countdown timeout;
+- `update_interval` (Default "24") - Applications update check interval;
+- `system_update_interval` (Default "168") - Runtime update check interval;
+- `payment_channel_check_limit` (Default "0": disable) - Enable(1) / Disable(0) daily payment channel limit;
+- `payment_channel_limit` (Default "0") - Configure daily limit to payment channel creation.
 
 ## Setup
 
