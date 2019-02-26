@@ -25,35 +25,36 @@ class LogsMenu
   end
 
   def self.send_file(filename)
-    InjectedKeys.write_injected_keys_on_log
-    content = self.get_log_content(filename)
-    Device::Display.clear
-    I18n.pt(:admin_logs_uploading)
-    if self.upload(content, "/v1/devices/", false)
+    path = "./main/#{filename}"
+    zip  = "./main/#{Device::System.serial}-#{filename.split(".").first}.zip"
+    if filename && File.exists?(path)
       Device::Display.clear
-      I18n.pt(:admin_logs_success)
-    else
-      Device::Display.clear
-      I18n.pt(:admin_logs_fail)
+      I18n.pt(:admin_logs_compressing)
+      if Zip.compress(zip, path)
+        I18n.pt(:admin_logs_uploading)
+        if self.upload(zip)
+          I18n.pt(:admin_logs_success)
+        else
+          I18n.pt(:admin_logs_fail)
+        end
+        File.delete(zip) if File.exists?(zip)
+        getc(2000)
+      else
+        I18n.pt(:admin_logs_compressing_error)
+        getc(2000)
+      end
     end
-    getc(2000)
   end
 
-  def self.upload(content, path="/v1/files/", zip_file=true)
-    req = {
-      "Content-Type" => "application/json"
-    }
-    http = SimpleHttp.new("https", endpoint)
+  def self.upload(zip_file)
+    return unless token = api_token
+    http  = SimpleHttp.new("https", endpoint)
     Device::System.klass = "cw_logs.posxml"
     http.socket = Device::Network.socket.call
-    if zip_file
-      return unless token = api_token
-      req["Body"] = body(content.split("/").last, content, token)
-    else
-      path+="#{access_token}/metrics"
-      req["Body"] = content
-    end
-    response = http.request("POST", path, req)
+    response = http.request("POST", "/v1/devices/#{access_token}/metrics", {
+      "Content-Type" => "application/json",
+      "Body" => body(zip_file.split("/").last, zip_file, token)
+    })
     response.code == 201 || response.code == 200
   ensure
     Device::System.klass = "main"
@@ -104,12 +105,5 @@ class LogsMenu
 
   def self.access_token
     DaFunk::ParamsDat.file["access_token"]
-  end
-
-  def self.get_log_content(filename)
-    content = {}
-    content[:log_date] = filename[0..(filename.index("log") - 2)]
-    content[:log] = File.read("./main/#{filename}")
-    content.to_json
   end
 end
