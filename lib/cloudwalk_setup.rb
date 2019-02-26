@@ -9,6 +9,7 @@ class CloudwalkSetup
     self.setup_listeners
     self.setup_events
     self.delete_old_logs
+    self.write_keys_on_log
     CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup
@@ -363,6 +364,14 @@ class CloudwalkSetup
       if self.compare_dates(file[0..(file.index('.') - 1)], date_today) > 1296000
         File.delete("./main/#{file}")
       end
+    end
+  end
+
+  def self.write_keys_on_log
+    time = Time.now
+    logname = "./main/#{"%d-%02d-%02d" % [time.year, time.month, time.day]}.log"
+    if !File.exists?(logname)
+      InjectedKeys.write_injected_keys_on_log
     end
   end
 end
