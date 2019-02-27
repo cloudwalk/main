@@ -204,6 +204,10 @@ class CloudwalkSetup
     DaFunk::EventHandler.new :schedule, minutes: 10 do
       GC.start
     end
+
+    DaFunk::EventHandler.new :schedule, minutes: 10, slot: "upload_log_file" do
+      LogControl.upload_log_file
+    end
   end
 
   def self.countdown_menu
