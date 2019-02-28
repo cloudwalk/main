@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.0.0 - 2019-02-28
+
+- Update posxml_parser (2.15.0);
+- Update da_funk (3.0.0);
+- Update cloudwalk_handshake (1.0.0);
+- Support to close http socket at the end of an event;
+- Force http socket creation during write event on thread communication;
+- Update README with new parameter transaction_http_enabled.
+
 ### 2.14.1 - 2019-02-16
 
 - Bug fix set payment channel limit disable as default;
