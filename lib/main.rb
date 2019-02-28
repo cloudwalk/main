@@ -104,7 +104,7 @@ class Main < Device
           Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
 
           if buf = Context::ThreadChannel.queue_read(ThreadScheduler::THREAD_COMMUNICATION)
-            DaFunk::PaymentChannel.connect unless DaFunk::PaymentChannel.client
+            DaFunk::PaymentChannel.connect(false) unless (DaFunk::PaymentChannel.client && DaFunk::PaymentChannel.client.connected?)
             DaFunk::PaymentChannel.client.write(buf)
           end
         end
