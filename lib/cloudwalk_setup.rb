@@ -49,6 +49,7 @@ class CloudwalkSetup
             end
             BacklightControl.on
           end
+          DaFunk::PaymentChannel.close! if DaFunk::PaymentChannel.transaction_http?
           event.finish
           event.start
         end
@@ -77,7 +78,9 @@ class CloudwalkSetup
       event.check do
         if EmvTransaction.opened? && DaFunk::ParamsDat.file["emv_enabled"] == "1"
           if EmvTransaction.detected?
-            DaFunk::PaymentChannel.connect(false) if DaFunk::PaymentChannel.channel_limit_exceed?
+            if DaFunk::PaymentChannel.channel_limit_exceed?
+              DaFunk::PaymentChannel.connect(false)
+            end
             BacklightControl.on
             if CloudwalkSetup.check_connection
               EmvTransaction.clean
@@ -92,6 +95,7 @@ class CloudwalkSetup
                 EmvTransaction.open("01")
               end
             end
+            DaFunk::PaymentChannel.close! if DaFunk::PaymentChannel.transaction_http?
             BacklightControl.on
           end
         else
