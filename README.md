@@ -30,7 +30,8 @@ Funky application responsible for start DaFunk ecosystem.
 - `update_interval` (Default "24") - Applications update check interval;
 - `system_update_interval` (Default "168") - Runtime update check interval;
 - `payment_channel_check_limit` (Default "0": disable) - Enable(1) / Disable(0) daily payment channel limit;
-- `payment_channel_limit` (Default "0") - Configure daily limit to payment channel creation.
+- `payment_channel_limit` (Default "0") - Configure daily limit to payment channel creation;
+- `transaction_http_enabled` (Default "1") - Enabled http transaction interface, if "0" PaymentChannel via Websocket.
 
 ## Setup
 
