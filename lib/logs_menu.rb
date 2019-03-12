@@ -35,6 +35,7 @@ class LogsMenu
         I18n.pt(:admin_logs_uploading)
         if self.upload(zip)
           I18n.pt(:admin_logs_success)
+          File.delete(path)
         else
           I18n.pt(:admin_logs_fail)
         end
