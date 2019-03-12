@@ -26,14 +26,16 @@ class LogsMenu
 
   def self.send_file(filename)
     path = "./main/#{filename}"
-    zip  = "./main/#{Device::System.serial}-#{filename}.zip"
+    zip  = "./main/#{Device::System.serial}-#{filename.split(".").first}.zip"
     if filename && File.exists?(path)
+      LogControl.new(path).write_keys_on_log
       Device::Display.clear
       I18n.pt(:admin_logs_compressing)
       if Zip.compress(zip, path)
         I18n.pt(:admin_logs_uploading)
         if self.upload(zip)
           I18n.pt(:admin_logs_success)
+          File.delete(path)
         else
           I18n.pt(:admin_logs_fail)
         end
@@ -51,7 +53,7 @@ class LogsMenu
     http  = SimpleHttp.new("https", endpoint)
     Device::System.klass = "cw_logs.posxml"
     http.socket = Device::Network.socket.call
-    response = http.request("POST", "/v1/files", {
+    response = http.request("POST", "/v1/devices/#{access_token}/metrics", {
       "Content-Type" => "application/json",
       "Body" => body(zip_file.split("/").last, zip_file, token)
     })
@@ -102,5 +104,8 @@ class LogsMenu
     I18n.pt(:admin_logs_not_configured) unless value
     value
   end
-end
 
+  def self.access_token
+    DaFunk::ParamsDat.file["access_token"]
+  end
+end

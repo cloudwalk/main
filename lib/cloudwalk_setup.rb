@@ -8,6 +8,7 @@ class CloudwalkSetup
     self.setup_notifications
     self.setup_listeners
     self.setup_events
+    LogControl.delete_old_logs
     CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup
@@ -269,6 +270,10 @@ class CloudwalkSetup
       CloudwalkUpdate.system
     end
 
+    DaFunk::EventHandler.new :schedule, minutes: 10, slot: "log" do
+      LogControl.upload_log_file
+    end
+
     DaFunk::EventHandler.new :schedule, minutes: 10 do
       if Vm.current_memory > 14_000_000
         DaFunk::Engine.stop!(true)
@@ -345,4 +350,3 @@ class CloudwalkSetup
     CloudwalkWizard.new.start
   end
 end
-
