@@ -8,7 +8,22 @@ class LogControl
   end
 
   def self.upload_log_file
-    LogsMenu.send_file(self.get_log_file)
+    return unless Device::Network.connected?
+
+    Device::Display.clear
+    I18n.pt(:admin_logs_upload_check)
+    Device::Display.print(I18n.t(:admin_logs_upload_cancel), 2)
+    Device::Display.print("", 3)
+    key = Device::IO::KEY_TIMEOUT
+
+    5.times do |i|
+      Device::Display.print((10 - i).to_s, 5, 11)
+      key = getc(1000)
+      break if key != Device::IO::KEY_TIMEOUT
+    end
+    if key != Device::IO::CANCEL
+      LogsMenu.send_file(self.get_log_file)
+    end
   end
 
   def self.delete_old_logs
