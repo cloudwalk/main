@@ -8,7 +8,7 @@ class CloudwalkSetup
     self.setup_notifications
     self.setup_listeners
     self.setup_events
-    LogControl.delete_old_logs
+    LogControl.purge
     CloudwalkFont.setup
     PosxmlParser.setup
     BacklightControl.setup

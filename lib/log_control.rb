@@ -26,7 +26,7 @@ class LogControl
     end
   end
 
-  def self.delete_old_logs
+  def self.purge
     dirs = Dir.entries("./main").select { |p| p.include?(".log") }
     date_today = self.get_date_today
     dirs.each do |file|
