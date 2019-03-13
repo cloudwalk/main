@@ -3,7 +3,6 @@
 Funky application responsible for start DaFunk ecosystem.
 
 ## What's inside?
-
 - A small Ruby application that uses [da_funk](https://github.com/cloudwalkio/da_funk).
 - Example test cases.
 - All the scripts needed to make it work.
@@ -32,6 +31,7 @@ Funky application responsible for start DaFunk ecosystem.
 - `payment_channel_check_limit` (Default "0": disable) - Enable(1) / Disable(0) daily payment channel limit;
 - `payment_channel_limit` (Default "0") - Configure daily limit to payment channel creation;
 - `transaction_http_enabled` (Default "1") - Enabled http transaction interface, if "0" PaymentChannel via Websocket.
+- `log_upload_enabled` (Default "0") - Upload communication and key logs.
 
 ## Setup
 

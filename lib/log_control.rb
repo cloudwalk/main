@@ -7,8 +7,12 @@ class LogControl
     InjectedKeys::log(@filename)
   end
 
+  def self.enabled?
+    Device::ParamsDat.file["log_upload_enabled"] == "1"
+  end
+
   def self.upload
-    return unless Device::Network.connected?
+    return unless self.enabled? && Device::Network.connected?
 
     Device::Display.clear
     I18n.pt(:admin_logs_upload_check)
