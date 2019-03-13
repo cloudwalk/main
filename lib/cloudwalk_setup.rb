@@ -271,7 +271,7 @@ class CloudwalkSetup
     end
 
     DaFunk::EventHandler.new :schedule, minutes: 10, slot: "log" do
-      LogControl.upload_log_file
+      LogControl.upload
     end
 
     DaFunk::EventHandler.new :schedule, minutes: 10 do

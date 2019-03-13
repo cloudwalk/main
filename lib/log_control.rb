@@ -7,7 +7,7 @@ class LogControl
     write_keys! unless log_ready?
   end
 
-  def self.upload_log_file
+  def self.upload
     return unless Device::Network.connected?
 
     Device::Display.clear
