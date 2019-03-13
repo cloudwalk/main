@@ -28,7 +28,7 @@ class LogsMenu
     path = "./main/#{filename}"
     zip  = "./main/#{Device::System.serial}-#{filename.split(".").first}.zip"
     if filename && File.exists?(path)
-      LogControl.new(path).write_keys_on_log
+      LogControl.new(path).write_keys
       Device::Display.clear
       I18n.pt(:admin_logs_compressing)
       if Zip.compress(zip, path)

@@ -3,8 +3,8 @@ class LogControl
     @filename = filename
   end
 
-  def write_keys_on_log
-    write_keys! unless log_ready?
+  def write_keys
+    InjectedKeys::log(@filename)
   end
 
   def self.upload
@@ -37,18 +37,6 @@ class LogControl
   end
 
   private
-
-  def write_keys!
-    InjectedKeys.write_injected_keys_on_log(@filename)
-  end
-
-  def log_ready?
-    File.read(@filename).each_line do |line|
-      return true if line[0..2] == "[K]"
-    end
-    false
-  end
-
   def self.get_log_file
     time = Time.now
     "#{"%d-%02d-%02d" % [time.year, time.month, time.day]}.log"
