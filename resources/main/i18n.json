@@ -116,6 +116,9 @@
 		"emv_pin_blocked":"\nPIN BLOCKED",
 		"emv_transaction_approved":"ENTER PIN:",
 		"emv_remove_card":"REMOVE CARD",
+		"emv_selection_credit_debit":"\n1. CREDITO\n2. DEBITO",
+		"emv_selected_credit":"CREDITO",
+		"emv_selected_debit":"DEBITO",
 		"transaction_no_connection":"TERMINAL NOT CONNECTED",
 		"networks": "NETWORKS"
 	},
@@ -236,6 +239,9 @@
 		"emv_pin_blocked":"\nSENHA BLOQUEADA",
 		"emv_transaction_approved":"TRANSACAO APROVADA",
 		"emv_remove_card":"RETIRE CARTAO",
+		"emv_selection_credit_debit":"\n1. CREDIT\n2. DEBIT",
+		"emv_selected_credit":"CREDIT",
+		"emv_selected_debit":"DEBIT",
 		"transaction_no_connection":"TERMINAL SEM CONEXAO",
 		"networks": "REDES"
 	}
