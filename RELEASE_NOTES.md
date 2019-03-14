@@ -2,6 +2,18 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.1.0 - 2019-03-14
+
+- Bug fix injected keys log typo;
+- Add support to params.dat flag log_upload_enabled.
+- Update cloudwalk_handshake (1.2.1)
+- Update da_funk (3.1.1)
+- Execute upload log routine every 24 hours;
+- Refactoring upload logs routine:
+    - Upload the log from yesterday;
+    - User would be able to cancel upload log in 5 seconds;
+    - Minimal fixes and typos.
+
 ### 3.0.0 - 2019-02-28
 
 - Update posxml_parser (2.15.0);
