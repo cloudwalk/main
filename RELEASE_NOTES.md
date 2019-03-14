@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.2.0 - 2019-03-14
+
+- Update da_funk (3.2.0);
+- Update funky-emv (0.21.0).
+
 ### 3.1.0 - 2019-03-14
 
 - Bug fix injected keys log typo;
