@@ -1,14 +1,10 @@
 class LogControl
-  def initialize(filename)
-    @filename = filename
-  end
-
-  def write_keys
-    InjectedKeys::log(@filename)
+  def self.write_keys(filename)
+    InjectedKeys::log("./main/#{filename}")
   end
 
   def self.enabled?
-    Device::ParamsDat.file["log_upload_enabled"] == "1"
+    DaFunk::ParamsDat.file["log_upload_enabled"] == "1"
   end
 
   def self.upload
@@ -21,7 +17,7 @@ class LogControl
     key = Device::IO::KEY_TIMEOUT
 
     5.times do |i|
-      Device::Display.print((10 - i).to_s, 5, 11)
+      Device::Display.print((5 - i).to_s, 5, 11)
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
@@ -42,7 +38,7 @@ class LogControl
 
   private
   def self.get_log_file
-    time = Time.now
+    time = (Time.now - (24 * 60 * 60))
     "#{"%d-%02d-%02d" % [time.year, time.month, time.day]}.log"
   end
 
