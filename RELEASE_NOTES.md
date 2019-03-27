@@ -9,6 +9,9 @@ Funky application responsible for start DaFunk ecosystem.
 - Change system update strategy:
     - Change default interval to 360 hours;
     - If params.dat system_update_interval 0 disable system update;
+- Update posxml_parser (2.16.0);
+- Update funky-emv (0.22.0);
+- Update cloudwalk_handshake (1.2.2).
 
 ### 3.2.0 - 2019-03-14
 
