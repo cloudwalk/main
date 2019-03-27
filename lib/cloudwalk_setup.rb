@@ -265,9 +265,11 @@ class CloudwalkSetup
     end
 
     value = DaFunk::ParamsDat.file["system_update_interval"]
-    interval = (value.to_s.empty? ? 168 : value.to_i)
-    DaFunk::EventHandler.new :schedule, hours: interval, slot: "system_update_interval" do
-      CloudwalkUpdate.system
+    if value.to_s != "0"
+      interval = (value.to_s.empty? ? 360 : value.to_i)
+      DaFunk::EventHandler.new :schedule, hours: interval, slot: "system_update_interval" do
+        CloudwalkUpdate.system
+      end
     end
 
     DaFunk::EventHandler.new :schedule, hours: 24, slot: "log" do
