@@ -30,8 +30,9 @@ Funky application responsible for start DaFunk ecosystem.
 - `system_update_interval` (Default "168") - Runtime update check interval;
 - `payment_channel_check_limit` (Default "0": disable) - Enable(1) / Disable(0) daily payment channel limit;
 - `payment_channel_limit` (Default "0") - Configure daily limit to payment channel creation;
-- `transaction_http_enabled` (Default "1") - Enabled http transaction interface, if "0" PaymentChannel via Websocket.
-- `log_upload_enabled` (Default "0") - Upload communication and key logs.
+- `transaction_http_enabled` (Default "1") - Enabled http transaction interface, if "0" PaymentChannel via Websocket;
+- `log_upload_enabled` (Default "0") - Upload communication and key logs;
+- `emv_application_name_image` (Default "0") - If "1" enable image display for emv application selection, it's required 3 images on ./shared path: `emv_selection_credit_debit.bmp`, `emv_selected_credit.bmp` and `emv_selected_debit.bmp`.
 
 ## Setup
 
