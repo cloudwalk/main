@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.3.0 - 2019-03-27
+
+- Change default application update period to 360 hours;
+- Change default application update interval to 120 hours;
+- Change system update strategy:
+    - Change default interval to 360 hours;
+    - If params.dat system_update_interval 0 disable system update;
+
 ### 3.2.0 - 2019-03-14
 
 - Update da_funk (3.2.0);
