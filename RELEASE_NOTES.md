@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.4.0 - 2019-03-28
+
+- Update cw_apns.dat.
+
 ### 3.3.0 - 2019-03-27
 
 - Change default application update period to 360 hours;
