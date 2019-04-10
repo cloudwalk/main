@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.5.0 - 2019-04-08
+
+- Add keymap.dat;
+- Update funky-emv (0.23.0).
+
 ### 3.4.0 - 2019-03-28
 
 - Update cw_apns.dat.
