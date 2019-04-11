@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.6.0 - 2019-04-11
+
+- Update da_funk (3.2.1);
+- Update posxml_parser (2.17.0).
+
 ### 3.5.0 - 2019-04-08
 
 - Add keymap.dat;
