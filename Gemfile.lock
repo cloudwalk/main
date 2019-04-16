@@ -6,7 +6,7 @@ GEM
     cloudwalk (1.14.1)
       bundler
       rake
-    cloudwalk_handshake (1.2.2)
+    cloudwalk_handshake (1.2.3)
       funky-simplehttp (~> 0.6)
     da_funk (3.2.1)
       archive-zip (~> 0.5)
