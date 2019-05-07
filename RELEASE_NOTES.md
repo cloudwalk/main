@@ -2,7 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
-### 3.11.0 - 2019.04-16
+### 3.12.0 - 2019-05-07
+
+- Refactoring fallback communication routine. Create another Listener to handle only communication issues;
+- Check all possible listener on communication thread;
+- Update funky-emv (0.23.4);
+- Update da_funk (3.3.0);
+- Added emv_wait messages.
+
+### 3.11.0 - 2019-04-16
 
 - Update cloudwalk_handshake (1.2.3).
 
