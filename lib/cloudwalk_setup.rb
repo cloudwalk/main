@@ -165,11 +165,22 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :payment_channel, :attach_registration_fail do
+    DaFunk::EventListener.new :communication do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        handler = event.handlers[DaFunk::ConnectionManagement.check]
+        handler.perform if handler
+      end
+    end
+
+    DaFunk::EventHandler.new :communication, :attach_registration_fail do
       attach(print_last: false)
     end
 
-    DaFunk::EventHandler.new :payment_channel, :fallback_communication do
+    DaFunk::EventHandler.new :communication, :fallback_communication do
       if DaFunk::ConnectionManagement.fallback_valid?
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
@@ -179,7 +190,7 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :payment_channel, :primary_communication do
+    DaFunk::EventHandler.new :communication, :primary_communication do
       if DaFunk::ConnectionManagement.fallback_valid?
         DaFunk::PaymentChannel.close!
         Device::Network.shutdown
