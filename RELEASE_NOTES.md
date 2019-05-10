@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.13.0 - 2019-05-10
+
+- On communication thread check communication and payment_channel listener;
+- Update funky-emv (0.23.5).
+
 ### 3.12.0 - 2019-05-07
 
 - Refactoring fallback communication routine. Create another Listener to handle only communication issues;
