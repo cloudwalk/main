@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.14.0 - 2019-05-10
+
+- Add EventHandler for payment_channel at comm thread. This enable payment_channel Listener check;
+
 ### 3.13.0 - 2019-05-10
 
 - On communication thread check communication and payment_channel listener;
