@@ -165,6 +165,11 @@ class CloudwalkSetup
       end
     end
 
+    # Necessary to enable Listener check
+    DaFunk::EventHandler.new :payment_channel, :nothing do
+      true
+    end
+
     DaFunk::EventListener.new :communication do |event|
       event.start do
         true
