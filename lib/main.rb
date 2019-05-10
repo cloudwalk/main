@@ -100,7 +100,8 @@ class Main < Device
             media_after = Device::Network.config
             DaFunk::PaymentChannel.close! if media_before != media_after
           end
-          DaFunk::EventListener.check
+          DaFunk::EventListener.check(:communication)
+          DaFunk::EventListener.check(:payment_channel)
           Context::ThreadScheduler.execute(ThreadScheduler::THREAD_COMMUNICATION)
 
           if buf = Context::ThreadChannel.queue_read(ThreadScheduler::THREAD_COMMUNICATION)
