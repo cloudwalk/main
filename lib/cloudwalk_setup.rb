@@ -68,16 +68,12 @@ class CloudwalkSetup
 
     DaFunk::EventListener.new :emv do |event|
       event.start do
-        if File.exists? "./shared/emv_acquirer_aids_04.dat"
-          EmvTransaction.open("01")
-          EmvTransaction.clean
-          EmvTransaction.load("4")
-        end
+        EmvTransaction.boot
         true
       end
 
       event.check do
-        if EmvTransaction.opened? && DaFunk::ParamsDat.file["emv_enabled"] == "1"
+        if EmvTransaction.opened? && DaFunk::ParamsDat.file["emv_enabled"] != "0"
           if EmvTransaction.detected?
             if DaFunk::PaymentChannel.channel_limit_exceed?
               DaFunk::PaymentChannel.connect(false)
@@ -87,24 +83,17 @@ class CloudwalkSetup
               EmvTransaction.clean
               EmvTransaction.initialize do |emv|
                 FunkyEmv::Ui.display(:emv_processing, :line => 2, :column => 1)
-                time = Time.now
-                emv.init_data.date = ("%s%02d%02d" % [time.year.to_s[2..3], time.month, time.day])
-                emv.init_data.initial_value = "000000000000"
+                emv.set_initial_data
                 handler = event.handlers.first
                 handler[1].perform(emv.select) if handler && handler[1]
-                EmvTransaction.close
-                EmvTransaction.open("01")
               end
+              EmvTransaction.reboot
             end
             DaFunk::PaymentChannel.close! if DaFunk::PaymentChannel.transaction_http?
             BacklightControl.on
           end
         else
-          if File.exists?("./shared/emv_acquirer_aids_04.dat") && DaFunk::ParamsDat.file["emv_enabled"] == "1"
-            EmvTransaction.open("01")
-            EmvTransaction.clean
-            EmvTransaction.load("4")
-          end
+          EmvTransaction.boot if DaFunk::ParamsDat.file["emv_enabled"] != "0"
         end
       end
 
