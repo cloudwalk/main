@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.18.0 - 2019-05-21
+
+- Update da_funk (3.6.0);
+- Do system reload on main thread after communication update.
+
 ### 3.17.0 - 2019-05-13
 
 - Update da_funk (3.5.0).
