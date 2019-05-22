@@ -32,15 +32,21 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   screen :parts_download do |result|
     block_success = -> {
-      Device::Display.clear(5)
       I18n.pt(:system_update_success, :line => 5)
+      getc(500)
+      Device::Display.clear(5)
     }
     block_fail = -> {
       I18n.pt(:system_update_fail, :line => 5)
       sleep 1
     }
+    block_interrupt = -> {
+      Device::Display.clear
+      I18n.pt(:system_update_interrupt)
+      try_key(["1", "2"], Device::IO.timeout) == "1"
+    }
     I18n.pt(:system_update_downloading_parts, :line => 3)
-    self.download_parts(block_success, block_fail)
+    self.download_parts(block_success, block_fail, block_interrupt)
   end
 
   screen :parts_concatenation do
@@ -98,14 +104,21 @@ class SystemUpdate < DaFunk::ScreenFlow
     self.zip_crc      = self.dat["crc"]
   end
 
-  def download_parts(block_success, block_fail)
+  def download_parts(block_success, block_fail, block_interrupt)
     parse_device_dat unless self.dat
     return true if check(self.zip_path, self.zip_crc)
 
     full  = true
     1.upto(self.total) do |part|
       result = try(3) do |attempt|
-        print("#{part}/#{self.total}",4)
+        Device::Display.print("#{part}/#{self.total}", 4, 0)
+
+        if (getc(10) == Device::IO::CANCEL)
+          return if block_interrupt.call
+          Device::Display.clear
+          I18n.pt(:system_update)
+          I18n.pt(:system_update_downloading_parts, :line => 3)
+        end
 
         if response = self.download_partial(self.zip_filename, part, self.dat[part.to_s])
           block_success.call
