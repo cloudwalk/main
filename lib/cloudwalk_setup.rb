@@ -128,10 +128,15 @@ class CloudwalkSetup
 
     DaFunk::EventListener.new :payment_channel do |event|
       event.start do
+        @id = Context::ThreadPubSub.subscribe
         true
       end
 
       event.check do
+        if Context::ThreadPubSub.listen(@id) == "communication_update"
+          Device::Runtime.system_reload
+        end
+
         if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION) &&
             payload = DaFunk::PaymentChannel.client.check)
           payload, notification = DaFunk::Notification.check(payload)
