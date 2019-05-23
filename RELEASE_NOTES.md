@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.19.0 - 2019-05-22
+
+- Update funky-emv (0.24.0);
+- Refactoring emv Listener supporting Funky-emv (0.24.0), and update emv_enabled flag use to define allowed as default;
+- Fix system update package count and improve interruption ux;
+- Add backup emv table to support funky-emv (0.24.0);
+- Update cloudwalk_handshake (1.3.0).
+
 ### 3.18.0 - 2019-05-21
 
 - Update da_funk (3.6.0);
