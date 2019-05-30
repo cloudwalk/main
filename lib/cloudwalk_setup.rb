@@ -13,7 +13,7 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
-    self.cache_apps
+    self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     ThreadScheduler.start
   end
@@ -355,12 +355,10 @@ class CloudwalkSetup
     unless application
       application = DaFunk::ParamsDat.application_menu
     end
-    ContextLog.info "cloudwalk_setup self.execute #{application.name}"
     application.execute if application
   end
 
   def self.start
-    ContextLog.info "cloudwalk_setup self.start"
     applications = DaFunk::ParamsDat.executable_apps
     application = DaFunk::ParamsDat.executable_app
     if DaFunk::ParamsDat.exists?
@@ -371,16 +369,9 @@ class CloudwalkSetup
     CloudwalkWizard.new.start
   end
 
-  def self.cache_apps
-    application = DaFunk::ParamsDat.executable_app
-    applications = DaFunk::ParamsDat.executable_apps
-
-    # ContextLog.info "#{application.name}"
-    # ContextLog.info "./#{application.name}/main.mrb"
-
-    require "./#{application.name}/main.mrb"
-    # ContextLog.info "after require"
-    ContextLog.info "cloudwalk_setup self.cache_apps #{application.name}-#{Device.adapter}"
-    execution_ret = mrb_eval("Context.load_apps('#{application.name}, '#{Device.adapter}')")
+  def self.pre_load_applications
+    DaFunk::ParamsDat.executable_apps.each do |application|
+      application.start
+    end
   end
 end
