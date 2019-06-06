@@ -13,6 +13,7 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
+    self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     ThreadScheduler.start
   end
@@ -360,5 +361,11 @@ class CloudwalkSetup
       end
     end
     CloudwalkWizard.new.start
+  end
+
+  def self.pre_load_applications
+    DaFunk::ParamsDat.executable_apps.each do |application|
+      application.start
+    end
   end
 end
