@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.20.0 - 2019-06-06
+
+- Update cw_apns.dat;
+- Cache applications in memory;
+- Update posxml_parser (2.19.0);
+- Update funky-emv (0.26.0);
+- Update da_funk (3.8.0);
+- Update cloudwalk_handshake (1.4.0).
+
 ### 3.19.0 - 2019-05-22
 
 - Update funky-emv (0.24.0);
