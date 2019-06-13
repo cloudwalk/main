@@ -2,6 +2,9 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.21.0 - 2019-06-13
+- Update cloudwalk_handshake (1.4.1).
+
 ### 3.20.0 - 2019-06-06
 
 - Update cw_apns.dat;
