@@ -364,7 +364,7 @@ class CloudwalkSetup
   end
 
   def self.pre_load_applications
-    DaFunk::ParamsDat.executable_apps.each do |application|
+    DaFunk::ParamsDat.ruby_executable_apps.each do |application|
       application.start
     end
   end
