@@ -31,6 +31,7 @@ class Main < Device
     DaFunk::Engine.app_loop do
       Device::System.klass = "main"
       Device::Display.print_main_image
+      InputTransactionAmount.display if InputTransactionAmount.enabled?
       MerchantName.display
       if DaFunk::ParamsDat.file["disable_datetime"] != "1"
         print_last(I18n.t(:time, :time => Time.now))
