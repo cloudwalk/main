@@ -2,7 +2,18 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.22.0 - 2019-06-18
+
+- Replaced executable_apps for ruby_executable_apps that only pre loads ruby applications;
+- Add main to manager with the version 1.0.0;
+- Add message to main application update reboot;
+- Update da_funk (3.8.1, 3.8.2, 3.8.3, 3.9.0);
+- Update posxml_parser (2.19.0, 2.20.0, 2.21.0);
+- Update funky-emv (1.0.0, 1.1.0);
+- Update cloudwalk_handshake (1.4.2).
+
 ### 3.21.0 - 2019-06-13
+
 - Update cloudwalk_handshake (1.4.1).
 
 ### 3.20.0 - 2019-06-06
