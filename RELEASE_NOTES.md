@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.23.0 - 2019-06-19
+
+- Added InputTransactionAmount class to handle input amount on the idle screen and support CTLS from idle.
+
 ### 3.22.0 - 2019-06-18
 
 - Replaced executable_apps for ruby_executable_apps that only pre loads ruby applications;
