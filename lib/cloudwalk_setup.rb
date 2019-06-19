@@ -241,6 +241,12 @@ class CloudwalkSetup
   end
 
   def self.setup_events
+    if InputTransactionAmount.enabled?
+      (1..9).to_a.each do |key|
+        DaFunk::EventHandler.new :key_main, key.to_s do InputTransactionAmount.call(key.to_s) end
+      end
+    end
+
     DaFunk::EventHandler.new :key_main, Device::IO::ENTER do CloudwalkSetup.start            end
     DaFunk::EventHandler.new :key_main, Device::IO::F1    do AdminConfiguration.perform      end
     if Device::System.model == "link2500"
