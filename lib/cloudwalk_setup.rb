@@ -47,7 +47,7 @@ class CloudwalkSetup
           if handler
             BacklightControl.on
             if check_connection
-              handler[1].perform(@mag.track2)
+              handler[1].perform(@mag)
             end
             BacklightControl.on
           end
