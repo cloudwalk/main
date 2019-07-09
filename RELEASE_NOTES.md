@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.24.0 - 2019-07-09
+
+- Update cloudwalk_handshake (1.6.0);
+- Update da_funk (3.10.2);
+- Update funky-emv (1.2.1);
+- Update posxml_parser (2.22.0);
+- Send Magnetic object instead track2 only on Magnetic Handler triggering.
+
 ### 3.23.0 - 2019-06-19
 
 - Added InputTransactionAmount class to handle input amount on the idle screen and support CTLS from idle.
