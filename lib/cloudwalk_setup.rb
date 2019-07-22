@@ -248,9 +248,9 @@ class CloudwalkSetup
           app_keys = JSON.parse(File.read("#{app.dir}/resources/CwKeys.json"))
           app_keys.each do |key, options|
             DaFunk::EventHandler.new :key_main, key do
-              app  = options["app"]
-              json = options["initialization"]
-              Device.Runtime.execute(app, json)
+              app       = options["app"]
+              operation = options["initialization"]
+              Device::Runtime.execute(app, operation.to_json)
             end
           end
         end
