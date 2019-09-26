@@ -13,7 +13,6 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
-    self.pre_load_applications
     self.setup_app_events
     DaFunk::EventHandler.new :magnetic, nil do end
     ThreadScheduler.start
