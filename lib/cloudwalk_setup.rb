@@ -13,6 +13,7 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
+    self.setup_app_events
     DaFunk::EventHandler.new :magnetic, nil do end
     ThreadScheduler.start
   end
@@ -235,6 +236,23 @@ class CloudwalkSetup
         end
       elsif key == Device::IO::F1 || key == Device::IO::FUNC
         AdminConfiguration.perform
+      end
+    end
+  end
+
+  def self.setup_app_events
+    DaFunk::ParamsDat.ruby_executable_apps.each do |app|
+      if Dir.exists?("#{app.dir}/resources")
+        if File.exists?("#{app.dir}/resources/CwKeys.json")
+          app_keys = JSON.parse(File.read("#{app.dir}/resources/CwKeys.json"))
+          app_keys.each do |key, options|
+            DaFunk::EventHandler.new :key_main, key do
+              app       = options["app"]
+              operation = options["initialization"]
+              Device::Runtime.execute(app, operation.to_json)
+            end
+          end
+        end
       end
     end
   end
