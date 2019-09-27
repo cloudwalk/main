@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.25.0 - 2019-09-27
+
+- Removed cache ruby applications mechanism
+- Update cloudwalk_handshake (1.8.1);
+- Update posxml_parser (2.24.0);
+- Update da_funk (3.11.0)
+
 ### 3.24.0 - 2019-07-09
 
 - Update cloudwalk_handshake (1.6.0);
