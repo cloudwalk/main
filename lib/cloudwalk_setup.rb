@@ -242,15 +242,13 @@ class CloudwalkSetup
 
   def self.setup_app_events
     DaFunk::ParamsDat.ruby_executable_apps.each do |app|
-      if Dir.exists?("#{app.dir}/resources")
-        if File.exists?("#{app.dir}/resources/CwKeys.json")
-          app_keys = JSON.parse(File.read("#{app.dir}/resources/CwKeys.json"))
-          app_keys.each do |key, options|
-            DaFunk::EventHandler.new :key_main, key do
-              app       = options["app"]
-              operation = options["initialization"]
-              Device::Runtime.execute(app, operation.to_json)
-            end
+      if File.exists?("#{app.dir}/CwKeys.json")
+        app_keys = JSON.parse(File.read("#{app.dir}/CwKeys.json"))
+        app_keys.each do |key, options|
+          DaFunk::EventHandler.new :key_main, key do
+            app       = options["app"]
+            operation = options["initialization"]
+            Device::Runtime.execute(app, operation.to_json)
           end
         end
       end
