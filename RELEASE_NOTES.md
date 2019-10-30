@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.25.1 - 2019-10-30
+
+- Update dependencies
+ - da_funk (3.11.1)
+ - posxml_parser (2.24.1)
+
 ### 3.25.0 - 2019-09-27
 
 - Removed cache ruby applications mechanism
