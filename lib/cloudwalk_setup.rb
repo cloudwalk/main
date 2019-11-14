@@ -14,6 +14,7 @@ class CloudwalkSetup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
     self.setup_app_events
+    self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     Context::ThreadScheduler.start
   end
