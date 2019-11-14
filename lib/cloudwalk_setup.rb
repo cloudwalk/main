@@ -15,7 +15,7 @@ class CloudwalkSetup
     DaFunk::ParamsDat.parameters_load
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
-    ThreadScheduler.start
+    Context::ThreadScheduler.start
   end
 
   def self.setup_listeners
