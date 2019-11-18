@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.27.0 - 2019-11-18
+
+- Update da_funk (3.12.2).
+
 ### 3.26.0 - 2019-11-18
 
 - Add ruby application cache;
