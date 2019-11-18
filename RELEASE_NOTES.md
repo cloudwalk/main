@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.26.0 - 2019-11-18
+
+- Add ruby application cache;
+- Remove possible memory leak on ThreadScheduler inheritance calling.
+
 ### 3.25.1 - 2019-10-30
 
 - Update dependencies
