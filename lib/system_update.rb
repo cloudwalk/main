@@ -5,6 +5,10 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   include DaFunk::Helper
 
+  class << self
+    attr_accessor :current
+  end
+
   attr_accessor :dat, :zip_filename, :total, :zip_path, :status, :zip_crc
 
   setup do
@@ -79,6 +83,26 @@ class SystemUpdate < DaFunk::ScreenFlow
       getc(5_000)
     }
     self.update(block_success, block_fail)
+  end
+
+  def self.bg_start
+    @current = SystemUpdate.new
+  end
+
+  def self.bg_stop
+    @current = nil
+  end
+
+  def bg_check
+    @download_device_dat ||= download_device_dat
+    @part               ||= 0
+
+    @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
+    if @part >= total
+      Device::Display.clear
+      I18n.pt(:system_update_concatenate, :line => 3)
+      concatenate && unpack_files && system_update
+    end
   end
 
   def download_device_dat
