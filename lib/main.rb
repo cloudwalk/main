@@ -103,6 +103,7 @@ class Main < Device
           end
           DaFunk::EventListener.check(:communication)
           DaFunk::EventListener.check(:payment_channel)
+          DaFunk::EventListener.check(:file_exists)
           DaFunk::EventListener.check(:background_system_update)
           Context::ThreadScheduler.execute(Context::ThreadScheduler::THREAD_COMMUNICATION)
 
