@@ -104,6 +104,24 @@ class CloudwalkSetup
       end
     end
 
+    DaFunk::EventListener.new :file_exists do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        event.handlers.each do |option, handler|
+          handler.perform if File.exists?(option)
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :file_exists, "shared/system_update" do
+      if File.read("./shared/system_update") == 'DONE'
+        SystemUpdate.new.start
+      end
+    end
+
     DaFunk::EventListener.new :file_exists_once do |event|
       event.start do @file_exists_once = {}; true end
 
@@ -215,6 +233,37 @@ class CloudwalkSetup
         handler = event.handlers.find { |option, h| h.execute? }
         handler[1].perform if handler
       end
+    end
+
+    DaFunk::EventListener.new :background_system_update do |event|
+      event.start do true end
+
+      event.check do
+        if SystemUpdate.current
+          handler = event.handlers.first
+          handler[1].perform if handler
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :background_system_update, :nothing do
+      SystemUpdate.current&.bg_check
+    end
+
+    DaFunk::EventListener.new :file_exists do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        event.handlers.each do |option, handler|
+          handler.perform if File.exists?(option)
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :file_exists, "shared/system_update" do
+      SystemUpdate.bg_start
     end
 
     DaFunk::EventHandler.new :schedule, minutes: 10 do
