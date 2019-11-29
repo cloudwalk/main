@@ -122,6 +122,11 @@ class CloudwalkSetup
       end
     end
 
+    DaFunk::EventHandler.new :file_exists, "./shared/application_update" do
+      DaFunk::ParamsDat.update_apps(true)
+      File.delete("./shared/application_update")
+    end
+
     DaFunk::EventListener.new :file_exists_once do |event|
       event.start do @file_exists_once = {}; true end
 
