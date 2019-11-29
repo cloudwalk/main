@@ -74,6 +74,7 @@ class SystemUpdate < DaFunk::ScreenFlow
   screen :system_update do
     I18n.pt(:system_update_updating, :line => 3)
     block_success = -> {
+      File.delete('shared/system_update')
       I18n.pt(:system_update_success_restart, :line => 4)
       getc(5_000)
       Device::System.restart
@@ -94,26 +95,15 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def bg_check
-    @download_device_dat ||= download_device_dat
-    @part                ||= 1
+    unless @done
+      @download_device_dat ||= download_device_dat
+      @part                ||= 1
 
-    @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
-    if @part >= total
-      Device::Display.clear
-      I18n.pt(:system_update_concatenate, :line => 3)
-
-      I18n.pt(:system_update_updating, :line => 3)
-      block_success = -> {
-        I18n.pt(:system_update_success_restart, :line => 4)
-        getc(5_000)
-        Device::System.restart
-      }
-      block_fail = -> {
-        I18n.pt(:system_update_problem, :line => 4)
-        getc(5_000)
-      }
-
-      concatenate && unzip && self.update(block_success, block_fail)
+      @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
+      if @part > total
+        File.open('shared/system_update', 'w'){|f| f.write('DONE') }
+        @done = true
+      end
     end
   end
 
