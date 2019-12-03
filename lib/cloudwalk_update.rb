@@ -14,8 +14,13 @@ class CloudwalkUpdate
       break if key != Device::IO::KEY_TIMEOUT
     end
 
+    if File.exists?("./shared/application_update")
+      File.delete("./shared/application_update")
+    end
+
     if key != Device::IO::CANCEL
       DaFunk::ParamsDat.update_apps(true)
+      Device::System.restart
     end
   end
 
