@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.29.0 - 2019-12-03
+
+- Update da_funk (3.13.0);
+- posxml_parser (2.25.0);
+- Added new :file_exists handler to update applications;
+- Add system update icon message;
+- Add support to system update in background.
+
 ### 3.28.0 - 2019-11-22
 
 - Update da_funk (3.12.3).
