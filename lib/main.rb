@@ -66,6 +66,8 @@ class Main < Device
     else
       raise
     end
+  ensure
+    $thread_name = options['initialize']&.to_sym if options.is_a?(Hash)
   end
 
   def self.thread_status_bar
