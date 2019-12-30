@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.32.0 - 2019-12-30
+
+- Update cloudwalk_handshake (1.10.0);
+- Create $thread_name global variable;
+- Display message before wait to stop communication on network configuration;
+
 ### 3.31.0 - 2019-12-20
 
 - Update da_funk (3.13.1).
