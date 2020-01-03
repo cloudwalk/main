@@ -117,6 +117,18 @@ class CloudwalkSetup
       end
     end
 
+    DaFunk::EventListener.new :boot do |event|
+      event.start do true end
+
+      event.check do
+        event.handlers.each do |file_path, handler|
+          handler.perform if File.exists?(file_path)
+        end
+        Device::Setting.boot = "0"
+        event.delete
+      end
+    end
+
     DaFunk::EventHandler.new :file_exists, "./shared/system_update" do
       if File.read("./shared/system_update") == 'DONE'
         SystemUpdate.new.start
