@@ -13,8 +13,8 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
-    self.setup_app_events
     self.schedule_routines_from_rb_apps
+    self.setup_keyboard_events_from_rb_apps
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     Context::ThreadScheduler.start
@@ -295,7 +295,7 @@ class CloudwalkSetup
     end
   end
 
-  def self.setup_app_events
+  def self.setup_keyboard_events_from_rb_apps
     DaFunk::ParamsDat.ruby_executable_apps.each do |app|
       if File.exists?("#{app.dir}/CwKeys.json")
         app_keys = JSON.parse(File.read("#{app.dir}/CwKeys.json"))
