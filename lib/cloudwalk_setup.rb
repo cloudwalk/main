@@ -13,7 +13,8 @@ class CloudwalkSetup
     PosxmlParser.setup
     BacklightControl.setup
     DaFunk::ParamsDat.parameters_load
-    self.setup_app_events
+    self.schedule_routines_from_rb_apps
+    self.setup_keyboard_events_from_rb_apps
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     Context::ThreadScheduler.start
@@ -113,6 +114,18 @@ class CloudwalkSetup
         event.handlers.each do |option, handler|
           handler.perform if File.exists?(option)
         end
+      end
+    end
+
+    DaFunk::EventListener.new :boot do |event|
+      event.start do true end
+
+      event.check do
+        event.handlers.each do |file_path, handler|
+          handler.perform if File.exists?(file_path)
+        end
+        Device::Setting.boot = "0"
+        event.delete
       end
     end
 
@@ -294,15 +307,47 @@ class CloudwalkSetup
     end
   end
 
-  def self.setup_app_events
+  def self.setup_keyboard_events_from_rb_apps
     DaFunk::ParamsDat.ruby_executable_apps.each do |app|
-      if File.exists?("#{app.dir}/CwKeys.json")
-        app_keys = JSON.parse(File.read("#{app.dir}/CwKeys.json"))
+      if File.exists?("#{app.dir}/cw_keys.json")
+        app_keys = JSON.parse(File.read("#{app.dir}/cw_keys.json"))
         app_keys.each do |key, options|
           DaFunk::EventHandler.new :key_main, key do
             app       = options["app"]
             operation = options["initialization"]
             Device::Runtime.execute(app, operation.to_json)
+          end
+        end
+      end
+    end
+  end
+
+  def self.schedule_routines_from_rb_apps
+    DaFunk::ParamsDat.ruby_executable_apps.each do |app|
+      schedule_path = "#{app.dir}/cw_app_schedule.json"
+      if File.exists?(schedule_path)
+        schedule_params = JSON.parse(File.read(schedule_path))
+        schedule_params["routines"].each do |params|
+          ruby_app      = params["app"]
+          function      = { :initialize => params["routine"]["initialize"] }
+          interval      = params["routine"]["interval"].to_i
+          file_check    = params["routine"]["file_check"]
+          function_boot = { :initialize => params["routine"]["boot"] }
+
+          DaFunk::EventHandler.new :schedule, seconds: interval do
+            Device::Runtime.execute(ruby_app, function.to_json)
+          end
+
+          if file_check
+            DaFunk::EventHandler.new :file_exists, posxml_file_path(file_check) do
+              Device::Runtime.execute(ruby_app, function.to_json)
+            end
+          end
+
+          if params["routine"].include?("boot")
+            DaFunk::EventHandler.new :boot, ruby_app do
+              Device::Runtime.execute(ruby_app, function_boot.to_json)
+            end
           end
         end
       end
