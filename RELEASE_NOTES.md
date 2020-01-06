@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.33.0 - 2020-01-06
+
+- Update da_funk (3.14.0);
+- Update posxml_parser (2.26.0);
+- Added ruby apps tasks scheduler handler;
+- Changed method name setup_app_events to setup_keyboard_events_from_rb_apps;
+- Changed file name CwKeys.json to cw_keys.json to have a pattern name;
+- Added :boot handler event listener;
+
 ### 3.32.0 - 2019-12-30
 
 - Update cloudwalk_handshake (1.10.0);
