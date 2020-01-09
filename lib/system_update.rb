@@ -74,7 +74,7 @@ class SystemUpdate < DaFunk::ScreenFlow
   screen :system_update do
     I18n.pt(:system_update_updating, :line => 3)
     block_success = -> {
-      File.delete('shared/system_update')
+      File.delete('shared/system_update') if File.exists?('shared/system_update')
       I18n.pt(:system_update_success_restart, :line => 4)
       getc(5_000)
       Device::System.restart
