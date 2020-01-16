@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.34.0 - 2020-01-16
+
+- Update da_funk (3.15.0);
+- Update cloudwalk_handshake (1.11.0);
+
 ### 3.33.0 - 2020-01-06
 
 - Update da_funk (3.14.0);
