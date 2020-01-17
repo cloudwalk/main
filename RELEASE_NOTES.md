@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.36.0 - 2020-01-17
+
+- Simple bump version.
+
+### 3.35.0 - 2020-01-17
+
+- Update da_funk (3.15.1).
+
 ### 3.34.0 - 2020-01-16
 
 - Update da_funk (3.15.0);
