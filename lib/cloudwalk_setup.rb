@@ -23,13 +23,32 @@ class CloudwalkSetup
   def self.setup_listeners
     DaFunk::EventListener.new :key_main do |event|
       event.check do
-        key = getc(1000)
+        key = getc(100)
         if key != Device::IO::KEY_TIMEOUT
           BacklightControl.on
           handler = event.handlers[key]
           if handler
             handler.perform
             BacklightControl.on
+          end
+        end
+      end
+    end
+
+    DaFunk::EventListener.new :touchscreen do |event|
+      event.check do
+        x, y = getxy_stream(100)
+        if x && y
+          event.handlers.each do |option, handler|
+            if option.is_a?(Hash)
+              if option.include?(:x) && option.include?(:y)
+                if option[:x].include?(x) && option[:y].include?(y)
+                  BacklightControl.on
+                  Device::Audio.beep(7, 60)
+                  handler.perform
+                end
+              end
+            end
           end
         end
       end
@@ -356,8 +375,8 @@ class CloudwalkSetup
 
   def self.setup_events
     if InputTransactionAmount.enabled?
-      (1..9).to_a.each do |key|
-        DaFunk::EventHandler.new :key_main, key.to_s do InputTransactionAmount.call(key.to_s) end
+      DaFunk::EventHandler.new :touchscreen, {:x => 53..194, :y => 200..225} do
+        InputTransactionAmount.call
       end
     end
 

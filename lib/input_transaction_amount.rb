@@ -2,12 +2,12 @@ class InputTransactionAmount
   class << self
     def enabled?
       DaFunk::ParamsDat.file["emv_application"] &&
-      (DaFunk::ParamsDat.file["emv_input_amount_idle"] == "1" ||
-        Device::Setting.emv_input_amount_idle == "1")
+      (DaFunk::ParamsDat.file["emv_contactless_amount"] == "1" ||
+        Device::Setting.emv_contactless_amount == "1")
     end
 
-    def call(first_key)
-      amount = self.input(first_key)
+    def call
+      amount = self.input
       if amount != Device::IO::CANCEL
         Device::Runtime.execute(
           DaFunk::ParamsDat.file["emv_application"],
@@ -17,15 +17,15 @@ class InputTransactionAmount
     end
 
     def column
-      DaFunk::ParamsDat.file["emv_input_amount_idle_column"] || 5
+      DaFunk::ParamsDat.file["emv_contactless_amount_collum"] || 2
     end
 
     def line
-      DaFunk::ParamsDat.file["emv_input_amount_idle_row"] || 7
+      DaFunk::ParamsDat.file["emv_contactless_amount_row"] || 4
     end
 
     def label(extra = nil)
-      (DaFunk::ParamsDat.file["emv_input_amount_idle_label"] || 'R$ ') + extra.to_s
+      (DaFunk::ParamsDat.file["emv_contactless_amount_label"] || 'R$ ') + extra.to_s
     end
 
     def emv_parameters(amount)
@@ -36,16 +36,35 @@ class InputTransactionAmount
       Device::Display.print_line(label('0,00'), line, column)
     end
 
-    def input(value)
+    def contactless_amount_image
+      DaFunk::ParamsDat.file["emv_contactless_amount_image"] || 'amount.bmp'
+    end
+
+    def to_bmp(image)
+      if image.include?('.bmp')
+        "./shared/#{image}"
+      else
+        "./shared/#{image}.bmp"
+      end
+    end
+
+    def bmp_exists?(bmp)
+      File.exists?(bmp)
+    end
+
+    def input
       options = Hash.new
-      options[:label]  = label
-      options[:value]  = value
-      options[:line]   = line
-      options[:column] = column
-      options[:mode]   = Device::IO::IO_INPUT_MONEY
+      options[:label]     = label
+      options[:line]      = line
+      options[:column]    = column
+      options[:mode]      = Device::IO::IO_INPUT_MONEY
       options[:delimiter] = "."
       options[:separator] = ","
 
+      image = contactless_amount_image
+      bmp   = to_bmp(image)
+
+      Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
       Device::IO.get_format(0, 12, options)
     end
   end
