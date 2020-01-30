@@ -35,6 +35,25 @@ class CloudwalkSetup
       end
     end
 
+    DaFunk::EventListener.new :touchscreen do |event|
+      event.check do
+        x, y = getxy_stream(100)
+        if x && y
+          event.handlers.each do |option, handler|
+            if option.is_a?(Hash)
+              if option.include?(:x) && option.include?(:y)
+                if option[:x].include?(x) && option[:y].include?(y)
+                  BacklightControl.on
+                  Device::Audio.beep(7, 60)
+                  handler.perform
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
     DaFunk::EventListener.new :magnetic do |event|
       event.start do
         @mag = Device::Magnetic.new
