@@ -432,7 +432,7 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 1440 do
+    DaFunk::EventHandler.new :schedule, minutes: 300 do
       DaFunk::Engine.stop!(true)
     end
 
