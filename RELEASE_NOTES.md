@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.38.0 - 2020-01-31
+
+- Update cloudwalk (1.15.0);
+- Update cloudwalk_handshake (1.12.0);
+- da_funk (3.16.3);
+
 ### 3.37.0 - 2020-01-31
 
 - Use infinitepay logo as default image;
