@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.37.0 - 2020-01-31
+
+- Use infinitepay logo as default image;
+- Removed amount text from main display when ctls is enabled;
+- Added :touchscreen event listener;
+- Refactored InputTransactionAmount class. CTLS Amount is not being captured from idle anymore, now this call is based on a touch screen event;
+- Added event handler for contactless transactions;
+- Set getc and with getxy_stream timeout to 100ms to have a better UX;
+- Change reset time from 24hrs to 5hrs;
+
 ### 3.36.0 - 2020-01-17
 
 - Simple bump version.
