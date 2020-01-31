@@ -3,12 +3,12 @@ GEM
   specs:
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
-    cloudwalk (1.14.3)
+    cloudwalk (1.15.0)
       bundler
       rake
-    cloudwalk_handshake (1.11.0)
+    cloudwalk_handshake (1.12.0)
       funky-simplehttp (~> 0.6)
-    da_funk (3.15.1)
+    da_funk (3.16.3)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
