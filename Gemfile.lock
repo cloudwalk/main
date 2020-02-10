@@ -6,9 +6,9 @@ GEM
     cloudwalk (1.15.0)
       bundler
       rake
-    cloudwalk_handshake (1.12.0)
+    cloudwalk_handshake (1.13.0)
       funky-simplehttp (~> 0.6)
-    da_funk (3.16.3)
+    da_funk (3.17.0)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
@@ -19,7 +19,7 @@ GEM
       funky-tlv (~> 0.2)
     funky-simplehttp (0.6.0)
     funky-tlv (0.2.3)
-    io-like (0.3.0)
+    io-like (0.3.1)
     posxml_parser (2.26.0)
       funky-emv (~> 1)
     rake (10.5.0)
