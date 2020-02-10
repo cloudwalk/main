@@ -157,13 +157,16 @@ class AdminConfiguration
 
   def self.communication
     case menu(I18n.t(:admin_communication), {I18n.t(:admin_configure) => :config,
-      I18n.t(:admin_show) => :show, I18n.t(:media_connect) => :test})
+      I18n.t(:admin_show) => :show, I18n.t(:media_connect) => :test,
+      I18n.t(:infinitepay_endpoint_config) => :endpoint_config})
     when :config
       communication_configure
     when :show
       communication_show
     when :test
       communication_test
+    when :endpoint_config
+      endpoint_config
     end
   end
 
@@ -216,6 +219,35 @@ class AdminConfiguration
       end
     end
     getc(0)
+  end
+
+  def self.cloudwalk
+    Device::Setting.update_attributes(
+      {"infinitepay_cw_endpoint" => "1", "infinitepay_google_endpoint" => "0"}
+    )
+
+    Device::Runtime.system_reload
+    Device::Display.clear
+    I18n.pt(:admin_communication_success)
+    getc(2000)
+  end
+
+  def self.google
+    Device::Setting.update_attributes(
+      {"infinitepay_cw_endpoint" => "0", "infinitepay_google_endpoint" => "1"}
+    )
+
+    Device::Runtime.system_reload
+    Device::Display.clear
+    I18n.pt(:admin_communication_success)
+    getc(2000)
+  end
+
+  def self.endpoint_config
+  endpoint = menu(I18n.t(:infinitepay_select_endpoint), {"GOOGLE" => :google,
+    "CLOUDWALK" => :cloudwalk, I18n.t(:admin_exit) => false})
+
+    self.send(endpoint) if endpoint
   end
 
   def self.magstripe
