@@ -123,7 +123,9 @@
 		"emv_selected_debit":"DEBITO",
 		"emv_wait":"WAIT",
 		"transaction_no_connection":"TERMINAL NOT CONNECTED",
-		"networks": "NETWORKS"
+		"networks": "NETWORKS",
+		"infinitepay_endpoint_config": "INFINITEPAY ENDPOINT",
+		"infinitepay_select_endpoint": "SELECT ENDPOINT"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUES\n2.ENGLISH",
@@ -249,6 +251,8 @@
 		"emv_selected_debit":"DEBIT",
 		"emv_wait":"AGUARDE",
 		"transaction_no_connection":"TERMINAL SEM CONEXAO",
-		"networks": "REDES"
+		"networks": "REDES",
+		"infinitepay_endpoint_config": "INFINITEPAY ENDERECO",
+		"infinitepay_select_endpoint": "SELECIONE ENDERECO"
 	}
 }
