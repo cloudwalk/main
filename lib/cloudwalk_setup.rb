@@ -38,7 +38,7 @@ class CloudwalkSetup
     DaFunk::EventListener.new :touchscreen do |event|
       event.check do
         touch_clear
-        x, y = getxy_stream(100)
+        x, y = getxy_stream(800)
         if x && y
           event.handlers.each do |option, handler|
             if option.is_a?(Hash)
@@ -191,6 +191,23 @@ class CloudwalkSetup
           end
           handler = event.handlers[payload]
           handler.perform(notification) if handler
+        end
+      end
+    end
+
+    DaFunk::EventHandler.new :schedule, minutes: 2 do
+      if Device::System.battery < 20 && ! Device::System.power_supply
+        if File.exists?('./shared/battery_low.bmp')
+          Device::Display.print_bitmap('./shared/battery_low.bmp')
+        else
+          Device::Display.clear
+          Device::Display.print_line(I18n.t(:battery_low).split("\n")[0], 3, 0)
+          Device::Display.print_line(I18n.t(:battery_low).split("\n")[1], 4, 0)
+        end
+
+        5.times do
+          Device::Audio.beep(0, 180)
+          getc(1500)
         end
       end
     end
