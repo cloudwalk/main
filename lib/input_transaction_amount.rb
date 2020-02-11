@@ -8,7 +8,7 @@ class InputTransactionAmount
 
     def call
       amount = self.input
-      if amount != Device::IO::CANCEL
+      if amount != Device::IO::CANCEL && amount != Device::IO::KEY_TIMEOUT
         Device::Runtime.execute(
           DaFunk::ParamsDat.file["emv_application"],
           emv_parameters(amount)
