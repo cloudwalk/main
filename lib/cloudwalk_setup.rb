@@ -38,7 +38,7 @@ class CloudwalkSetup
     DaFunk::EventListener.new :touchscreen do |event|
       event.check do
         touch_clear
-        x, y = getxy_stream(100)
+        x, y = getxy_stream(800)
         if x && y
           event.handlers.each do |option, handler|
             if option.is_a?(Hash)
