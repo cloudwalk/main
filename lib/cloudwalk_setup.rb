@@ -194,6 +194,23 @@ class CloudwalkSetup
         end
       end
     end
+
+    DaFunk::EventHandler.new :schedule, minutes: 2 do
+      if Device::System.battery < 20 && ! Device::System.power_supply
+        if File.exists?('./shared/battery_low.bmp')
+          Device::Display.print_bitmap('./shared/battery_low.bmp')
+        else
+          Device::Display.clear
+          Device::Display.print_line(I18n.t(:battery_low).split("\n")[0], 3, 0)
+          Device::Display.print_line(I18n.t(:battery_low).split("\n")[1], 4, 0)
+        end
+
+        5.times do
+          Device::Audio.beep(0, 180)
+          getc(1500)
+        end
+      end
+    end
   end
 
   def self.setup_communication_listeners

@@ -125,7 +125,8 @@
 		"transaction_no_connection":"TERMINAL NOT CONNECTED",
 		"networks": "NETWORKS",
 		"infinitepay_endpoint_config": "INFINITEPAY ENDPOINT",
-		"infinitepay_select_endpoint": "SELECT ENDPOINT"
+		"infinitepay_select_endpoint": "SELECT ENDPOINT",
+		"battery_low": "BATTERY IS LOW\nPLEASE RECHARGE"
 	},
 	"pt-br":{
 		"language":"WELCOME TO CLOUDWALK\nLANGUAGE SETTINGS\n\n1.PORTUGUES\n2.ENGLISH",
@@ -253,6 +254,7 @@
 		"transaction_no_connection":"TERMINAL SEM CONEXAO",
 		"networks": "REDES",
 		"infinitepay_endpoint_config": "INFINITEPAY ENDERECO",
-		"infinitepay_select_endpoint": "SELECIONE ENDERECO"
+		"infinitepay_select_endpoint": "SELECIONE ENDERECO",
+		"battery_low": "BATERIA FRANCA\nPOR FAVOR RECARREGUE"
 	}
 }
