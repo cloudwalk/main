@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.39.0 - 2020-02-11
+
+- Added support of infinitepay endpoint config;
+- Update cloudwalk_handshake (1.13.0);
+- Update da_funk (3.17.0);
+- Clear queue of touch events and increase timeout on getxy_stream to avoid execute handler twice;
+- Increase range of touch to start contactless transaction;
+- Check if amount is not KEY_TIMEOUT on InputTransactionAmount;
+- Check battery level each 5 minutes in order to warning the user that the battery is low when it's in idle status.
+
 ### 3.38.0 - 2020-01-31
 
 - Update cloudwalk (1.15.0);
