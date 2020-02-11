@@ -376,7 +376,7 @@ class CloudwalkSetup
 
   def self.setup_events
     if InputTransactionAmount.enabled?
-      DaFunk::EventHandler.new :touchscreen, {:x => 53..194, :y => 200..225} do
+      DaFunk::EventHandler.new :touchscreen, {:x => 41..199, :y => 179..233} do
         InputTransactionAmount.call
       end
     end
