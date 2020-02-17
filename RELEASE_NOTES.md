@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.40.0 - 2020-02-17
+
+- Added handler to also start ctls transaction pressing key number.
+
 ### 3.39.0 - 2020-02-11
 
 - Added support of infinitepay endpoint config;
