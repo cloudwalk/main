@@ -6,8 +6,8 @@ class InputTransactionAmount
         Device::Setting.emv_contactless_amount == "1")
     end
 
-    def call
-      amount = self.input
+    def call(first_key=nil)
+      amount = self.input(first_key)
       if amount != Device::IO::CANCEL && amount != Device::IO::KEY_TIMEOUT
         Device::Runtime.execute(
           DaFunk::ParamsDat.file["emv_application"],
@@ -52,9 +52,10 @@ class InputTransactionAmount
       File.exists?(bmp)
     end
 
-    def input
+    def input(value)
       options = Hash.new
       options[:label]     = label
+      options[:value]     = value
       options[:line]      = line
       options[:column]    = column
       options[:mode]      = Device::IO::IO_INPUT_MONEY
