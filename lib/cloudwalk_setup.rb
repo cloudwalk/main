@@ -396,6 +396,10 @@ class CloudwalkSetup
       DaFunk::EventHandler.new :touchscreen, {:x => 41..199, :y => 179..233} do
         InputTransactionAmount.call
       end
+
+      (1..9).to_a.each do |key|
+        DaFunk::EventHandler.new :key_main, key.to_s do InputTransactionAmount.call(key.to_s) end
+      end
     end
 
     DaFunk::EventHandler.new :key_main, Device::IO::ENTER do CloudwalkSetup.start            end
