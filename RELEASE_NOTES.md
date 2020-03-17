@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.41.0 - 2020-03-17
+
+- Adopt new THREAD_* flags and pause timeout (200 mesa).
+
 ### 3.40.0 - 2020-02-17
 
 - Added handler to also start ctls transaction pressing key number.
