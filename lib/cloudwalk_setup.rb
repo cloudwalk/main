@@ -183,7 +183,7 @@ class CloudwalkSetup
           Device::Runtime.system_reload
         end
 
-        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION) &&
+        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_EXTERNAL_COMMUNICATION, 200) &&
             payload = DaFunk::PaymentChannel.client.check)
           payload, notification = DaFunk::Notification.check(payload)
           if notification && notification.reply
@@ -221,13 +221,13 @@ class CloudwalkSetup
       end
 
       event.check do
-        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION) &&
+        if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_EXTERNAL_COMMUNICATION, 200) &&
             payload = DaFunk::PaymentChannel.check(false))
           handler = event.handlers[payload]
           if handler
             handler.perform
           else
-            Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_COMMUNICATION, payload) if payload.is_a?(String)
+            Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_INTERNAL_COMMUNICATION, payload) if payload.is_a?(String)
           end
         end
       end

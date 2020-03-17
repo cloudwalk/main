@@ -106,9 +106,9 @@ class Main < Device
           DaFunk::EventListener.check(:payment_channel)
           DaFunk::EventListener.check(:file_exists)
           DaFunk::EventListener.check(:background_system_update)
-          Context::ThreadScheduler.execute(Context::ThreadScheduler::THREAD_COMMUNICATION)
+          Context::ThreadScheduler.execute(Context::ThreadScheduler::THREAD_EXTERNAL_COMMUNICATION)
 
-          if buf = Context::ThreadChannel.queue_read(ThreadScheduler::THREAD_COMMUNICATION)
+          if buf = Context::ThreadChannel.queue_read(Context::ThreadScheduler::THREAD_INTERNAL_COMMUNICATION)
             DaFunk::PaymentChannel.connect(false) unless (DaFunk::PaymentChannel.client && DaFunk::PaymentChannel.client.connected?)
             DaFunk::PaymentChannel.client.write(buf)
           end
