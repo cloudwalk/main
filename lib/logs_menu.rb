@@ -49,17 +49,25 @@ class LogsMenu
   end
 
   def self.upload(zip_file)
-    return unless token = api_token
-    http  = SimpleHttp.new("https", endpoint)
-    Device::System.klass = "cw_logs.posxml"
-    http.socket = Device::Network.socket.call
-    response = http.request("POST", "/v1/devices/#{token}/metrics", {
+    if api_token.nil?
+      I18n.pt(:admin_logs_not_configured)
+      return false
+    end
+
+    socket      = CloudwalkSocket.new
+    socket.host = endpoint
+    socket.port = '443'
+    socket.connect(true)
+
+    http        = SimpleHttp.new("https", socket.host, 443)
+    http.socket = socket
+
+    response = http.request("POST", "/v1/devices/#{api_token}/metrics", {
       "Content-Type" => "application/json",
-      "Body" => body(zip_file.split("/").last, zip_file, token)
+      "Body" => body(zip_file.split("/").last, zip_file)
     })
+
     response.code == 201 || response.code == 200
-  ensure
-    Device::System.klass = "main"
   end
 
   def self.clear
@@ -80,14 +88,10 @@ class LogsMenu
 
   private
 
-  def self.body(name, zip_file, token)
+  def self.body(name, zip_file)
     {
-      "format"       => "json",
       "name"         => name,
-      "description"  => "Log #{name}",
-      "created_via"  => "device",
-      "content"      => [File.read(zip_file)].pack("m0"),
-      "access_token" => token
+      "content"      => [File.read(zip_file)].pack("m0")
     }.to_json
   end
 
@@ -100,8 +104,6 @@ class LogsMenu
   end
 
   def self.api_token
-    value = DaFunk::ParamsDat.file["access_token"]
-    I18n.pt(:admin_logs_not_configured) unless value
-    value
+    DaFunk::ParamsDat.file["access_token"]
   end
 end
