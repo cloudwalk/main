@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.43.0 - 2020-04-17
+
+- Update rake from 10.5.0 to 12.3.3;
+- Refactor on logs send mechanism, it's not necessary to proxy with switch anymore;
+- Update da_funk (3.18.0).
+
 ### 3.42.0 - 2020-03-25
 
 - Change reboot timeout to 1440 minutes;
