@@ -227,7 +227,7 @@ class CloudwalkSetup
           if handler
             handler.perform
           else
-            Context::ThreadChannel.queue_write(ThreadScheduler::THREAD_INTERNAL_COMMUNICATION, payload) if payload.is_a?(String)
+            Context::ThreadChannel.write(:recv, payload) if payload.is_a?(String)
           end
         end
       end
