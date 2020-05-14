@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.43.1 - 2020-05-14
+
+- Update cloudwalk_handshake (1.13.1)
+
 ### 3.43.0 - 2020-04-17
 
 - Update rake from 10.5.0 to 12.3.3;
