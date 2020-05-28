@@ -184,10 +184,10 @@ class CloudwalkSetup
         end
 
         if (! ThreadScheduler.pause?(ThreadScheduler::THREAD_EXTERNAL_COMMUNICATION, 200) &&
-            payload = DaFunk::PaymentChannel.client.check)
+            payload = DaFunk::PaymentChannel.current.check)
           payload, notification = DaFunk::Notification.check(payload)
           if notification && notification.reply
-            DaFunk::PaymentChannel.client.write(notification.reply)
+            DaFunk::PaymentChannel.current.write(notification.reply)
           end
           handler = event.handlers[payload]
           handler.perform(notification) if handler
@@ -320,7 +320,7 @@ class CloudwalkSetup
       SystemUpdate.bg_start
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 10 do
+    DaFunk::EventHandler.new :schedule, minutes: 2 do
       GC.start
     end
   end
@@ -458,7 +458,7 @@ class CloudwalkSetup
       DaFunk::Engine.stop!(true)
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 10 do
+    DaFunk::EventHandler.new :schedule, minutes: 2 do
       GC.start
     end
   end
