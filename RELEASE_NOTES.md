@@ -12,6 +12,7 @@ Funky application responsible for start DaFunk ecosystem.
 - Rename PaymentChannel::client to PaymentChannel::current;
 - Cache CwMetadata on boot time;
 - Check status bar on communication thread;
+- Update da_funk (3.20.0);
 - Refactoring communication thread loop:
     - Adopt new ThreadScheduler.execute interface (without sending thread id);
     - Do not call Listener if payment channel connected.
