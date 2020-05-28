@@ -11,8 +11,6 @@ class Main < Device
       AdminConfiguration.perform
     when :admin_communication
       AdminConfiguration.communication
-    when :status_bar
-      self.thread_status_bar
     when :communication
       self.thread_communication
     when :apps_update
@@ -47,8 +45,6 @@ class Main < Device
         :admin_configuration
       elsif options["initialize"] == "admin_communication"
         :admin_communication
-      elsif options["initialize"] == "status_bar"
-        :status_bar
       elsif options["initialize"] == "communication"
         :communication
       elsif options["initialize"] == "apps_update"
@@ -67,24 +63,6 @@ class Main < Device
     end
   ensure
     $thread_name = options['initialize']&.to_sym if options.is_a?(Hash)
-  end
-
-  def self.thread_status_bar
-    id = Context::ThreadPubSub.subscribe
-    time = nil
-    loop do
-      break if Context::ThreadScheduler.die?(:status_bar)
-      DaFunk::Helper::StatusBar.check
-      if Context::ThreadPubSub.listen(id) == "communication_update"
-        Device::Runtime.system_reload
-      end
-
-      if time.nil? || time < Time.now
-        time = (Time.now + 600)
-        GC.start
-      end
-      usleep(1000_000)
-    end
   end
 
   def self.thread_communication
