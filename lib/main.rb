@@ -69,6 +69,7 @@ class Main < Device
     DaFunk::PaymentChannel.current = nil
     begin
       DaFunk::Helper::StatusBar.check
+      CwMetadata.get
       id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
