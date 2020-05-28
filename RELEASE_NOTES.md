@@ -2,6 +2,20 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.44.0 - 2020-05-28
+
+- Support new ThreadChannel interface (only read/write);
+- Change GC strategy to freak mode (execute every 2 minutes a full GC in all threads);
+- Remove stop of engine if memory consumption is to high;
+- Remove stop of engine if every 1440 minutes;
+- Remove thread status bar;
+- Rename PaymentChannel::client to PaymentChannel::current;
+- Cache CwMetadata on boot time;
+- Check status bar on communication thread;
+- Refactoring communication thread loop:
+    - Adopt new ThreadScheduler.execute interface (without sending thread id);
+    - Do not call Listener if payment channel connected.
+
 ### 3.43.1 - 2020-05-14
 
 - Update cloudwalk_handshake (1.13.1)
