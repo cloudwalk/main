@@ -448,12 +448,6 @@ class CloudwalkSetup
       LogControl.upload
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 10 do
-      if Vm.current_memory > 14_000_000
-        DaFunk::Engine.stop!(true)
-      end
-    end
-
     DaFunk::EventHandler.new :schedule, minutes: 1440 do
       DaFunk::Engine.stop!(true)
     end
