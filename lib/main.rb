@@ -66,7 +66,7 @@ class Main < Device
   end
 
   def self.thread_communication
-    DaFunk::PaymentChannel.client = nil
+    DaFunk::PaymentChannel.current = nil
     begin
       id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
