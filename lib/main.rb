@@ -68,6 +68,7 @@ class Main < Device
   def self.thread_communication
     DaFunk::PaymentChannel.current = nil
     begin
+      DaFunk::Helper::StatusBar.check
       id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
@@ -91,6 +92,7 @@ class Main < Device
             DaFunk::PaymentChannel.client.write(buf)
           end
         end
+        DaFunk::Helper::StatusBar.check
         usleep(50_000)
       end
     rescue => e
