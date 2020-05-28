@@ -82,15 +82,19 @@ class Main < Device
             media_after = Device::Network.config
             DaFunk::PaymentChannel.close! if media_before != media_after
           end
-          DaFunk::EventListener.check(:communication)
           DaFunk::EventListener.check(:payment_channel)
-          DaFunk::EventListener.check(:file_exists)
-          DaFunk::EventListener.check(:background_system_update)
-          Context::ThreadScheduler.execute(Context::ThreadScheduler::THREAD_EXTERNAL_COMMUNICATION)
+          unless @connected
+            DaFunk::EventListener.check(:communication)
+            DaFunk::EventListener.check(:file_exists)
+            DaFunk::EventListener.check(:background_system_update)
+            DaFunk::EventListener.check(:schedule)
+          end
+          Context::ThreadScheduler.execute
 
+          @connected = DaFunk::PaymentChannel.current&.connected?
           if buf = Context::ThreadChannel.read(:send, 0)
-            DaFunk::PaymentChannel.connect(false) unless (DaFunk::PaymentChannel.client && DaFunk::PaymentChannel.client.connected?)
-            DaFunk::PaymentChannel.client.write(buf)
+            DaFunk::PaymentChannel.connect(false) unless @connected
+            DaFunk::PaymentChannel.current.write(buf)
           end
         end
         DaFunk::Helper::StatusBar.check
