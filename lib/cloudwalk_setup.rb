@@ -448,10 +448,6 @@ class CloudwalkSetup
       LogControl.upload
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 1440 do
-      DaFunk::Engine.stop!(true)
-    end
-
     DaFunk::EventHandler.new :schedule, minutes: 2 do
       GC.start
     end
