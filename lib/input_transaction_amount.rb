@@ -70,7 +70,7 @@ class InputTransactionAmount
     end
 
     def emv_ctls_table_installed?
-      EmvTransaction.ctls_tables.first == 0
+      EmvTransaction.ctls_apps.first == 0
     end
   end
 end
