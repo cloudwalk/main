@@ -68,5 +68,9 @@ class InputTransactionAmount
       Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
       Device::IO.get_format(0, 12, options)
     end
+
+    def emv_ctls_table_installed?
+      EmvTransaction.ctls_apps.first == 0
+    end
   end
 end
