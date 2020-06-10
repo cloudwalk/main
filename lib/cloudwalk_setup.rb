@@ -1,9 +1,12 @@
 class CloudwalkSetup
   include DaFunk::Helper
 
+  BOOT_IMAGE = './shared/boot_welcome.bmp'
+
   def self.boot(start_attach = true)
+    Device::Display.print_bitmap(BOOT_IMAGE) if File.exists?(BOOT_IMAGE)
     I18n.configure("main", Device::Setting.locale)
-    I18n.pt(:setup_booting)
+    I18n.pt(:setup_booting) unless File.exists?(BOOT_IMAGE)
     Device::Setting.boot = "1"
     self.setup_notifications
     self.setup_listeners
