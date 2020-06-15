@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.46.0 - 2020-06-15
+
+- Updated status bar images;
+- Removed unnecessary images from resources/shared;
+- Updated AdminConfiguration::KEEP_FILES;
+- Added boot welcome image;
+- Added support to emv contactless timeout and user canceled messages;
+- Update da_funk (3.21.0).
+
 ### 3.45.1 - 2020-06-01
 
 - Update funky-emv (1.3.0)
