@@ -7,7 +7,7 @@ class InputTransactionAmount
     end
 
     def call(first_key=nil)
-      amount = self.input(first_key)
+      amount = input(first_key)
       if amount != Device::IO::CANCEL && amount != Device::IO::KEY_TIMEOUT
         Device::Runtime.execute(
           DaFunk::ParamsDat.file["emv_application"],
@@ -32,12 +32,16 @@ class InputTransactionAmount
       EmvTransaction.params('init_data' => {'amount' => amount.to_s.rjust(12, '0')}).to_json
     end
 
-    def display
-      Device::Display.print_line(label('0,00'), line, column)
-    end
-
     def contactless_amount_image
       DaFunk::ParamsDat.file["emv_contactless_amount_image"] || 'amount.bmp'
+    end
+
+    def contactless_amount_user_canceled_image
+      DaFunk::ParamsDat.file["emv_contactless_amount_user_canceled_image"] || 'operation_canceled.bmp'
+    end
+
+    def contactless_amount_timeout_image
+      DaFunk::ParamsDat.file["emv_contactless_amount_timeout_image"] || 'fail_timeout.bmp'
     end
 
     def to_bmp(image)
@@ -66,7 +70,41 @@ class InputTransactionAmount
       bmp   = to_bmp(image)
 
       Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
-      Device::IO.get_format(0, 12, options)
+
+      key = Device::IO.get_format(0, 12, options)
+      Device::Display.clear
+
+      if key == Device::IO::CANCEL
+        user_canceled_message
+      elsif key == Device::IO::KEY_TIMEOUT
+        timeout_message
+      end
+
+      key
+    end
+
+    def user_canceled_message
+      image = contactless_amount_user_canceled_image
+      bmp   = to_bmp(image)
+
+      if bmp_exists?(bmp)
+        Device::Display.print_bitmap(bmp)
+      else
+        I18n.pt(:emv_contactless_amount_user_canceled, :line => 3)
+      end
+      getc(3000)
+    end
+
+    def timeout_message
+      image = contactless_amount_timeout_image
+      bmp   = to_bmp(image)
+
+      if bmp_exists?(bmp)
+        Device::Display.print_bitmap(bmp)
+      else
+        I18n.pt(:contactless_amount_timeout_image, :line => 3)
+      end
+      getc(3000)
     end
 
     def emv_ctls_table_installed?
