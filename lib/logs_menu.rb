@@ -20,7 +20,10 @@ class LogsMenu
       I18n.pt(:attach_device_not_configured)
       getc(2000)
     else
-      self.send_file(menu("LOGS", dirs))
+      log = menu("LOGS", dirs)
+      unless log.nil? || log == Device::IO::KEY_TIMEOUT
+        self.send_file(log)
+      end
     end
   end
 
