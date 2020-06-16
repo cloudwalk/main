@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.46.1 - 2020-06-16
+
+- Update libs
+  - da_funk (3.21.2);
+  - funky-emv (1.3.1);
+- Fixed app crash if timeout or cancel is returned on LogsMenu.
+
 ### 3.46.0 - 2020-06-15
 
 - Updated status bar images;
