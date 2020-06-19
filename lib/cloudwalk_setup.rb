@@ -177,7 +177,7 @@ class CloudwalkSetup
 
     DaFunk::EventListener.new :payment_channel do |event|
       event.start do
-        @id = Context::ThreadPubSub.subscribe
+        @id ||= Context::ThreadPubSub.subscribe
         true
       end
 
