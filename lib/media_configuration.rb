@@ -160,7 +160,6 @@ class MediaConfiguration
   def self.persist_communication(config)
     Device::Display.clear
     I18n.pt(:setup_booting)
-    ThreadScheduler.stop
     value = menu(I18n.t(:media_try_connection), {I18n.t(:media_reboot) => true,
       I18n.t(:media_connect) => false})
 
@@ -178,14 +177,14 @@ class MediaConfiguration
       if attach
         Device::Display.clear
         I18n.pt(:admin_communication_success)
-        ThreadScheduler.start
         getc(2000)
       else
         Device::Setting.network_configured = "0" unless DaFunk::ConnectionManagement.conn_automatic_management?
-        ThreadScheduler.start
         getc(0)
       end
     end
+  ensure
+    Context::ThreadPubSub.publish('communication_update')
   end
 
   def self.configure(config)
