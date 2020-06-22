@@ -82,7 +82,10 @@ class CloudwalkSetup
         end
       end
 
-      event.finish do @mag.close if @mag end
+      event.finish do
+        @mag.close
+        EmvTransaction.reboot
+      end
     end
 
     DaFunk::EventListener.new :schedule do |event|
