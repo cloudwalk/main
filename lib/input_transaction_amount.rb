@@ -72,11 +72,12 @@ class InputTransactionAmount
       Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
 
       key = Device::IO.get_format(0, 12, options)
-      Device::Display.clear
 
       if key == Device::IO::CANCEL
+        Device::Display.clear
         user_canceled_message
       elsif key == Device::IO::KEY_TIMEOUT
+        Device::Display.clear
         timeout_message
       end
 
