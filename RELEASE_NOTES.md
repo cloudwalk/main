@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.48.0 - 2020-06-22
+
+- Do not stop ThreadScheduler on media configuration;
+- Cache ThreadPubSub id on payment_channel listener;
+- Update some header images;
+- Only clear display on ctls amount if timeout or user cancel;
+- Reboot emv interface on magnetic finish;
+- Update funky-emv (1.4.1);
+- Update da_funk (3.23.0).
+
 ### 3.47.0 - 2020-06-18
 
 - Update libs
