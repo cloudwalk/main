@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.48.1 - 2020-06-23
+
+- Update cloudwalk_handshake (1.15.0)
+
 ### 3.48.0 - 2020-06-22
 
 - Do not stop ThreadScheduler on media configuration;
