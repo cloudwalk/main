@@ -28,6 +28,7 @@ class AdminConfiguration
         I18n.t(:admin_about)       => :about,
         I18n.t(:admin_exit)        => false
       })
+      break if selected == Device::IO::CANCEL || selected == Device::IO::KEY_TIMEOUT
       self.send(selected) if selected
     end
   end
@@ -42,6 +43,7 @@ class AdminConfiguration
         "LOGS"                        => :logs_menu,
         I18n.t(:admin_back)           => false
       })
+      break if selected == Device::IO::CANCEL || selected == Device::IO::KEY_TIMEOUT
       self.send(selected) if selected
     end
   end
@@ -56,6 +58,7 @@ class AdminConfiguration
         I18n.t(:admin_key_menu)      => :key_menu,
         I18n.t(:admin_back)          => false
       })
+      break if selected == Device::IO::CANCEL || selected == Device::IO::KEY_TIMEOUT
       self.send(selected) if selected
     end
   end
@@ -68,6 +71,7 @@ class AdminConfiguration
         I18n.t(:admin_key_slot)     => :key_slot,
         I18n.t(:admin_back)         => false
       })
+      break if selected == Device::IO::CANCEL || selected == Device::IO::KEY_TIMEOUT
       self.send(selected) if selected
     end
   end
@@ -141,6 +145,7 @@ class AdminConfiguration
         I18n.t(:admin_clear_zip)     => :clear_zip,
         I18n.t(:admin_back)          => false
       })
+      break if selected == Device::IO::CANCEL || selected == Device::IO::KEY_TIMEOUT
       self.send(selected) if selected
     end
   end
@@ -247,6 +252,7 @@ class AdminConfiguration
   endpoint = menu(I18n.t(:infinitepay_select_endpoint), {"GOOGLE" => :google,
     "CLOUDWALK" => :cloudwalk, I18n.t(:admin_exit) => false})
 
+    break if endpoint == Device::IO::CANCEL || endpoint == Device::IO::KEY_TIMEOUT
     self.send(endpoint) if endpoint
   end
 
@@ -343,7 +349,7 @@ class AdminConfiguration
           "PRODUCTION" => "production",
           "MOCKUP"     => "mockup"
         })
-        if env && env != Device::IO::CANCEL
+        if env && env != Device::IO::CANCEL && env != Device::IO::KEY_TIMEOUT
           FileDb.new("./shared/device.sig")["signer"] = env
           restart
         end
