@@ -82,7 +82,7 @@ class LogsMenu
   end
 
   def self.action_menu
-    menu(I18n.t(:admin_update), {
+    menu(I18n.t(:admin_logs_menu), {
       I18n.t(:admin_logs_upload_file) => :send_file_menu,
       I18n.t(:admin_logs_clear)       => :clear,
       I18n.t(:admin_back)             => false
