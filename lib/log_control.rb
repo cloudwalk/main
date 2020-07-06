@@ -1,14 +1,10 @@
 class LogControl
   def self.write_keys(filename)
-    InjectedKeys::log("./main/#{filename}")
-  end
-
-  def self.enabled?
-    DaFunk::ParamsDat.file["log_upload_enabled"] == "1"
+    InjectedKeys.log("./main/#{filename}")
   end
 
   def self.upload
-    return unless self.enabled? && Device::Network.connected?
+    return unless Device::Network.connected?
 
     Device::Display.clear
     I18n.pt(:admin_logs_upload_check)
