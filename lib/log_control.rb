@@ -17,8 +17,13 @@ class LogControl
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
+
+    file = self.get_log_file
+
     if key != Device::IO::CANCEL
-      LogsMenu.send_file(self.get_log_file)
+      LogsMenu.send_file(file)
+    else
+      File.delete("./main/#{file}")
     end
   end
 
