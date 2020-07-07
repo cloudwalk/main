@@ -13,6 +13,7 @@ class LogControl
     key = Device::IO::KEY_TIMEOUT
 
     5.times do |i|
+      Device::Audio.beep(0, 180)
       Device::Display.print((5 - i).to_s, 5, 11)
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
