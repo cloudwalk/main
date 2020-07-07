@@ -201,7 +201,7 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 2 do
+    DaFunk::EventHandler.new :schedule, minutes: 60 do
       if Device::System.battery < 20 && ! Device::System.power_supply
         if File.exists?('./shared/battery_low.bmp')
           Device::Display.print_bitmap('./shared/battery_low.bmp')
@@ -450,7 +450,8 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :schedule, hours: 24, slot: "log" do
+    value = DaFunk::ParamsDat.file["log_send_interval"] || 24
+    DaFunk::EventHandler.new :schedule, hours: value, slot: "log" do
       LogControl.upload
     end
 

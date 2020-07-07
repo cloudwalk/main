@@ -1,14 +1,10 @@
 class LogControl
   def self.write_keys(filename)
-    InjectedKeys::log("./main/#{filename}")
-  end
-
-  def self.enabled?
-    DaFunk::ParamsDat.file["log_upload_enabled"] == "1"
+    InjectedKeys.log("./main/#{filename}")
   end
 
   def self.upload
-    return unless self.enabled? && Device::Network.connected?
+    return unless Device::Network.connected?
 
     Device::Display.clear
     I18n.pt(:admin_logs_upload_check)
@@ -17,12 +13,18 @@ class LogControl
     key = Device::IO::KEY_TIMEOUT
 
     5.times do |i|
+      Device::Audio.beep(0, 180)
       Device::Display.print((5 - i).to_s, 5, 11)
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
+
+    file = self.get_log_file
+
     if key != Device::IO::CANCEL
-      LogsMenu.send_file(self.get_log_file)
+      LogsMenu.send_file(file)
+    else
+      File.delete("./main/#{file}")
     end
   end
 
@@ -30,7 +32,7 @@ class LogControl
     dirs = Dir.entries("./main").select { |p| p.include?(".log") }
     date_today = self.get_date_today
     dirs.each do |file|
-      if self.compare_dates(file[0..(file.index('.') - 1)], date_today) > 1296000
+      if self.compare_dates(file[0..(file.index('.') - 1)], date_today) >= 604800
         File.delete("./main/#{file}")
       end
     end
@@ -46,7 +48,7 @@ class LogControl
     date = text1.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
     greaterdate = text2.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
     unless date || greaterdate
-      return nil
+      return 0
     end
     (Time.local(greaterdate[1].to_i, greaterdate[2].to_i, greaterdate[3].to_i) - Time.local(date[1].to_i, date[2].to_i, date[3].to_i)).to_i
   end
