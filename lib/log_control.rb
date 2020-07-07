@@ -47,7 +47,7 @@ class LogControl
     date = text1.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
     greaterdate = text2.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
     unless date || greaterdate
-      return nil
+      return 0
     end
     (Time.local(greaterdate[1].to_i, greaterdate[2].to_i, greaterdate[3].to_i) - Time.local(date[1].to_i, date[2].to_i, date[3].to_i)).to_i
   end
