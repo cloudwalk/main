@@ -450,7 +450,8 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :schedule, hours: 24, slot: "log" do
+    value = DaFunk::ParamsDat.file["log_send_interval"] || 24
+    DaFunk::EventHandler.new :schedule, hours: value, slot: "log" do
       LogControl.upload
     end
 
