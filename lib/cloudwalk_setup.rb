@@ -201,7 +201,7 @@ class CloudwalkSetup
       end
     end
 
-    DaFunk::EventHandler.new :schedule, minutes: 60 do
+    DaFunk::EventHandler.new :schedule, hours: 2, slot: 'battery_check' do
       if Device::System.battery < 20 && ! Device::System.power_supply
         if File.exists?('./shared/battery_low.bmp')
           Device::Display.print_bitmap('./shared/battery_low.bmp')
