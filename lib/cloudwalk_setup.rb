@@ -383,7 +383,7 @@ class CloudwalkSetup
           end
 
           if file_check
-            DaFunk::EventHandler.new :file_exists, posxml_file_path(file_check) do
+            DaFunk::EventHandler.new :file_exists, "./shared/#{file_check}" do
               Device::Runtime.execute(ruby_app, function.to_json)
             end
           end
