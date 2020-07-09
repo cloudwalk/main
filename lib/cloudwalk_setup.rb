@@ -526,4 +526,8 @@ class CloudwalkSetup
       application.start
     end
   end
+
+  def self.update_process_in_progess?
+    File.exists?('./shared/cw_update_steps.dat')
+  end
 end
