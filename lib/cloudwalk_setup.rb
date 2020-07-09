@@ -16,6 +16,12 @@ class CloudwalkSetup
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     Context::ThreadScheduler.start
+    if update_process_in_progess?
+      app = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
+        app.name == 'cw_infinitepay_update'
+      end
+      app.execute if app
+    end
   end
 
   def self.setup_listeners
