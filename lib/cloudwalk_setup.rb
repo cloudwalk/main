@@ -1,13 +1,8 @@
 class CloudwalkSetup
   include DaFunk::Helper
 
-  BOOT_IMAGE = './shared/boot_welcome.bmp'
-
   def self.boot(start_attach = true)
-    Device::Display.print_bitmap(BOOT_IMAGE) if File.exists?(BOOT_IMAGE)
-    I18n.configure("main", Device::Setting.locale)
-    I18n.pt(:setup_booting) unless File.exists?(BOOT_IMAGE)
-    Device::Setting.boot = "1"
+    boot_layout
     self.setup_notifications
     self.setup_listeners
     self.setup_events
@@ -525,6 +520,23 @@ class CloudwalkSetup
     DaFunk::ParamsDat.ruby_executable_apps.each do |application|
       application.start
     end
+  end
+
+  def self.boot_layout
+    BOOT_LAYOUT_FILE = {
+      :default =>         './shared/boot_welcome.bmp',
+      :update_process => './shared/6steps_updating.bmp'
+    }
+
+    I18n.configure("main", Device::Setting.locale)
+
+    if update_process_in_progess?
+      Device::Display.print_bitmap(BOOT_LAYOUT_FILE[:update_process])
+    else
+      Device::Display.print_bitmap(BOOT_LAYOUT_FILE[:default])
+    end
+
+    Device::Setting.boot = "1"
   end
 
   def self.update_process_in_progess?
