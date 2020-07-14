@@ -531,7 +531,7 @@ class CloudwalkSetup
   def self.boot_layout
     BOOT_LAYOUT_FILE = {
       :default =>         './shared/boot_welcome.bmp',
-      :update_process => './shared/6steps_updating.bmp'
+      :update_process => './shared/six_steps_updating.bmp'
     }
 
     I18n.configure("main", Device::Setting.locale)
