@@ -18,7 +18,7 @@ class CloudwalkSetup
     Context::ThreadScheduler.start
     if update_process_in_progess?
       app = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
-        app.name == 'cw_infinitepay_update'
+        app.name == 'cw_infinitepay_app'
       end
       app.execute if app
     end
