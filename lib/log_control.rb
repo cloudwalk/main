@@ -23,9 +23,8 @@ class LogControl
 
     if key != Device::IO::CANCEL
       LogsMenu.send_file(file) if File.exists?("./main/#{file}")
-    else
-      File.delete("./main/#{file}") if File.exists?("./main/#{file}")
     end
+    self.purge
   end
 
   def self.purge
