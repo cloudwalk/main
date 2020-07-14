@@ -529,7 +529,7 @@ class CloudwalkSetup
   end
 
   def self.boot_layout
-    BOOT_LAYOUT_FILE = {
+    boot_layout_file = {
       :default =>         './shared/boot_welcome.bmp',
       :update_process => './shared/six_steps_updating.bmp'
     }
@@ -537,9 +537,9 @@ class CloudwalkSetup
     I18n.configure("main", Device::Setting.locale)
 
     if update_process_in_progess?
-      Device::Display.print_bitmap(BOOT_LAYOUT_FILE[:update_process])
+      Device::Display.print_bitmap(boot_layout_file[:update_process])
     else
-      Device::Display.print_bitmap(BOOT_LAYOUT_FILE[:default])
+      Device::Display.print_bitmap(boot_layout_file[:default])
     end
 
     Device::Setting.boot = "1"
