@@ -5,7 +5,8 @@ class LogsMenu
     action = true
     while(action) do
       action = self.action_menu
-      self.send(action) if action
+      break if action.nil? || action == Device::IO::CANCEL || action == Device::IO::KEY_TIMEOUT
+      self.send(action)
     end
   end
 
@@ -21,7 +22,7 @@ class LogsMenu
       getc(2000)
     else
       log = menu("LOGS", dirs)
-      unless log.nil? || log == Device::IO::KEY_TIMEOUT
+      unless log.nil? || log == Device::IO::KEY_TIMEOUT || log == Device::IO::CANCEL
         self.send_file(log)
       end
     end
