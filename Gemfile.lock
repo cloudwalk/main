@@ -3,25 +3,25 @@ GEM
   specs:
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
-    cloudwalk (1.15.0)
+    cloudwalk (2.0.0)
       bundler
       rake
-    cloudwalk_handshake (1.16.0)
-      funky-simplehttp (~> 0.6)
-    da_funk (3.23.0)
+    cloudwalk_handshake (2.0.1)
+      funky-simplehttp (~> 1.0)
+    da_funk (4.0.1)
       archive-zip (~> 0.5)
       bundler
       cloudwalk_handshake
       funky-emv
       posxml_parser
       rake
-    funky-emv (1.4.1)
-      funky-tlv (~> 0.2)
-    funky-simplehttp (0.6.0)
-    funky-tlv (0.2.3)
+    funky-emv (2.0.1)
+      funky-tlv (~> 1.0)
+    funky-simplehttp (1.0.0)
+    funky-tlv (1.0.1)
     io-like (0.3.1)
-    posxml_parser (2.26.0)
-      funky-emv (~> 1)
+    posxml_parser (3.0.1)
+      funky-emv (~> 2)
     rake (12.3.3)
 
 PLATFORMS
@@ -30,7 +30,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  cloudwalk
+  cloudwalk (= 2.0.0)
   da_funk
   funky-emv
   funky-simplehttp
