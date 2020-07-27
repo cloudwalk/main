@@ -30,6 +30,10 @@ class LogControl
     end
   end
 
+  def self.layout
+    Device::Display.print_bitmap('./shared/send_log.bmp')
+  end
+
   private
   def self.get_log_file
     time = (Time.now - (24 * 60 * 60))
