@@ -56,4 +56,8 @@ class LogControl
     time = Time.now
     "%d-%02d-%02d %02d:%02d:%02d:%06d" % [time.year, time.month, time.day, time.hour, time.min, time.sec, time.usec]
   end
+
+  def self.layout_exists?
+    File.exists?('./shared/send_log.bmp')
+  end
 end
