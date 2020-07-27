@@ -29,25 +29,18 @@ class LogsMenu
   end
 
   def self.send_file(filename)
+    LogControl.layout
     path = "./main/#{filename}"
     zip  = "./main/#{Device::System.serial}-#{filename.split(".").first}.zip"
+
     if filename && File.exists?(path)
       LogControl.write_keys(filename)
-      Device::Display.clear
-      I18n.pt(:admin_logs_compressing)
+
       if Zip.compress(zip, path)
-        I18n.pt(:admin_logs_uploading)
         if self.upload(zip)
-          I18n.pt(:admin_logs_success)
           File.delete(path)
-        else
-          I18n.pt(:admin_logs_fail)
         end
         File.delete(zip) if File.exists?(zip)
-        getc(2000)
-      else
-        I18n.pt(:admin_logs_compressing_error)
-        getc(2000)
       end
     end
   end

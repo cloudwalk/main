@@ -6,15 +6,7 @@ class LogControl
   def self.upload
     return unless Device::Network.connected?
 
-    if layout_exists?
-      Device::Display.print_bitmap('./shared/send_log.bmp')
-    else
-      Device::Display.clear
-      I18n.pt(:admin_logs_upload_check)
-      Device::Display.print(I18n.t(:admin_logs_upload_cancel), 2)
-      Device::Display.print("", 3)
-    end
-
+    layout
     file = self.get_log_file
     LogsMenu.send_file(file) if File.exists?("./main/#{file}")
     self.purge
