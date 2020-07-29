@@ -15,6 +15,13 @@ class CloudwalkSetup
     self.setup_keyboard_events_from_rb_apps
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
+    if update_process_in_progess?
+      MediaConfiguration.gprs_default({
+        apn: 'cloudwalk.algar.br',
+        user: 'algar',
+        pass: '1212'
+      })
+    end
     Context::ThreadScheduler.start
     if update_process_in_progess?
       application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
