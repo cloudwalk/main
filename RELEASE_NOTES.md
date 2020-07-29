@@ -2,6 +2,19 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.50.0 - 2020-07-29
+
+- Update da_funk (3.24.1);
+- Update array list of files that shouldn't be removed on clear;
+- Added new layout to be used on log send process;
+- Added LogContol#layout_exists?;
+- Refactor on LogControl#upload;
+- Removed LogControl#layout_exists?;
+- LogControl#layout;
+- Present better interface in the log send;
+- Avoiding user to input zero amount;
+- Implemented MediaConfiguration#gprs_default.
+
 ### 3.49.0 - 2020-07-25
 
 - Validates if menu returned KEY_TIMEOUT to avoid crash app;
