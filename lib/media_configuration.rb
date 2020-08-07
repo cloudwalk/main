@@ -125,7 +125,7 @@ class MediaConfiguration
     response = Network::Gprs.select_attach_network(imsi_id)
     Device::Display.clear
     if response.nil? || response[:result] != "OK"
-      print_line(I18n.t(:attach_registration_fail).gsub("%d",'').strip!, 3, 0)
+      print_line(I18n.t(:attach_registration_fail).to_s.gsub("%d",'').strip!, 3, 0)
     else
       print_line(I18n.t(:attach_connected), 3, 0)
     end
