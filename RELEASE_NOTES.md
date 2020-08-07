@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.53.0 - 2020-08-07
+
+- MediaConfiguration defensive code with gsub;
+- Update da_funk (3.24.4).
+
 ### 3.52.0 - 2020-08-03
 
 - Update da_funk (3.24.3).
