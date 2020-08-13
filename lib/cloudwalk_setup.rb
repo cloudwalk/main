@@ -23,7 +23,9 @@ class CloudwalkSetup
       })
     end
     Context::ThreadScheduler.start
-    AdminConfiguration.configure if update_process_in_progess?
+    if update_process_in_progess? || !AdminConfiguration.device_activated?
+      AdminConfiguration.configure
+    end
   end
 
   def self.setup_listeners
