@@ -23,12 +23,7 @@ class CloudwalkSetup
       })
     end
     Context::ThreadScheduler.start
-    if update_process_in_progess?
-      application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
-        app.name == 'cw_infinitepay_app'
-      end
-      application.execute if application
-    end
+    resume_update if update_process_in_progess?
   end
 
   def self.setup_listeners
@@ -555,5 +550,12 @@ class CloudwalkSetup
 
   def self.update_process_in_progess?
     File.exists?('./shared/cw_update_steps.dat')
+  end
+
+  def self.resume_update
+    application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
+      app.name == 'cw_infinitepay_app'
+    end
+    application.execute if application
   end
 end
