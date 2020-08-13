@@ -382,5 +382,10 @@ class AdminConfiguration
     end
     application.execute if application
   end
+
+  def self.device_activated?
+    return false if DaFunk::ParamsDat.file['infinitepay_scrow'] == '1'
+    true
+  end
 end
 
