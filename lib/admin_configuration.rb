@@ -375,5 +375,12 @@ class AdminConfiguration
     second = form("INPUT THE SECONDS:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
     Time.new(year,month,day,hour,minute,second).hwclock
   end
+
+  def self.configure
+    application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
+      app.name == 'cw_infinitepay_app'
+    end
+    application.execute if application
+  end
 end
 
