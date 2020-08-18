@@ -376,7 +376,7 @@ class AdminConfiguration
     Time.new(year,month,day,hour,minute,second).hwclock
   end
 
-  def self.configure
+  def self.configure_payment_application
     application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
       app.name == 'cw_infinitepay_app'
     end

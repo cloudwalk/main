@@ -24,7 +24,7 @@ class CloudwalkSetup
     end
     Context::ThreadScheduler.start
     if update_process_in_progess? || !AdminConfiguration.device_activated?
-      AdminConfiguration.configure
+      AdminConfiguration.configure_payment_application
     end
   end
 
