@@ -375,5 +375,17 @@ class AdminConfiguration
     second = form("INPUT THE SECONDS:"    , :min => 0 , :max => 4 , :default => Time.now.sec)
     Time.new(year,month,day,hour,minute,second).hwclock
   end
+
+  def self.configure_payment_application
+    application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
+      app.name == 'cw_infinitepay_app'
+    end
+    application.execute if application
+  end
+
+  def self.device_activated?
+    return false if DaFunk::ParamsDat.file['infinitepay_scrow'] == '1'
+    true
+  end
 end
 
