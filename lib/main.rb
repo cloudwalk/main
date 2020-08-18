@@ -88,8 +88,9 @@ class Main < Device
             DaFunk::EventListener.check(:file_exists)
             DaFunk::EventListener.check(:background_system_update)
             DaFunk::EventListener.check(:schedule)
+            DaFunk::Helper::StatusBar.check
+            Context::ThreadScheduler.execute
           end
-          Context::ThreadScheduler.execute
 
           @connected = DaFunk::PaymentChannel.current&.connected?
           if buf = Context::ThreadChannel.read(:send, 0)
@@ -97,7 +98,6 @@ class Main < Device
             DaFunk::PaymentChannel.current.write(buf)
           end
         end
-        DaFunk::Helper::StatusBar.check
         usleep(50_000)
       end
     rescue => e
