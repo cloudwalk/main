@@ -2,6 +2,17 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.54.0 - 2020-08-18
+
+- Change thread execution and status bar check order, Necessary to not free CPU processing time on transaction execution;
+- Added CloudwalkSetup#resume_update;
+- Moved CloudwalkSetup#resume_update to AdminConfiguration#configure;
+- Implemented AdminConfiguration#device_activated?;
+- Perform device configs in case device is not activated;
+- Rename method AdminConfiguration#configure to AdminConfiguration#configure_payment_application;
+- Update cloudwalk_handshake (1.19.0);
+- Update da_funk (3.25.0).
+
 ### 3.53.0 - 2020-08-07
 
 - MediaConfiguration defensive code with gsub;

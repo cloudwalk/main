@@ -3,7 +3,7 @@
   "runtime": "ruby",
   "modules":{
   },
-  "version":"3.53.0",
+  "version":"3.54.0",
   "authorizer_url":"https://myhost.com",
   "description":"main",
   "pos_display_label":"X"
