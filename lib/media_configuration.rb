@@ -193,6 +193,8 @@ class MediaConfiguration
   end
 
   def self.gprs_default(options)
+    return if Device::Setting.network_configured == '1'
+
     Device::Network.init(:gprs, options)
     Device::Network::Gprs.power(1)
 
