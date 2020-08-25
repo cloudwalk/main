@@ -2,6 +2,17 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.56.0 - 2020-08-25
+
+- Added InputTransactionAmount#contactless_minimum_amount_permited;
+- Added InputTransactionAmount#contactless_amount_under_permited;
+- Display amount bitmap inside loop;
+- Added InputTransactionAmount#amount_under_minimum_not_permitted;
+- Show amount under minimum permitted message on screen;
+- Fixed i18n message symbol;
+- Added new i18n text message;
+- Added new image on resources.
+
 ### 3.55.0 - 2020-08-25
 
 - Only save media on config.dat file if sim_id is not nil;
