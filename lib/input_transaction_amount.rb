@@ -48,6 +48,10 @@ class InputTransactionAmount
       DaFunk::ParamsDat.file["emv_contactless_minimum_amount_permitted"] || '100'
     end
 
+    def contactless_amount_under_permited
+      DaFunk::ParamsDat.file["emv_contactless_amount_under_permited_image"] || 'fail_low_amount.bmp'
+    end
+
     def to_bmp(image)
       if image.include?('.bmp')
         "./shared/#{image}"
