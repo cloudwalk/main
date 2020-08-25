@@ -17,6 +17,8 @@ class Main < Device
       AdminConfiguration.apps_update
     when :system_update
       AdminConfiguration.system_update
+    when :send_logs
+      LogsMenu.send_file_menu
     when :normal
       perform
     else
@@ -51,6 +53,8 @@ class Main < Device
         :apps_update
       elsif options["initialize"] == "system_update"
         :system_update
+      elsif options["initialize"] == "send_logs"
+        :send_logs
       else
         :normal
       end
