@@ -89,6 +89,13 @@ class InputTransactionAmount
         elsif key == Device::IO::KEY_TIMEOUT
           Device::Display.clear
           timeout_message
+        else
+          unless key.to_s.empty?
+            if key.to_i < contactless_minimum_amount_permited.to_i
+              amount_under_minimum_not_permitted
+              key = ''
+            end
+          end
         end
       end
 
