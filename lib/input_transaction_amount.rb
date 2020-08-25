@@ -44,6 +44,10 @@ class InputTransactionAmount
       DaFunk::ParamsDat.file["emv_contactless_amount_timeout_image"] || 'fail_timeout.bmp'
     end
 
+    def contactless_minimum_amount_permited
+      DaFunk::ParamsDat.file["emv_contactless_minimum_amount_permitted"] || '100'
+    end
+
     def to_bmp(image)
       if image.include?('.bmp')
         "./shared/#{image}"
