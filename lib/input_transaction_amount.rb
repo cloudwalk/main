@@ -121,7 +121,7 @@ class InputTransactionAmount
       if bmp_exists?(bmp)
         Device::Display.print_bitmap(bmp)
       else
-        I18n.pt(:contactless_amount_timeout_image, :line => 3)
+        I18n.pt(:emv_contactless_amount_timeout, :line => 3)
       end
       getc(3000)
     end
