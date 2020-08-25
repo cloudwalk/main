@@ -193,10 +193,12 @@ class MediaConfiguration
   end
 
   def self.gprs_default(options)
+    return if Device::Setting.network_configured == '1'
+
     Device::Network.init(:gprs, options)
     Device::Network::Gprs.power(1)
 
-    if Device::Network.sim_id[0..3] == '8944'
+    if Device::Network.sim_id.to_s[0..3] == '8944'
       options[:apn] = 'hologram'
       options[:user] = 'user'
       options[:pass] = 'pass'
@@ -204,9 +206,12 @@ class MediaConfiguration
       Device::Network.init(:gprs, options)
       Device::Network::Gprs.power(1)
     end
-    configure(options.merge({
-      media: Device::Network::MEDIA_GPRS,
-      media_primary: Device::Network::MEDIA_GPRS
-    }))
+
+    unless Device::Network.sim_id.to_s.empty?
+      configure(options.merge({
+        media: Device::Network::MEDIA_GPRS,
+        media_primary: Device::Network::MEDIA_GPRS
+      }))
+    end
   end
 end

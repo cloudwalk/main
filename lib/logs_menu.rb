@@ -54,17 +54,28 @@ class LogsMenu
     socket      = CloudwalkSocket.new
     socket.host = endpoint
     socket.port = '443'
-    socket.connect(true)
+    ret = false
 
-    http        = SimpleHttp.new("https", socket.host, 443)
-    http.socket = socket
+    if socket.connect(true)
+      http        = SimpleHttp.new("https", socket.host, 443)
+      http.socket = socket
 
-    response = http.request("POST", "/v1/devices/#{api_token}/metrics", {
-      "Content-Type" => "application/json",
-      "Body" => body(zip_file.split("/").last, zip_file)
-    })
+      response = http.request("POST", "/v1/devices/#{api_token}/metrics", {
+        "Content-Type" => "application/json",
+        "Body" => body(zip_file.split("/").last, zip_file)
+      })
 
-    response.code == 201 || response.code == 200
+      if response.code == 201 || response.code == 200
+        Device::Display.print_bitmap('./shared/send_log_sucess.bmp')
+        ret = true
+      else
+        Device::Display.print_bitmap('./shared/send_log_fail.bmp')
+      end
+    else
+      Device::Display.print_bitmap('./shared/network_system_error.bmp')
+    end
+    getc(3000)
+    ret
   end
 
   def self.clear
