@@ -77,10 +77,10 @@ class InputTransactionAmount
       image = contactless_amount_image
       bmp   = to_bmp(image)
 
-      Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
-
       key = ''
       while key.empty?
+        Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
+
         key = Device::IO.get_format(0, 12, options)
 
         if key == Device::IO::CANCEL
