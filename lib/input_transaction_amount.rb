@@ -44,6 +44,14 @@ class InputTransactionAmount
       DaFunk::ParamsDat.file["emv_contactless_amount_timeout_image"] || 'fail_timeout.bmp'
     end
 
+    def contactless_minimum_amount_permited
+      DaFunk::ParamsDat.file["emv_contactless_minimum_amount_permitted"] || '100'
+    end
+
+    def contactless_amount_under_permited
+      DaFunk::ParamsDat.file["emv_contactless_amount_under_permited_image"] || 'fail_low_amount.bmp'
+    end
+
     def to_bmp(image)
       if image.include?('.bmp')
         "./shared/#{image}"
@@ -69,10 +77,10 @@ class InputTransactionAmount
       image = contactless_amount_image
       bmp   = to_bmp(image)
 
-      Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
-
       key = ''
       while key.empty?
+        Device::Display.print_bitmap(bmp) if bmp_exists?(bmp)
+
         key = Device::IO.get_format(0, 12, options)
 
         if key == Device::IO::CANCEL
@@ -81,6 +89,13 @@ class InputTransactionAmount
         elsif key == Device::IO::KEY_TIMEOUT
           Device::Display.clear
           timeout_message
+        else
+          unless key.to_s.empty?
+            if key.to_i < contactless_minimum_amount_permited.to_i
+              amount_under_minimum_not_permitted
+              key = ''
+            end
+          end
         end
       end
 
@@ -106,13 +121,24 @@ class InputTransactionAmount
       if bmp_exists?(bmp)
         Device::Display.print_bitmap(bmp)
       else
-        I18n.pt(:contactless_amount_timeout_image, :line => 3)
+        I18n.pt(:emv_contactless_amount_timeout, :line => 3)
       end
       getc(3000)
     end
 
     def emv_ctls_table_installed?
       EmvTransaction.ctls_apps.first == 0
+    end
+
+    def amount_under_minimum_not_permitted
+      amount_under_minimum = to_bmp(contactless_amount_under_permited)
+
+      if bmp_exists?(amount_under_minimum)
+        Device::Display.print_bitmap(amount_under_minimum)
+      else
+        I18n.pt(:emv_contactless_amount_under_minimum, :line => 3)
+      end
+      getc(3000)
     end
   end
 end
