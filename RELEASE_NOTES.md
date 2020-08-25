@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.55.0 - 2020-08-25
+
+- Only save media on config.dat file if sim_id is not nil;
+- Convert sim_id to String before access characters;
+- Only try to send log if socket is connected, also display images to show operation result.
+- Added support to send logs from another app call;
+- Added images to be used on log send process;
+- Do not perform default gprs config if network_configured is 1.
+
 ### 3.54.0 - 2020-08-18
 
 - Change thread execution and status bar check order, Necessary to not free CPU processing time on transaction execution;
