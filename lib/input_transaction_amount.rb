@@ -122,5 +122,16 @@ class InputTransactionAmount
     def emv_ctls_table_installed?
       EmvTransaction.ctls_apps.first == 0
     end
+
+    def amount_under_minimum_not_permitted
+      amount_under_minimum = to_bmp(contactless_amount_under_permited)
+
+      if bmp_exists?(amount_under_minimum)
+        Device::Display.print_bitmap(amount_under_minimum)
+      else
+        I18n.pt(:emv_contactless_amount_under_minimum, :line => 3)
+      end
+      getc(3000)
+    end
   end
 end
