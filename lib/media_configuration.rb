@@ -206,9 +206,12 @@ class MediaConfiguration
       Device::Network.init(:gprs, options)
       Device::Network::Gprs.power(1)
     end
-    configure(options.merge({
-      media: Device::Network::MEDIA_GPRS,
-      media_primary: Device::Network::MEDIA_GPRS
-    }))
+
+    unless Device::Network.sim_id.to_s.empty?
+      configure(options.merge({
+        media: Device::Network::MEDIA_GPRS,
+        media_primary: Device::Network::MEDIA_GPRS
+      }))
+    end
   end
 end
