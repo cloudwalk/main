@@ -162,7 +162,7 @@ class CloudwalkSetup
 
     DaFunk::EventHandler.new :file_exists, "./shared/system_update" do
       if File.read("./shared/system_update") == 'DONE'
-        SystemUpdate.new.start
+        CloudwalkUpdate.system
       end
     end
 
