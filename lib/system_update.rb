@@ -107,6 +107,15 @@ class SystemUpdate < DaFunk::ScreenFlow
     end
   end
 
+  def done?
+    if @done
+      unless File.exists?('shared/system_update')
+        File.open('shared/system_update', 'w'){|f| f.write('DONE') }
+      end
+    end
+    @done
+  end
+
   def download_device_dat
     result = try(3) do |attempt|
       ret = DaFunk::Transaction::Download.request_file(
