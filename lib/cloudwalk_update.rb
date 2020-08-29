@@ -27,6 +27,7 @@ class CloudwalkUpdate
   def self.system
     return unless Device::Network.connected?
 
+    BacklightControl.on
     Device::Display.clear
     I18n.pt(:system_update_check)
     Device::Display.print(I18n.t(:system_update_cancel), 2)
