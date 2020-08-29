@@ -300,6 +300,16 @@ class CloudwalkSetup
       end
     end
 
+    value = DaFunk::ParamsDat.file["system_update_interval"]
+    if value.to_s != "0"
+      interval = (value.to_s.empty? ? 360 : value.to_i)
+      DaFunk::EventHandler.new :schedule, hours: interval, slot: "system_update_interval" do
+        if DaFunk::ParamsDat.file["system_update_thread_enable"] == "1"
+          SystemUpdate.bg_start unless SystemUpdate.current&.done?
+        end
+      end
+    end
+
     DaFunk::EventListener.new :background_system_update do |event|
       event.start do true end
 
