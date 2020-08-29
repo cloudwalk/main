@@ -42,6 +42,8 @@ class CloudwalkUpdate
 
     if key != Device::IO::CANCEL
       SystemUpdate.new.start
+    else
+      File.delete("./shared/system_update") if File.exists?("./shared/system_update")
     end
   end
 end
