@@ -2,6 +2,18 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.57.0 - 2020-08-28
+
+- Update da_funk (3.25.1);
+- Call to CloudwalkUpdate#system instead of SystemUpdate#start so the user can cancel the update process if he wants;
+- Added new parameter system_update_main_enabled to enable system update with UI;
+- Added system_update_interval scheduler on communication thread in order to download all pieces in background;
+- Added system_update_thread_enable parameter to enable/disable update with thread;
+- Turn backlight on in the update process;
+- Delete system_update file if user cancel update process;
+- Start connection on input amount to make contactless transactions a bit faster;
+- Added SystemUpdate#done? method in order to check if all pieces were downloaded and to add system_update file again if user has canceled it before.
+
 ### 3.56.0 - 2020-08-25
 
 - Added InputTransactionAmount#contactless_minimum_amount_permited;
