@@ -9,6 +9,7 @@ class InputTransactionAmount
     def call(first_key=nil)
       amount = input(first_key)
       if amount != Device::IO::CANCEL && amount != Device::IO::KEY_TIMEOUT
+        DaFunk::PaymentChannel.connect(false) if DaFunk::PaymentChannel.channel_limit_exceed?
         Device::Runtime.execute(
           DaFunk::ParamsDat.file["emv_application"],
           emv_parameters(amount)
