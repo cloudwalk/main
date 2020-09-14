@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.58.0 - 2020-09-14
+
+- Update cloudwalk_handshake (1.20.0);
+- Update da_funk (3.26.0);
+- Update virtual keyboard images.
+
 ### 3.57.0 - 2020-08-28
 
 - Update da_funk (3.25.1);
