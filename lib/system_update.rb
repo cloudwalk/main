@@ -13,21 +13,26 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   setup do
     Device::Display.clear
-    I18n.pt(:system_update)
+    I18n.pt(:system_update, :line => 0)
   end
 
   screen :device_dat_download do |result|
     I18n.pt(:system_update_check, :line => 3)
     if Device::Network.connected?
       if self.download_device_dat
+        I18n.pt(:system_update, :line => 0)
         I18n.pt(:system_update_available, :line => 4)
         true
       else
+        Device::Display.clear
+        I18n.pt(:system_update, :line => 0)
         I18n.pt(:system_update_not_available, :line => 4)
         getc(5000)
         nil
       end
     else
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:attach_device_not_configured, :line => 4)
       getc(5000)
       nil
@@ -36,35 +41,45 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   screen :parts_download do |result|
     block_success = -> {
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_success, :line => 5)
       getc(500)
       Device::Display.clear(5)
     }
     block_fail = -> {
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_fail, :line => 5)
       sleep 1
     }
     block_interrupt = -> {
       Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_interrupt)
       try_key(["1", "2"], Device::IO.timeout) == "1"
     }
+    I18n.pt(:system_update, :line => 0)
     I18n.pt(:system_update_downloading_parts, :line => 3)
     self.download_parts(block_success, block_fail, block_interrupt)
   end
 
   screen :parts_concatenation do
+    Device::Display.clear
+    I18n.pt(:system_update, :line => 0)
     I18n.pt(:system_update_concatenate, :line => 3)
     self.concatenate
   end
 
   screen :unpack_files do
+    Device::Display.clear
+    I18n.pt(:system_update, :line => 0)
     I18n.pt(:system_update_unpack, :line => 3)
     getc(5_000)
 
     if self.unzip
       true
     else
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_file_not_found, :line => 3)
       getc(5_000)
       nil
@@ -72,14 +87,20 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   screen :system_update do
+    Device::Display.clear
+    I18n.pt(:system_update, :line => 0)
     I18n.pt(:system_update_updating, :line => 3)
     block_success = -> {
       File.delete('shared/system_update') if File.exists?('shared/system_update')
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_success_restart, :line => 4)
       getc(5_000)
       Device::System.restart
     }
     block_fail = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_problem, :line => 4)
       getc(5_000)
     }
@@ -151,7 +172,7 @@ class SystemUpdate < DaFunk::ScreenFlow
         if (getc(10) == Device::IO::CANCEL)
           return if block_interrupt.call
           Device::Display.clear
-          I18n.pt(:system_update)
+          I18n.pt(:system_update, :line => 0)
           I18n.pt(:system_update_downloading_parts, :line => 3)
         end
 
