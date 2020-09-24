@@ -44,6 +44,22 @@ class CloudwalkUpdate
       SystemUpdate.new.start
     else
       File.delete("./shared/system_update") if File.exists?("./shared/system_update")
+
+  def self.wait_connection
+    time = Time.now + 180
+
+    Device::Display.clear
+    I18n.pt(:system_update, :line => 0)
+    I18n.pt(:attach_network, :line => 3)
+    loop do
+      if Device::Network.connected?
+        break
+      elsif time < Time.now && !Device::Network.connected?
+        break
+      elsif getc(100)== Device::IO::CANCEL
+        File.delete('./shared/system_update') if File.exists?('./shared/system_update')
+        break
+      end
     end
   end
 end
