@@ -555,6 +555,9 @@ class CloudwalkSetup
 
     if update_process_in_progess?
       Device::Display.print_bitmap(boot_layout_file[:update_process])
+    elsif CloudwalkUpdate.system_in_progress?
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
     else
       Device::Display.print_bitmap(boot_layout_file[:default])
     end
