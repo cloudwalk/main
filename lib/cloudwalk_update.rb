@@ -30,9 +30,11 @@ class CloudwalkUpdate
     return unless Device::Network.connected?
 
     Device::Display.clear
-    I18n.pt(:system_update_check)
-    Device::Display.print(I18n.t(:system_update_cancel), 2)
-    Device::Display.print("", 3)
+    I18n.pt(:system_update, :line => 0)
+    I18n.pt(:system_update_cancel, :line => 3)
+    I18n.pt(:system_update_x_to_cancel, :line => 4)
+    key = Device::IO::KEY_TIMEOUT
+
   def self.count_down
     key = Device::IO::KEY_TIMEOUT
 
