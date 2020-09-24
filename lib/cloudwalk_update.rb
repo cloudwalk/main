@@ -32,6 +32,7 @@ class CloudwalkUpdate
     I18n.pt(:system_update_check)
     Device::Display.print(I18n.t(:system_update_cancel), 2)
     Device::Display.print("", 3)
+  def self.count_down
     key = Device::IO::KEY_TIMEOUT
 
     10.times do |i|
@@ -39,6 +40,8 @@ class CloudwalkUpdate
       key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
+    key
+  end
 
     if key != Device::IO::CANCEL
       SystemUpdate.new.start
