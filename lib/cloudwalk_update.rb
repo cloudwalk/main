@@ -35,6 +35,33 @@ class CloudwalkUpdate
     I18n.pt(:system_update_x_to_cancel, :line => 4)
     key = Device::IO::KEY_TIMEOUT
 
+    if File.exists?('./shared/system_update')
+      restart = File.read('./shared/system_update').split("\n")[1] == 'RESTART DEVICE'
+      key = count_down if restart
+    else
+      restart = false
+      key = count_down
+    end
+
+    if key != Device::IO::CANCEL
+      if restart
+        File.open('./shared/system_update', 'w') do |f|
+          f.write("DONE\nDO NOT RESTART DEVICE")
+        end
+        Device::Display.clear
+        I18n.pt(:system_update, :line => 0)
+        Device::Display.clear(3)
+        I18n.pt(:system_update_start, :line => 3)
+        getc(7000)
+        Device::System.restart
+      else
+        SystemUpdate.new.start
+      end
+    else
+      File.delete('./shared/system_update') if File.exists?('./shared/system_update')
+    end
+  end
+
   def self.count_down
     key = Device::IO::KEY_TIMEOUT
 
