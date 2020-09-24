@@ -43,10 +43,13 @@ class CloudwalkUpdate
     key
   end
 
-    if key != Device::IO::CANCEL
-      SystemUpdate.new.start
+  def self.system_in_progress?
+    if File.exists?('./shared/system_update')
+      File.read('shared/system_update').split("\n")[0] == 'DONE'
     else
-      File.delete("./shared/system_update") if File.exists?("./shared/system_update")
+      false
+    end
+  end
 
   def self.wait_connection
     time = Time.now + 180
