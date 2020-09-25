@@ -77,7 +77,15 @@ class Main < Device
       id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
-      loop do
+      thread_loop(id)
+    rescue => e
+      ContextLog.exception(e, e.backtrace, "Communication thread")
+    end
+  end
+
+  def self.thread_loop(id)
+    loop do
+      begin
         break if Context::ThreadScheduler.die?(:communication)
         if (! Context::ThreadScheduler.pause?(:communication))
           if Context::ThreadPubSub.listen(id) == "communication_update"
@@ -103,9 +111,9 @@ class Main < Device
           end
         end
         usleep(50_000)
+      rescue => e
+        ContextLog.exception(e, e.backtrace, "Communication thread loop")
       end
-    rescue => e
-      ContextLog.exception(e, e.backtrace, "Communication thread")
     end
   end
 
