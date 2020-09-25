@@ -2,6 +2,26 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.59.0 - 2020-09-25
+
+- Add main application version on config.dat file;
+- Move thread loop process to Main#thread_loop metohod, also added rescue on Main#thread_loop;
+- Update cloudwalk_handshake (1.20.1);
+- Update da_funk (3.27.0);
+- Improved system update messages;
+- Show system update message at line 0 and alway clear it before;
+- Added system_update_start message;
+- Check system update status at zero position of string array;
+- Print system update message after device restart, in case system update is in progress;
+- Added additional information in the system update file in order to know that the device needs to restart before proceed with the system update;
+- Added CloudwalkUpdate#wait_connection method;
+- Added CloudwalkUpdate#count_down method;
+- Added CloudwalkUpdate#system_in_progress? method;
+- Wait terminal to connect before start system update in case device has restarted;
+- Added system update management file on CloudwalkUpdate;
+- Fixed display messages on application update proccess;
+- Update da_funk (3.28.0).
+
 ### 3.58.0 - 2020-09-14
 
 - Update cloudwalk_handshake (1.20.0);
