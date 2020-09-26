@@ -133,7 +133,7 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def done?
-    if @done
+    if @done && @dat
       unless File.exists?('shared/system_update')
         File.open('shared/system_update', 'w'){|f| f.write("DONE\nRESTART DEVICE") }
       end
