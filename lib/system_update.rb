@@ -120,9 +120,13 @@ class SystemUpdate < DaFunk::ScreenFlow
       @download_device_dat ||= download_device_dat
       @part                ||= 1
 
-      @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
-      if @part > total
-        File.open('shared/system_update', 'w'){|f| f.write("DONE\nRESTART DEVICE") }
+      if @dat
+        @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
+        if @part > total
+          File.open('shared/system_update', 'w'){|f| f.write("DONE\nRESTART DEVICE") }
+          @done = true
+        end
+      else
         @done = true
       end
     end
