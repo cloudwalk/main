@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.59.1 - 2020-09-26
+
+- Do not try to download system parts if update file does not exists;
+- Check if update dat object exists on SystemUpdate#done? before start it;
+- Update da_funk (3.28.1).
+
 ### 3.59.0 - 2020-09-25
 
 - Add main application version on config.dat file;
