@@ -10,6 +10,13 @@ class LogControl
     Dir.entries("./main").select { |e| e.include?(".log") }.each do |log|
       LogsMenu.send_file(log)
     end
+
+    if ret
+      Device::Display.print_bitmap('./shared/send_log_sucess.bmp')
+    else
+      Device::Display.print_bitmap('./shared/send_log_fail.bmp')
+    end
+    getc(3000)
   end
 
   def self.purge

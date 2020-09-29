@@ -23,7 +23,12 @@ class LogsMenu
     else
       log = menu("LOGS", dirs)
       unless log.nil? || log == Device::IO::KEY_TIMEOUT || log == Device::IO::CANCEL
-        self.send_file(log)
+        if self.send_file(log)
+          Device::Display.print_bitmap('./shared/send_log_sucess.bmp')
+        else
+          Device::Display.print_bitmap('./shared/send_log_fail.bmp')
+        end
+        getc(3000)
       end
     end
   end
@@ -63,17 +68,8 @@ class LogsMenu
         "Content-Type" => "application/json",
         "Body" => body(zip_file.split("/").last, zip_file)
       })
-
-      if response.code == 201 || response.code == 200
-        Device::Display.print_bitmap('./shared/send_log_sucess.bmp')
-        ret = true
-      else
-        Device::Display.print_bitmap('./shared/send_log_fail.bmp')
-      end
-    else
-      Device::Display.print_bitmap('./shared/network_system_error.bmp')
+      response.code == 201 || response.code == 200
     end
-    getc(3000)
     ret
   end
 
