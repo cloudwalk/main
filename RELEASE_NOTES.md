@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.59.2 - 2020-09-29
+
+- Update cloudwalk_handshake (1.21.0)
+
 ### 3.59.1 - 2020-09-26
 
 - Do not try to download system parts if update file does not exists;
