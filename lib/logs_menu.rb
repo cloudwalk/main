@@ -37,12 +37,11 @@ class LogsMenu
       LogControl.write_keys(filename)
 
       if Zip.compress(zip, path)
-        if self.upload(zip)
-          File.delete(path)
-        end
-        File.delete(zip) if File.exists?(zip)
+        File.delete(path) if self.upload(zip)
       end
     end
+  ensure
+    File.delete(zip) if File.exists?(zip)
   end
 
   def self.upload(zip_file)
