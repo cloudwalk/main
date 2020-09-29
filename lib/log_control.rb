@@ -7,20 +7,9 @@ class LogControl
     return unless Device::Network.connected?
 
     layout
-    concatenate_logs do
-      LogsMenu.send_file(filename.split('/')[2]) if File.exists?(filename)
+    Dir.entries("./main").select { |e| e.include?(".log") }.each do |log|
+      LogsMenu.send_file(log)
     end
-  end
-
-  def self.concatenate_logs(&block)
-    files = Dir.entries("./main").select { |e| e.include?(".log") }
-    size = File.open(filename, 'w') do |f|
-      files.each { |log| f.write(File.read("./main/#{log}").to_s) }
-    end
-    if block.call(filename)
-      files.each { |log| File.delete("./main/#{log}") if File.exists?("./main/#{log}") }
-    end
-    File.delete(filename) if File.exists?(filename)
   end
 
   def self.purge
@@ -38,11 +27,6 @@ class LogControl
   end
 
   private
-  def self.filename
-    time = Time.now
-    "./main/#{"%d-%02d-%02d" % [time.year, time.month, time.day]}.txt"
-  end
-
   def self.compare_dates(text1, text2)
     date = text1.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
     greaterdate = text2.match(/([0-9]+)-([0-9]+)-([0-9]+)/)
