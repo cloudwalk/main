@@ -15,10 +15,10 @@ class LogControl
   def self.concatenate_logs(&block)
     files = Dir.entries("./main").select { |e| e.include?(".log") }
     size = File.open(filename, 'w') do |f|
-      files.each { |log| f.write(File.read(log).to_s) }
+      files.each { |log| f.write(File.read("./main/#{log}").to_s) }
     end
     if block.call(filename)
-      files.each { |log| File.delete(log) if File.exists?(log) }
+      files.each { |log| File.delete("./main/#{log}") if File.exists?("./main/#{log}") }
     end
     File.delete(filename) if File.exists?(filename)
   end
