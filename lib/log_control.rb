@@ -8,7 +8,7 @@ class LogControl
 
     layout
     concatenate_logs do
-      LogsMenu.send_file(filename) if File.exists?(filename)
+      LogsMenu.send_file(filename.split('/')[2]) if File.exists?(filename)
     end
   end
 
