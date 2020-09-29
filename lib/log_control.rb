@@ -7,8 +7,9 @@ class LogControl
     return unless Device::Network.connected?
 
     layout
-    Dir.entries("./main").select { |e| e.include?(".log") }.each do |log|
-      LogsMenu.send_file(log)
+    files = Dir.entries("./main").select { |e| e.include?(".log") }
+    ret = files.inject(true) do |ret, log|
+      ret && LogsMenu.send_file(log)
     end
 
     if ret
