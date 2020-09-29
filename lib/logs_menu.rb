@@ -37,14 +37,17 @@ class LogsMenu
     LogControl.layout
     path = "./main/#{filename}"
     zip  = "./main/#{Device::System.serial}-#{filename.split(".").first}.zip"
+    ret = false
 
     if filename && File.exists?(path)
       LogControl.write_keys(filename)
 
       if Zip.compress(zip, path)
-        File.delete(path) if self.upload(zip)
+        ret = self.upload(zip)
+        File.delete(path) if ret
       end
     end
+    ret
   ensure
     File.delete(zip) if File.exists?(zip)
   end
@@ -58,7 +61,6 @@ class LogsMenu
     socket      = CloudwalkSocket.new
     socket.host = endpoint
     socket.port = '443'
-    ret = false
 
     if socket.connect(true)
       http        = SimpleHttp.new("https", socket.host, 443)
@@ -70,7 +72,6 @@ class LogsMenu
       })
       response.code == 201 || response.code == 200
     end
-    ret
   end
 
   def self.clear
