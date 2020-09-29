@@ -39,7 +39,7 @@ class LogControl
 
   private
   def self.filename
-    time = (Time.now - (24 * 60 * 60))
+    time = Time.now
     "./main/#{"%d-%02d-%02d" % [time.year, time.month, time.day]}.txt"
   end
 
