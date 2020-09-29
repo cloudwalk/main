@@ -2,6 +2,16 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.59.3 - 2020-09-29
+
+- Concatenate and send all logs at once;
+- Fixed filename. Log txt should have the date of the day that is being sent;
+- Do not send full path as LogsMenu#send_file is already adding path;
+- Send all log files separated;
+- Moved logs ui feedback to LogsMenu#send_file_menu and LogControl#upload;
+- LogsMenu#send_file return booleam as result;
+- Store return of each log send.
+
 ### 3.59.2 - 2020-09-29
 
 - Update cloudwalk_handshake (1.21.0)
