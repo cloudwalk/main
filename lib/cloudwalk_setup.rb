@@ -222,6 +222,14 @@ class CloudwalkSetup
         end
       end
     end
+
+    DaFunk::EventHandler.new :schedule, minutes: 60 do
+      if DaFunk::ParamsDat.corrupted?
+        ContextLog.info "params.dat file was corrupted"
+        ContextLog.info "Starting download of new params.dat"
+        DaFunk::ParamsDat.restart if DaFunk::ParamsDat.download
+      end
+    end
   end
 
   def self.setup_communication_listeners
