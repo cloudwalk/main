@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.60.0 - 2020-10-07
+
+- Update da_funk (3.28.2);
+- Update some images;
+- Added new handler to check params.dat status each 60 minutes;
+- Update cloudwalk_handshake (1.21.1).
+
 ### 3.59.3 - 2020-09-29
 
 - Concatenate and send all logs at once;
