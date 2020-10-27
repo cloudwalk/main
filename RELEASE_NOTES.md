@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.60.1 - 2020-10-26
+
+- Added deivice was restarted info on log.
+
 ### 3.60.0 - 2020-10-07
 
 - Update da_funk (3.28.2);
