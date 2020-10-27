@@ -571,6 +571,7 @@ class CloudwalkSetup
     end
 
     Device::Setting.boot = "1"
+    ContextLog.info "[I] Device was restarted"
   end
 
   def self.update_process_in_progess?
