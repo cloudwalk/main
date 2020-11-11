@@ -13,6 +13,7 @@ class CloudwalkSetup
     DaFunk::ParamsDat.parameters_load
     self.schedule_routines_from_rb_apps
     self.setup_keyboard_events_from_rb_apps
+    self.setup_touchscreen_events_from_rb_apps
     self.pre_load_applications
     DaFunk::EventHandler.new :magnetic, nil do end
     if update_process_in_progess?
@@ -382,6 +383,25 @@ class CloudwalkSetup
             app       = options["app"]
             operation = options["initialization"]
             Device::Runtime.execute(app, operation.to_json)
+          end
+        end
+      end
+    end
+  end
+
+  def self.setup_touchscreen_events_from_rb_apps
+    DaFunk::ParamsDat.ruby_executable_apps.each do |app|
+      if File.exists?("#{app.dir}/cw_touchscreen.json")
+        functions = JSON.parse(File.read("#{app.dir}/cw_touchscreen.json"))
+        functions.each do |function, options|
+          range = options['range'].to_a.inject({}) do |result, value|
+            ary = value[1].split('..').map { |v| v.to_i }
+            result[:x] = ary[0]..ary[1] if value[0] == 'x'
+            result[:y] = ary[0]..ary[1]
+            result
+          end
+          DaFunk::EventHandler.new :touchscreen, range do
+            Device::Runtime.execute(options['app'], {initialize: function}.to_json)
           end
         end
       end
