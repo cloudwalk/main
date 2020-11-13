@@ -415,7 +415,10 @@ class CloudwalkSetup
         schedule_params = JSON.parse(File.read(schedule_path))
         schedule_params["routines"].each do |params|
           ruby_app      = params["app"]
-          function      = { :initialize => params["routine"]["initialize"] }
+          function      = {
+                            initialize: params["routine"]["initialize"],
+                            parameters: params["parameters"]
+                          }
           interval      = params["routine"]["interval"].to_i
           file_check    = params["routine"]["file_check"]
           function_boot = { :initialize => params["routine"]["boot"] }
