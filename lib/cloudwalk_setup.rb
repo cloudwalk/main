@@ -417,7 +417,7 @@ class CloudwalkSetup
           ruby_app      = params["app"]
           function      = {
                             initialize: params["routine"]["initialize"],
-                            parameters: params["parameters"]
+                            parameters: params["routine"]["parameters"]
                           }
           interval      = params["routine"]["interval"].to_i
           file_check    = params["routine"]["file_check"]
