@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.61.0 - 2020-11-16
+
+- Added new icon for 3G connection;
+- Added new s920 main screen image;
+- Added support to touchscreen events which executes other apps;
+- Added support to send additional parameters in the function executed from scheduler;
+- Update da_funk (3.30.0).
+
 ### 3.60.2 - 2020-11-04
 
 - Update cloudwalk_handshake (1.21.3);
