@@ -2,6 +2,13 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.62.0 - 2020-11-27
+
+- Added new battery percentage icons;
+- Update cloudwalk_handshake (1.22.0);
+- Enable touchscreen application config on 8.X.X runtime version only;
+- Update da_funk (3.31.0).
+
 ### 3.61.0 - 2020-11-16
 
 - Added new icon for 3G connection;
