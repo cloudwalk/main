@@ -18,7 +18,7 @@ class Main < Device
     when :system_update
       AdminConfiguration.system_update
     when :send_logs
-      LogsMenu.send_file_menu
+      LogControl.upload
     when :normal
       perform
     else
