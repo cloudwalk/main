@@ -390,18 +390,22 @@ class CloudwalkSetup
   end
 
   def self.setup_touchscreen_events_from_rb_apps
-    DaFunk::ParamsDat.ruby_executable_apps.each do |app|
-      if File.exists?("#{app.dir}/cw_touchscreen.json")
-        functions = JSON.parse(File.read("#{app.dir}/cw_touchscreen.json"))
-        functions.each do |function, options|
-          range = options['range'].to_a.inject({}) do |result, value|
-            ary = value[1].split('..').map { |v| v.to_i }
-            result[:x] = ary[0]..ary[1] if value[0] == 'x'
-            result[:y] = ary[0]..ary[1]
-            result
-          end
-          DaFunk::EventHandler.new :touchscreen, range do
-            Device::Runtime.execute(options['app'], {initialize: function}.to_json)
+    # This check of version it's because versions < 8 cannot run reversal through notification in the home screen
+    major, min, patch = Device.version.to_s.split('.').map { |v| v.to_i }
+    if major >= 8
+      DaFunk::ParamsDat.ruby_executable_apps.each do |app|
+        if File.exists?("#{app.dir}/cw_touchscreen.json")
+          functions = JSON.parse(File.read("#{app.dir}/cw_touchscreen.json"))
+          functions.each do |function, options|
+            range = options['range'].to_a.inject({}) do |result, value|
+              ary = value[1].split('..').map { |v| v.to_i }
+              result[:x] = ary[0]..ary[1] if value[0] == 'x'
+              result[:y] = ary[0]..ary[1]
+              result
+            end
+            DaFunk::EventHandler.new :touchscreen, range do
+              Device::Runtime.execute(options['app'], {initialize: function}.to_json)
+            end
           end
         end
       end
