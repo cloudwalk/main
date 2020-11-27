@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.62.1 - 2020-11-27
+
+- Send all logs when executed manually.
+
 ### 3.62.0 - 2020-11-27
 
 - Added new battery percentage icons;
