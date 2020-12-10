@@ -26,56 +26,63 @@ class MediaConfiguration
   CW_APNS_FILE = "./shared/cw_apns.dat"
 
   def self.wifi
-    ret = menu(I18n.t(:scan_wifi), {I18n.t(:yes) => true, I18n.t(:no) => false})
-    return if ret.nil?
-    if ret
-      Device::Display.clear
-      I18n.pt(:scanning)
-      Device::Network.shutdown
-      Device::Setting.media = Device::Network::MEDIA_WIFI
-      aps = Device::Network.scan
-      selection = aps.inject({}) do |selection, hash|
-        selection[hash[:essid]] = hash; selection
-      end
-
-      if selected = menu(I18n.t(:select_ssid), selection)
-        selected[:cipher] ||= Device::Network::PARE_CIPHERS_TKIP
-        selected[:media_primary] = Device::Network::MEDIA_WIFI
-        if menu(I18n.t(:add_password), {I18n.t(:yes) => true, I18n.t(:no) => false})
-          selected[:wifi_password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password)
-        else
-          selected[:wifi_password] = ""
+    ThreadScheduler.pausing_communication do
+      ret = menu(I18n.t(:scan_wifi), {I18n.t(:yes) => true, I18n.t(:no) => false})
+      return if ret.nil?
+      if ret
+        Device::Display.clear
+        I18n.pt(:scanning)
+        Device::Network.shutdown
+        Device::Setting.media = Device::Network::MEDIA_WIFI
+        DaFunk::Helper::StatusBar.check
+        aps = Device::Network.scan
+        selection = aps.inject({}) do |selection, hash|
+          selection[hash[:essid]] = hash; selection
         end
-        self.persist_communication(selected)
+
+        if selected = menu(I18n.t(:select_ssid), selection)
+          selected[:cipher] ||= Device::Network::PARE_CIPHERS_TKIP
+          selected[:media_primary] = Device::Network::MEDIA_WIFI
+          if menu(I18n.t(:add_password), {I18n.t(:yes) => true, I18n.t(:no) => false})
+            selected[:wifi_password] = form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password)
+          else
+            selected[:wifi_password] = ""
+          end
+          self.persist_communication(selected)
+        else
+          return
+        end
       else
-        return
+        self.persist_communication({
+          :authentication => menu(I18n.t(:authentication), WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication),
+          :essid          => form("ESSID", :min => 0, :max => 127, :default => Device::Setting.essid),
+          :wifi_password  => form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password),
+          :channel        => form("CHANNEL", :min => 0, :max => 127, :default => Device::Setting.channel),
+          :cipher         => menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher),
+          :mode           => menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode),
+          :media          => Device::Network::MEDIA_WIFI,
+          :media_primary  => Device::Network::MEDIA_WIFI
+        })
       end
-    else
-      self.persist_communication({
-        :authentication => menu(I18n.t(:authentication), WIFI_AUTHENTICATION_OPTIONS, default: Device::Setting.authentication),
-        :essid          => form("ESSID", :min => 0, :max => 127, :default => Device::Setting.essid),
-        :wifi_password  => form("PASSWORD", :min => 0, :max => 127, :default => Device::Setting.wifi_password),
-        :channel        => form("CHANNEL", :min => 0, :max => 127, :default => Device::Setting.channel),
-        :cipher         => menu("CIPHER", WIFI_CIPHERS_OPTIONS, default: Device::Setting.cipher),
-        :mode           => menu("MODE", WIFI_MODE_OPTIONS, default: Device::Setting.mode),
-        :media          => Device::Network::MEDIA_WIFI,
-        :media_primary  => Device::Network::MEDIA_WIFI
-      })
     end
+    Context::ThreadPubSub.publish('communication_update')
   end
 
   def self.gprs
-    if File.exists?(CW_APNS_FILE)
-      apn, user, password = self.gprs_menu
-    else
-      apn, user, password = self.gprs_manual
-    end
+    ThreadScheduler.pausing_communication do
+      if File.exists?(CW_APNS_FILE)
+        apn, user, password = self.gprs_menu
+      else
+        apn, user, password = self.gprs_manual
+      end
 
-    self.persist_communication({
-      :apn => apn, :user => user, :apn_password => password,
-      :media => Device::Network::MEDIA_GPRS,
-      :media_primary => Device::Network::MEDIA_GPRS
-    })
+      self.persist_communication({
+        :apn => apn, :user => user, :apn_password => password,
+        :media => Device::Network::MEDIA_GPRS,
+        :media_primary => Device::Network::MEDIA_GPRS
+      })
+    end
+    Context::ThreadPubSub.publish('communication_update')
   end
 
   def self.parse_apn_operators(hash)
@@ -158,6 +165,7 @@ class MediaConfiguration
   end
 
   def self.persist_communication(config)
+    DaFunk::Helper::StatusBar.check
     Device::Display.clear
     I18n.pt(:setup_booting)
     value = menu(I18n.t(:media_try_connection), {I18n.t(:media_reboot) => true,
@@ -183,8 +191,6 @@ class MediaConfiguration
         getc(0)
       end
     end
-  ensure
-    Context::ThreadPubSub.publish('communication_update')
   end
 
   def self.configure(config)
