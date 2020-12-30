@@ -98,6 +98,7 @@ class Main < Device
             end
             ContextLog.info "[I] Thread communication configs updated"
           end
+
           DaFunk::EventListener.check(:payment_channel)
           unless @connected
             DaFunk::EventListener.check(:communication)
@@ -113,6 +114,10 @@ class Main < Device
             DaFunk::PaymentChannel.connect(false) unless @connected
             DaFunk::PaymentChannel.current.write(buf)
           end
+        else
+          DaFunk::Helper::StatusBar.current_signal  = nil
+          DaFunk::Helper::StatusBar.current_message = :pause
+          DaFunk::Helper::StatusBar.current_media   = nil
         end
         usleep(50_000)
       rescue => e
