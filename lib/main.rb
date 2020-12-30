@@ -96,6 +96,7 @@ class Main < Device
             if Object.const_defined?(:CwMetadata) && Device::Network.connected?
               CwMetadata.load_variable if CwMetadata.respond_to?(:load_variable)
             end
+            ContextLog.info "[I] Thread communication configs updated"
           end
           DaFunk::EventListener.check(:payment_channel)
           unless @connected
