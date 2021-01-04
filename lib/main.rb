@@ -93,7 +93,12 @@ class Main < Device
             Device::Runtime.system_reload
             media_after = Device::Network.config
             DaFunk::PaymentChannel.close! if media_before != media_after
+            if Object.const_defined?(:CwMetadata) && Device::Network.connected?
+              CwMetadata.load_variable if CwMetadata.respond_to?(:load_variable)
+            end
+            ContextLog.info "[I] Thread communication configs updated"
           end
+
           DaFunk::EventListener.check(:payment_channel)
           unless @connected
             DaFunk::EventListener.check(:communication)
@@ -109,6 +114,10 @@ class Main < Device
             DaFunk::PaymentChannel.connect(false) unless @connected
             DaFunk::PaymentChannel.current.write(buf)
           end
+        else
+          DaFunk::Helper::StatusBar.current_signal  = nil
+          DaFunk::Helper::StatusBar.current_message = :pause
+          DaFunk::Helper::StatusBar.current_media   = nil
         end
         usleep(50_000)
       rescue => e
