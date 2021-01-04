@@ -2,6 +2,15 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.63.0 - 2021-01-04
+
+- Update keyboard screens;
+- Call to thread pause before configuring communication;
+- Reload metadata after switching communication;
+- Added log in order to know that communication config was updated;
+- Set statusbar attributes as nil if thread is paused;
+- Update da_funk (3.32.0).
+
 ### 3.62.1 - 2020-11-27
 
 - Send all logs when executed manually.
