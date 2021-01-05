@@ -236,6 +236,7 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def update(block_success, block_fail)
+    version_major, version_minor, _patch = Device.version.to_s.split('.').map { |v| v.to_i }
     parse_device_dat unless self.dat
 
     files = FileDb.new(PATH_UPDATE_FILES)["content"]
@@ -247,15 +248,23 @@ class SystemUpdate < DaFunk::ScreenFlow
 
         file, type = entry.split(";")
         path = "./shared/#{file}"
-
-        if delete_zip && File.exists?(path) && Device::System.update("./shared/#{entry}")
-          File.delete(path) if File.exists?(path)
-          block_success.call
+        # Because of the error that was introduced in the System#update method on version 8.0.1
+        if version_major == 8 && version_minor == 0
+          if delete_zip && File.exists?(path)
+            Device::System.update("./shared/#{entry}")
+            File.delete(path) if File.exists?(path)
+            block_success.call
+          end
         else
-          delete_zip = false
-          block_fail.call
-          File.delete(path) if File.exists?(path)
-          false
+          if delete_zip && File.exists?(path) && Device::System.update("./shared/#{entry}")
+            File.delete(path) if File.exists?(path)
+            block_success.call
+          else
+            delete_zip = false
+            block_fail.call
+            File.delete(path) if File.exists?(path)
+            false
+          end
         end
       end
       File.delete(self.zip_path) if File.exists?(self.zip_path)
