@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.63.1 - 2021-01-07
+
+- Added workaround to solve system update error. There's a bug in the PAX::System#update method which returns a wrong result that causes an error in the system update flow, this change workaround this error.
+
 ### 3.63.0 - 2021-01-04
 
 - Update keyboard screens;
