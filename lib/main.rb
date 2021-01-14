@@ -77,6 +77,7 @@ class Main < Device
       id = Context::ThreadPubSub.subscribe
       attach(print_last: false) if Device::Network.configured?
       CloudwalkSetup.setup_communication_listeners
+      ContextLog.info "[I] Thread pubsub id #{id}"
       thread_loop(id)
     rescue => e
       ContextLog.exception(e, e.backtrace, "Communication thread")
