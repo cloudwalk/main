@@ -93,7 +93,7 @@ class Main < Device
             media_before = Device::Network.config
             Device::Runtime.system_reload
             media_after = Device::Network.config
-            DaFunk::PaymentChannel.close! if media_before != media_after
+            DaFunk::PaymentChannel.close! if (!media_before.eql? media_after) && @connected
             if Object.const_defined?(:CwMetadata) && Device::Network.connected?
               CwMetadata.load_variable if CwMetadata.respond_to?(:load_variable)
             end
