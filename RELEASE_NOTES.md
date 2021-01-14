@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.63.2 - 2021-01-14
+
+- Added log of pusbsub id registered;
+- Close socket on communication thread after media switch only in case media changed and socket is connected.
+
 ### 3.63.1 - 2021-01-07
 
 - Added workaround to solve system update error. There's a bug in the PAX::System#update method which returns a wrong result that causes an error in the system update flow, this change workaround this error.
