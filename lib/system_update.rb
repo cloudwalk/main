@@ -2,6 +2,7 @@ class SystemUpdate < DaFunk::ScreenFlow
   PATH_UPDATE_DAT   = "./shared/update.dat"
   REMOTE_UPDATE_DAT = "update.dat"
   PATH_UPDATE_FILES = "./shared/update_files.dat"
+  PATH_UPDATE_DONE  = './shared/system_update'
 
   include DaFunk::Helper
 
@@ -91,7 +92,7 @@ class SystemUpdate < DaFunk::ScreenFlow
     I18n.pt(:system_update, :line => 0)
     I18n.pt(:system_update_updating, :line => 3)
     block_success = -> {
-      File.delete('shared/system_update') if File.exists?('shared/system_update')
+      File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
       Device::Display.clear
       I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_success_restart, :line => 4)
@@ -123,7 +124,7 @@ class SystemUpdate < DaFunk::ScreenFlow
       if @dat
         @part +=1 if download_partial(self.zip_filename, @part, self.dat[@part.to_s])
         if @part > total
-          File.open('shared/system_update', 'w'){|f| f.write("DONE\nRESTART DEVICE") }
+          File.open(PATH_UPDATE_DONE, 'w'){|f| f.write("DONE\nRESTART DEVICE") }
           @done = true
         end
       else
@@ -134,8 +135,8 @@ class SystemUpdate < DaFunk::ScreenFlow
 
   def done?
     if @done && @dat
-      unless File.exists?('shared/system_update')
-        File.open('shared/system_update', 'w'){|f| f.write("DONE\nRESTART DEVICE") }
+      unless File.exists?(PATH_UPDATE_DONE)
+        File.open(PATH_UPDATE_DONE, 'w'){|f| f.write("DONE\nRESTART DEVICE") }
       end
     end
     @done
