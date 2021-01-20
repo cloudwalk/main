@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.63.3 - 2021-01-20
+
+- Added PATH_UPDATE_DONE constant on SystemUpdate class;
+- Delete PATH_UPDATE_DONE file if device is up to date.
+
 ### 3.63.2 - 2021-01-14
 
 - Added log of pusbsub id registered;
