@@ -28,6 +28,7 @@ class SystemUpdate < DaFunk::ScreenFlow
         Device::Display.clear
         I18n.pt(:system_update, :line => 0)
         I18n.pt(:system_update_not_available, :line => 4)
+        File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
         getc(5000)
         nil
       end
