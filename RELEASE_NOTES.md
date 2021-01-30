@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.64.0 - 2021-01-30
+
+- Update cloudwalk_handshake (1.23.0).
+
 ### 3.63.3 - 2021-01-20
 
 - Added PATH_UPDATE_DONE constant on SystemUpdate class;
