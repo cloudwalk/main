@@ -1,8 +1,8 @@
 class SystemUpdate < DaFunk::ScreenFlow
-  PATH_UPDATE_DAT   = "./shared/update.dat"
-  REMOTE_UPDATE_DAT = "update.dat"
-  PATH_UPDATE_FILES = "./shared/update_files.dat"
-  PATH_UPDATE_DONE  = './shared/system_update'
+  PATH_UPDATE_DAT      = "./shared/update.dat"
+  REMOTE_UPDATE_DAT    = "update.dat"
+  PATH_UPDATE_FILES    = "./shared/update_files.dat"
+  PATH_UPDATE_DONE     = './shared/system_update'
 
   include DaFunk::Helper
 
@@ -13,31 +13,49 @@ class SystemUpdate < DaFunk::ScreenFlow
   attr_accessor :dat, :zip_filename, :total, :zip_path, :status, :zip_crc
 
   setup do
-    Device::Display.clear
-    I18n.pt(:system_update, :line => 0)
+    block_search = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_check, :line => 3)
+    }
+    SystemUpdate::Screen.show_message(:system_update_check, block_search)
   end
 
   screen :device_dat_download do |result|
-    I18n.pt(:system_update_check, :line => 3)
-    if Device::Network.connected?
-      if self.download_device_dat
-        I18n.pt(:system_update, :line => 0)
-        I18n.pt(:system_update_available, :line => 4)
-        true
-      else
-        Device::Display.clear
-        I18n.pt(:system_update, :line => 0)
-        I18n.pt(:system_update_not_available, :line => 4)
-        File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
-        getc(5000)
-        nil
-      end
-    else
+    block_search = -> {
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_check, :line => 3)
+    }
+    block_found = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_available, :line => 4)
+    }
+    block_not_found = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_not_available, :line => 4)
+      getc(5000)
+    }
+    block_connection_error = -> {
       Device::Display.clear
       I18n.pt(:system_update, :line => 0)
       I18n.pt(:attach_device_not_configured, :line => 4)
       getc(5000)
-      nil
+    }
+    SystemUpdate::Screen.show_message(:system_update_check, block_search)
+    if Device::Network.connected?
+      if self.download_device_dat
+        SystemUpdate::Screen.show_message(:system_update_available, block_found)
+        true
+      else
+        SystemUpdate::Screen.show_message(:system_update_not_available, block_not_found)
+        File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
+        false
+      end
+    else
+      SystemUpdate::Screen.show_message(:attach_device_not_configured, block_connection_error)
+      false
     end
   end
 
@@ -59,39 +77,47 @@ class SystemUpdate < DaFunk::ScreenFlow
       I18n.pt(:system_update_interrupt)
       try_key(["1", "2"], Device::IO.timeout) == "1"
     }
-    I18n.pt(:system_update, :line => 0)
-    I18n.pt(:system_update_downloading_parts, :line => 3)
     self.download_parts(block_success, block_fail, block_interrupt)
   end
 
   screen :parts_concatenation do
-    Device::Display.clear
-    I18n.pt(:system_update, :line => 0)
-    I18n.pt(:system_update_concatenate, :line => 3)
+    block = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_concatenate, :line => 3)
+    }
+    SystemUpdate::Screen.show_message(:system_update_concatenate, block)
     self.concatenate
   end
 
   screen :unpack_files do
-    Device::Display.clear
-    I18n.pt(:system_update, :line => 0)
-    I18n.pt(:system_update_unpack, :line => 3)
-    getc(5_000)
-
-    if self.unzip
-      true
-    else
+    block_unpack = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_unpack, :line => 3)
+    }
+    block_fail = -> {
       Device::Display.clear
       I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_file_not_found, :line => 3)
       getc(5_000)
-      nil
+    }
+    SystemUpdate::Screen.show_message(:system_update_unpack, block_unpack)
+    getc(5_000)
+    if self.unzip
+      true
+    else
+      SystemUpdate::Screen.show_message(:system_update_file_not_found, block_fail)
+      false
     end
   end
 
   screen :system_update do
-    Device::Display.clear
-    I18n.pt(:system_update, :line => 0)
-    I18n.pt(:system_update_updating, :line => 3)
+    block_updating = -> {
+      Device::Display.clear
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_updating, :line => 3)
+    }
     block_success = -> {
       File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
       Device::Display.clear
@@ -106,6 +132,7 @@ class SystemUpdate < DaFunk::ScreenFlow
       I18n.pt(:system_update_problem, :line => 4)
       getc(5_000)
     }
+    SystemUpdate::Screen.show_message(:system_update_updating, block_updating)
     self.update(block_success, block_fail)
   end
 
@@ -167,25 +194,29 @@ class SystemUpdate < DaFunk::ScreenFlow
   end
 
   def download_parts(block_success, block_fail, block_interrupt)
+    block_start = -> {
+      I18n.pt(:system_update, :line => 0)
+      I18n.pt(:system_update_downloading_parts, :line => 3)
+    }
+    SystemUpdate::Screen.show_message(:system_update_downloading_parts, block_start)
     parse_device_dat unless self.dat
     return true if check(self.zip_path, self.zip_crc)
 
     full  = true
     1.upto(self.total) do |part|
       result = try(3) do |attempt|
-        Device::Display.print("#{part}/#{self.total}", 4, 0)
-
+        percent = calculate_percent(part, self.total)
+        ContextLog.info "show_percentage percent #{percent}"
+        SystemUpdate::Screen.show_percentage(percent, part, self.total)
         if (getc(10) == Device::IO::CANCEL)
-          return if block_interrupt.call
-          Device::Display.clear
-          I18n.pt(:system_update, :line => 0)
-          I18n.pt(:system_update_downloading_parts, :line => 3)
+          return if SystemUpdate::Screen.show_message(:system_update_interrupt, block_interrupt)
+          SystemUpdate::Screen.show_percentage(percent, part, self.total)
         end
 
         if response = self.download_partial(self.zip_filename, part, self.dat[part.to_s])
-          block_success.call
+          SystemUpdate::Screen.show_message(:system_update_success, block_success)
         else
-          block_fail.call
+          SystemUpdate::Screen.show_message(:system_update_fail, block_fail)
         end
         response
       end
@@ -255,15 +286,15 @@ class SystemUpdate < DaFunk::ScreenFlow
           if delete_zip && File.exists?(path)
             Device::System.update("./shared/#{entry}")
             File.delete(path) if File.exists?(path)
-            block_success.call
+            SystemUpdate::Screen.show_message(:system_update_success_restart, block_success)
           end
         else
           if delete_zip && File.exists?(path) && Device::System.update("./shared/#{entry}")
             File.delete(path) if File.exists?(path)
-            block_success.call
+            SystemUpdate::Screen.show_message(:system_update_success_restart, block_success)
           else
             delete_zip = false
-            block_fail.call
+            SystemUpdate::Screen.show_message(:system_update_problem, block_fail)
             File.delete(path) if File.exists?(path)
             false
           end
@@ -311,6 +342,10 @@ class SystemUpdate < DaFunk::ScreenFlow
     local_crc = Device::Crypto.file_crc16_hex(path)
     ContextLog.info "SystemUpdate - CRC Check [#{path}][#{crc}][#{local_crc}]"
     File.exists?(path) && local_crc == crc
+  end
+
+  def calculate_percent(part, total)
+    ((part / total) * 100).round(0)
   end
 end
 
