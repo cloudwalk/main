@@ -24,10 +24,10 @@ class CloudwalkSetup
       })
     end
     Context::ThreadScheduler.start
+    Device::Setting.update_attributes('main_app_version' => Main.version)
     if update_process_in_progess? || !AdminConfiguration.device_activated?
       AdminConfiguration.configure_payment_application
     end
-    Device::Setting.update_attributes('main_app_version' => Main.version)
   end
 
   def self.setup_listeners
