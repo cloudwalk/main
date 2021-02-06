@@ -1,4 +1,6 @@
 class CloudwalkUpdate
+  extend DaFunk::Helper
+
   NETWORK_START_IMAGE_PATH = [
     './shared/network_conectar_init1.bmp',
     './shared/network_conectar_init2.bmp',
@@ -8,18 +10,22 @@ class CloudwalkUpdate
     './shared/network_conectar_init6.bmp'
   ]
   UPDATE_CANCEL_IMAGE_PATH = [
-    './shared/uptade_1.bmp',
-    './shared/uptade_2.bmp',
-    './shared/uptade_3.bmp',
-    './shared/uptade_4.bmp',
-    './shared/uptade_5.bmp',
-    './shared/uptade_6.bmp',
-    './shared/uptade_7.bmp',
-    './shared/uptade_8.bmp',
-    './shared/uptade_9.bmp',
-    './shared/uptade_10.bmp'
+    './shared/update_10.bmp',
+    './shared/update_9.bmp',
+    './shared/update_8.bmp',
+    './shared/update_7.bmp',
+    './shared/update_6.bmp',
+    './shared/update_5.bmp',
+    './shared/update_4.bmp',
+    './shared/update_3.bmp',
+    './shared/update_2.bmp',
+    './shared/update_1.bmp',
   ]
   UPDATE_RESTART_IMAGE_PATH = './shared/init_reboot.bmp'
+  SCREEN_ABORT_SEARCH_UPDATE_KEYS_MAP = {
+    Device::IO::ENTER  => {:x => 30..239, :y => 117..152},
+    Device::IO::CANCEL => {:x => 38..230, :y => 180..203}
+  }
 
   def self.application
     return unless Device::Network.connected?
@@ -84,13 +90,15 @@ class CloudwalkUpdate
     end
 
     key = Device::IO::KEY_TIMEOUT
+    special_keys = {special_keys: [Device::IO::ENTER, Device::IO::CANCEL]}
     10.times do |i|
       if image_exists
         Device::Display.print_bitmap(UPDATE_CANCEL_IMAGE_PATH[i])
+        event, key = wait_touchscreen_or_keyboard_event(SCREEN_ABORT_SEARCH_UPDATE_KEYS_MAP, 1_000, special_keys)
       else
         Device::Display.print((10 - i).to_s, 5, 11)
+        key = getc(1000)
       end
-      key = getc(1000)
       break if key != Device::IO::KEY_TIMEOUT
     end
     key
