@@ -5,6 +5,7 @@ class SystemUpdate
     end
     extend DaFunk::Helper
     SCREEN_RESTART_PATH = './shared/init_reboot.bmp'
+    UPDATE_FILE_PATH    = './shared/system_update'
     SCREENS = {
       :system_update_check             => './shared/searching_updates.bmp',
       :system_update_available         => './shared/updating_system_00.bmp',
@@ -110,6 +111,7 @@ class SystemUpdate
 
     def self.update_success_message(symbol, block)
       if File.exists?(SCREENS_UPATE_SUCCESS[symbol]) && File.exists?(SCREEN_RESTART_PATH)
+        File.delete(UPDATE_FILE_PATH) if File.exists?(UPDATE_FILE_PATH)
         Device::Display.print_bitmap(SCREENS_UPATE_SUCCESS[symbol])
         getc(2000)
         Device::Display.print_bitmap(SCREEN_RESTART_PATH)
