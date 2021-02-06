@@ -67,6 +67,7 @@ class SystemUpdate < DaFunk::ScreenFlow
       Device::Display.clear(5)
     }
     block_fail = -> {
+      Device::Display.clear
       I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_fail, :line => 5)
       sleep 1
@@ -206,7 +207,6 @@ class SystemUpdate < DaFunk::ScreenFlow
     1.upto(self.total) do |part|
       result = try(3) do |attempt|
         percent = calculate_percent(part, self.total)
-        ContextLog.info "show_percentage percent #{percent}"
         SystemUpdate::Screen.show_percentage(percent, part, self.total)
         if (getc(100) == Device::IO::CANCEL)
           return if SystemUpdate::Screen.show_message(:system_update_interrupt, block_interrupt)
