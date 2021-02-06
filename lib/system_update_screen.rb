@@ -24,10 +24,6 @@ class SystemUpdate
       Device::IO::ONE_NUMBER => {:x => 30..239, :y => 117..152},
       Device::IO::TWO_NUMBER => {:x => 38..230, :y => 180..203}
     }
-    SCREEN_ABORT_SEARCH_UPDATE_KEYS_MAP = {
-      Device::IO::ENTER  => {:x => 32..237, :y => 119..153},
-      Device::IO::CANCEL => {:x => 30..239, :y => 171..202}
-    }
     SCREENS_UPATE_PART_SUCCESS = [
       :system_update_success
     ]
