@@ -3,6 +3,7 @@ class SystemUpdate
     class << self
       attr_accessor :image
     end
+    extend DaFunk::Helper
     SCREEN_RESTART_PATH = './shared/init_reboot.bmp'
     SCREENS = {
       :system_update_check             => './shared/searching_updates.bmp',
@@ -18,6 +19,14 @@ class SystemUpdate
     }
     SCREEN_ABORT = {
       :system_update_interrupt => './shared/update_cancel.bmp',
+    }
+    SCREEN_ABORT_KEYS_MAP = {
+      Device::IO::ONE_NUMBER => {:x => 30..239, :y => 117..152},
+      Device::IO::TWO_NUMBER => {:x => 38..230, :y => 180..203}
+    }
+    SCREEN_ABORT_SEARCH_UPDATE_KEYS_MAP = {
+      Device::IO::ENTER  => {:x => 32..237, :y => 119..153},
+      Device::IO::CANCEL => {:x => 30..239, :y => 171..202}
     }
     SCREENS_UPATE_FAIL_SUCCESS = {
       :system_update_success => '',
@@ -75,8 +84,8 @@ class SystemUpdate
         Device::Display.print("#{part}/#{total}", 4, 0)
       end
     rescue => e
-      ContextLog.exception(e, e.backtrace
-      Device::Display.clear)
+      ContextLog.exception(e, e.backtrace)
+      Device::Display.clear
       I18n.pt(:system_update, :line => 0)
       I18n.pt(:system_update_downloading_parts, :line => 3)
       Device::Display.print("#{part}/#{total}", 4, 0)
@@ -85,7 +94,9 @@ class SystemUpdate
     def self.abort_message(symbol, block)
       if File.exists?(SCREEN_ABORT[symbol])
         Device::Display.print_bitmap(SCREEN_ABORT[symbol])
-        return try_key(["1", "2"], Device::IO.timeout) == "1"
+        event, key = wait_touchscreen_or_keyboard_event(SCREEN_ABORT_KEYS_MAP, 30_000, {special_keys: []})
+        return true if key == Device::IO::ONE_NUMBER
+        return false
       end
       block.call
     end
