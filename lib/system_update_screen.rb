@@ -46,7 +46,7 @@ class SystemUpdate
       elsif SCREENS_UPATE_SUCCESS.include?(symbol)
         update_success_message(symbol, block)
       elsif SCREEN_ABORT.include?(symbol)
-        abort_message(symbol)
+        abort_message(symbol, block)
       elsif SCREENS.include?(symbol)
         normal_message(symbol, block)
       else
