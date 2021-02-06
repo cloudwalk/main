@@ -10,7 +10,7 @@ class SystemUpdate < DaFunk::ScreenFlow
     attr_accessor :current
   end
 
-  attr_accessor :dat, :zip_filename, :total, :zip_path, :status, :zip_crc
+  attr_accessor :dat, :zip_filename, :total, :zip_path, :status, :zip_crc, :download_ret
 
   setup do
     block_search = -> {
@@ -216,7 +216,7 @@ class SystemUpdate < DaFunk::ScreenFlow
         if response = self.download_partial(self.zip_filename, part, self.dat[part.to_s])
           SystemUpdate::Screen.show_message(:system_update_success, block_success)
         else
-          SystemUpdate::Screen.show_message(:system_update_fail, block_fail)
+          SystemUpdate::Screen.show_message(:system_update_fail, block_fail, {reason: @download_ret})
         end
         response
       end
@@ -333,8 +333,8 @@ class SystemUpdate < DaFunk::ScreenFlow
     if check(path, crc)
       true
     else
-      ret = DaFunk::Transaction::Download.request_file(filename, path, "0000")
-      DaFunk::Transaction::Download.check(ret)
+      @download_ret = DaFunk::Transaction::Download.request_file(filename, path, "0000")
+      DaFunk::Transaction::Download.check(@download_ret)
     end
   end
 
