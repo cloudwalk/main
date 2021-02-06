@@ -28,10 +28,12 @@ class SystemUpdate
       Device::IO::ENTER  => {:x => 32..237, :y => 119..153},
       Device::IO::CANCEL => {:x => 30..239, :y => 171..202}
     }
-    SCREENS_UPATE_FAIL_SUCCESS = {
-      :system_update_success => '',
-      :system_update_fail    => ''
-    }
+    SCREENS_UPATE_PART_SUCCESS = [
+      :system_update_success
+    ]
+    SCREENS_UPATE_PART_FAIL = [
+      :system_update_fail
+    ]
     SCREENS_UPATE_SUCCESS = {
       :system_update_success_restart => './shared/update_sucess.bmp',
     }
@@ -49,9 +51,11 @@ class SystemUpdate
       {:range => 100..100, :image => './shared/updating_system_10.bmp'}
     ]
 
-    def self.show_message(symbol, block)
-      if SCREENS_UPATE_FAIL_SUCCESS.include?(symbol)
-        sucess_or_failed_message(block)
+    def self.show_message(symbol, block, options = {})
+      if SCREENS_UPATE_PART_SUCCESS.include?(symbol)
+        part_sucess_message(block)
+      elsif SCREENS_UPATE_PART_FAIL.include?(symbol)
+        part_fail_message(block, options[:reason])
       elsif SCREENS_UPATE_SUCCESS.include?(symbol)
         update_success_message(symbol, block)
       elsif SCREEN_ABORT.include?(symbol)
@@ -113,16 +117,42 @@ class SystemUpdate
         Device::Display.print_bitmap(SCREENS_UPATE_SUCCESS[symbol])
         getc(2000)
         Device::Display.print_bitmap(SCREEN_RESTART_PATH)
+        getc(2000)
         Device::System.restart
       end
       block.call
     end
 
-    def self.sucess_or_failed_message(block)
+    def self.part_sucess_message(block)
       if File.exists?(self.image[:image])
         return Device::Display.print_bitmap(self.image[:image])
       end
       block.call
+    end
+
+    def self.part_fail_message(block, reason)
+      file = update_part_fail_reasons(reason)
+      if File.exists?(file)
+        Device::Display.print_bitmap(file)
+        getc(2000)
+        return false
+      end
+      block.call
+    end
+
+    def self.update_part_fail_reasons(reason)
+      case reason
+      when DaFunk::Transaction::Download::SERIAL_NUMBER_NOT_FOUND
+        './shared/config_fail.bmp'
+      when DaFunk::Transaction::Download::FILE_NOT_FOUND
+        './shared/config_fail.bmp'
+      when DaFunk::Transaction::Download::COMMUNICATION_ERROR
+        './shared/network_system_error.bmp'
+      when DaFunk::Transaction::Download::IO_ERROR
+        './shared/config_fail.bmp'
+      else
+        './shared/network_system_error.bmp'
+      end
     end
   end
 end
