@@ -36,7 +36,7 @@ class CloudwalkUpdate
     end
 
     if key != Device::IO::CANCEL
-      DaFunk::ParamsDat.update_apps(true)
+      DaFunk::ParamsDat.update_apps(true, true, false, false)
       Device::System.restart
     end
   end
