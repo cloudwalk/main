@@ -208,7 +208,7 @@ class SystemUpdate < DaFunk::ScreenFlow
         percent = calculate_percent(part, self.total)
         ContextLog.info "show_percentage percent #{percent}"
         SystemUpdate::Screen.show_percentage(percent, part, self.total)
-        if (getc(10) == Device::IO::CANCEL)
+        if (getc(100) == Device::IO::CANCEL)
           return if SystemUpdate::Screen.show_message(:system_update_interrupt, block_interrupt)
           SystemUpdate::Screen.show_percentage(percent, part, self.total)
         end
