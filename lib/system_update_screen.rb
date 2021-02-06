@@ -101,7 +101,8 @@ class SystemUpdate
       if File.exists?(SCREENS_UPATE_SUCCESS[symbol]) && File.exists?(SCREEN_RESTART_PATH)
         Device::Display.print_bitmap(SCREENS_UPATE_SUCCESS[symbol])
         getc(2000)
-        return Device::Display.print_bitmap(SCREEN_RESTART_PATH)
+        Device::Display.print_bitmap(SCREEN_RESTART_PATH)
+        Device::System.restart
       end
       block.call
     end
