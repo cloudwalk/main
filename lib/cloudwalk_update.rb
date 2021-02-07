@@ -1,6 +1,7 @@
 class CloudwalkUpdate
   extend DaFunk::Helper
 
+  SYSTEM_UPDATE_FILE_PATH = './shared/system_update'
   NETWORK_START_IMAGE_PATH = [
     './shared/network_conectar_init1.bmp',
     './shared/network_conectar_init2.bmp',
@@ -47,8 +48,8 @@ class CloudwalkUpdate
     return unless Device::Network.connected?
     key = Device::IO::KEY_TIMEOUT
 
-    if File.exists?('./shared/system_update')
-      restart = File.read('./shared/system_update').split("\n")[1] == 'RESTART DEVICE'
+    if File.exists?(SYSTEM_UPDATE_FILE_PATH)
+      restart = File.read(SYSTEM_UPDATE_FILE_PATH).split("\n")[1] == 'RESTART DEVICE'
       key = count_down if restart
     else
       restart = false
@@ -57,7 +58,7 @@ class CloudwalkUpdate
 
     if key != Device::IO::CANCEL
       if restart
-        File.open('./shared/system_update', 'w') do |f|
+        File.open(SYSTEM_UPDATE_FILE_PATH, 'w') do |f|
           f.write("DONE\nDO NOT RESTART DEVICE")
         end
 
@@ -75,7 +76,7 @@ class CloudwalkUpdate
         SystemUpdate.new.start
       end
     else
-      File.delete('./shared/system_update') if File.exists?('./shared/system_update')
+      File.delete(SYSTEM_UPDATE_FILE_PATH) if File.exists?(SYSTEM_UPDATE_FILE_PATH)
     end
   end
 
@@ -105,8 +106,8 @@ class CloudwalkUpdate
   end
 
   def self.system_in_progress?
-    if File.exists?('./shared/system_update')
-      File.read('shared/system_update').split("\n")[0] == 'DONE'
+    if File.exists?(SYSTEM_UPDATE_FILE_PATH)
+      File.read(SYSTEM_UPDATE_FILE_PATH).split("\n")[0] == 'DONE'
     else
       false
     end
@@ -130,7 +131,7 @@ class CloudwalkUpdate
       elsif time < Time.now && !Device::Network.connected?
         break
       elsif getc(100)== Device::IO::CANCEL
-        File.delete('./shared/system_update') if File.exists?('./shared/system_update')
+        File.delete(SYSTEM_UPDATE_FILE_PATH) if File.exists?(SYSTEM_UPDATE_FILE_PATH)
         break
       end
       images_loop += 1
