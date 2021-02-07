@@ -51,11 +51,11 @@ class SystemUpdate < DaFunk::ScreenFlow
       else
         SystemUpdate::Screen.show_message(:system_update_not_available, block_not_found)
         File.delete(PATH_UPDATE_DONE) if File.exists?(PATH_UPDATE_DONE)
-        false
+        nil
       end
     else
       SystemUpdate::Screen.show_message(:attach_device_not_configured, block_connection_error)
-      false
+      nil
     end
   end
 
@@ -109,7 +109,7 @@ class SystemUpdate < DaFunk::ScreenFlow
       true
     else
       SystemUpdate::Screen.show_message(:system_update_file_not_found, block_fail)
-      false
+      nil
     end
   end
 
