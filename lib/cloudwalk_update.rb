@@ -2,6 +2,7 @@ class CloudwalkUpdate
   extend DaFunk::Helper
 
   SYSTEM_UPDATE_FILE_PATH = './shared/system_update'
+  APPLICATION_UPDATE_FILE_PATH = './shared/application_update'
   NETWORK_START_IMAGE_PATH = [
     './shared/network_conectar_init1.bmp',
     './shared/network_conectar_init2.bmp',
@@ -32,8 +33,8 @@ class CloudwalkUpdate
     return unless Device::Network.connected?
 
     key = count_down
-    if File.exists?("./shared/application_update")
-      File.delete("./shared/application_update")
+    if File.exists?(APPLICATION_UPDATE_FILE_PATH)
+      File.delete(APPLICATION_UPDATE_FILE_PATH)
     end
 
     if key != Device::IO::CANCEL
