@@ -2,6 +2,12 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.64.0 - 2021-02-08
+
+- Update da_funk (3.33.0);
+- Added support to images on CloudwalkUpdate#system and CloudwalkUpdate#application;
+- Added support to images on system update process.
+
 ### 3.63.3 - 2021-01-20
 
 - Added PATH_UPDATE_DONE constant on SystemUpdate class;
