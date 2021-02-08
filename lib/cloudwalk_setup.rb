@@ -24,10 +24,10 @@ class CloudwalkSetup
       })
     end
     Context::ThreadScheduler.start
+    Device::Setting.update_attributes('main_app_version' => Main.version)
     if update_process_in_progess? || !AdminConfiguration.device_activated?
       AdminConfiguration.configure_payment_application
     end
-    Device::Setting.update_attributes('main_app_version' => Main.version)
   end
 
   def self.setup_listeners
@@ -583,7 +583,8 @@ class CloudwalkSetup
   def self.boot_layout
     boot_layout_file = {
       :default =>         './shared/boot_welcome.bmp',
-      :update_process => './shared/six_steps_updating.bmp'
+      :update_process => './shared/six_steps_updating.bmp',
+      :attach_network => './shared/network_conectar_init1.bmp'
     }
 
     I18n.configure("main", Device::Setting.locale)
@@ -591,8 +592,12 @@ class CloudwalkSetup
     if update_process_in_progess?
       Device::Display.print_bitmap(boot_layout_file[:update_process])
     elsif CloudwalkUpdate.system_in_progress?
-      Device::Display.clear
-      I18n.pt(:system_update, :line => 0)
+      if File.exists?(boot_layout_file[:attach_network])
+        Device::Display.print_bitmap(boot_layout_file[:attach_network])
+      else
+        Device::Display.clear
+        I18n.pt(:system_update, :line => 0)
+      end
     else
       Device::Display.print_bitmap(boot_layout_file[:default])
     end
