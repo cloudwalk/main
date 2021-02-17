@@ -171,6 +171,16 @@ class CloudwalkSetup
       CloudwalkUpdate.application
     end
 
+    # Because payment application can update the table and it's running in other runtime instance
+    DaFunk::EventHandler.new :file_exists, './shared/emv_table_reload' do
+      if EmvTransaction.opened?
+        EmvTransaction.load('4')
+      else
+        EmvTransaction.boot
+      end
+      File.delete('./shared/emv_table_reload') if File.exists?('./shared/emv_table_reload')
+    end
+
     DaFunk::EventListener.new :file_exists_once do |event|
       event.start do @file_exists_once = {}; true end
 
