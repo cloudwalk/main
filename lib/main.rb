@@ -9,6 +9,8 @@ class Main < Device
     case self.execute(json)
     when :admin_configuration
       AdminConfiguration.perform
+    when :main_menu
+      AdminConfiguration.main_menu
     when :admin_communication
       AdminConfiguration.communication
     when :communication
@@ -55,6 +57,8 @@ class Main < Device
         :system_update
       elsif options["initialize"] == "send_logs"
         :send_logs
+      elsif options["initialize"] == "main_menu"
+        :main_menu
       else
         :normal
       end
