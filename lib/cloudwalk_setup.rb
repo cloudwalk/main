@@ -458,6 +458,8 @@ class CloudwalkSetup
   end
 
   def self.setup_events
+    major, min, patch = Device.version.to_s.split('.').map { |v| v.to_i }
+
     if InputTransactionAmount.enabled? && InputTransactionAmount.emv_ctls_table_installed?
       DaFunk::EventHandler.new :touchscreen, {:x => 41..199, :y => 179..233} do
         InputTransactionAmount.call
@@ -475,7 +477,11 @@ class CloudwalkSetup
     end
 
     if Device::System.model == "s920"
-      DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do AdminConfiguration.perform      end
+      if (major == 8 && min >= 1) || major > 8
+        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do CloudwalkSetup.start      end
+      else
+        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do AdminConfiguration.perform      end
+      end
     end
 
     DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed       end
