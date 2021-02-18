@@ -428,16 +428,22 @@ class CloudwalkSetup
       if File.exists?(schedule_path)
         schedule_params = JSON.parse(File.read(schedule_path))
         schedule_params["routines"].each do |params|
+          schedule_interval = {}
           ruby_app      = params["app"]
           function      = {
                             initialize: params["routine"]["initialize"],
                             parameters: params["routine"]["parameters"]
                           }
           interval      = params["routine"]["interval"].to_i
+          if params["routine"]["type_time"] == 'minutes'
+            schedule_interval[:minutes] = interval
+          else
+            schedule_interval[:seconds] = interval
+          end
           file_check    = params["routine"]["file_check"]
           function_boot = { :initialize => params["routine"]["boot"] }
 
-          DaFunk::EventHandler.new :schedule, seconds: interval do
+          DaFunk::EventHandler.new :schedule, schedule_interval do
             Device::Runtime.execute(ruby_app, function.to_json)
           end
 
