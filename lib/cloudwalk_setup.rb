@@ -171,6 +171,16 @@ class CloudwalkSetup
       CloudwalkUpdate.application
     end
 
+    # Because payment application can update the table and it's running in other runtime instance
+    DaFunk::EventHandler.new :file_exists, './shared/emv_table_reload' do
+      if EmvTransaction.opened?
+        EmvTransaction.load('4')
+      else
+        EmvTransaction.boot
+      end
+      File.delete('./shared/emv_table_reload') if File.exists?('./shared/emv_table_reload')
+    end
+
     DaFunk::EventListener.new :file_exists_once do |event|
       event.start do @file_exists_once = {}; true end
 
@@ -418,16 +428,22 @@ class CloudwalkSetup
       if File.exists?(schedule_path)
         schedule_params = JSON.parse(File.read(schedule_path))
         schedule_params["routines"].each do |params|
+          schedule_interval = {}
           ruby_app      = params["app"]
           function      = {
                             initialize: params["routine"]["initialize"],
                             parameters: params["routine"]["parameters"]
                           }
           interval      = params["routine"]["interval"].to_i
+          if params["routine"]["type_time"] == 'minutes'
+            schedule_interval[:minutes] = interval
+          else
+            schedule_interval[:seconds] = interval
+          end
           file_check    = params["routine"]["file_check"]
           function_boot = { :initialize => params["routine"]["boot"] }
 
-          DaFunk::EventHandler.new :schedule, seconds: interval do
+          DaFunk::EventHandler.new :schedule, schedule_interval do
             Device::Runtime.execute(ruby_app, function.to_json)
           end
 
@@ -448,6 +464,8 @@ class CloudwalkSetup
   end
 
   def self.setup_events
+    major, min, patch = Device.version.to_s.split('.').map { |v| v.to_i }
+
     if InputTransactionAmount.enabled? && InputTransactionAmount.emv_ctls_table_installed?
       DaFunk::EventHandler.new :touchscreen, {:x => 41..199, :y => 179..233} do
         InputTransactionAmount.call
@@ -465,7 +483,11 @@ class CloudwalkSetup
     end
 
     if Device::System.model == "s920"
-      DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do AdminConfiguration.perform      end
+      if (major == 8 && min >= 1) || major > 8
+        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do CloudwalkSetup.start      end
+      else
+        DaFunk::EventHandler.new :key_main, Device::IO::ALPHA  do AdminConfiguration.perform      end
+      end
     end
 
     DaFunk::EventHandler.new :key_main, Device::IO::CLEAR do Device::Printer.paperfeed       end
