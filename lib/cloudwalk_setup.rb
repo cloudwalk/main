@@ -434,7 +434,7 @@ class CloudwalkSetup
                             initialize: params["routine"]["initialize"],
                             parameters: params["routine"]["parameters"]
                           }
-          if params["routine"]["type_time"] == 'hours'
+          if params["routine"]["type_time"] == 'hours' && params["routine"]["slot"]
             schedule_interval[:slot]  = params["routine"]["slot"]
             schedule_interval[:hours] = params["routine"]["interval"].to_i
           elsif params["routine"]["type_time"] == 'minutes'
