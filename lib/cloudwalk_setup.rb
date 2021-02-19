@@ -434,11 +434,13 @@ class CloudwalkSetup
                             initialize: params["routine"]["initialize"],
                             parameters: params["routine"]["parameters"]
                           }
-          interval      = params["routine"]["interval"].to_i
-          if params["routine"]["type_time"] == 'minutes'
-            schedule_interval[:minutes] = interval
+          if params["routine"]["type_time"] == 'hours'
+            schedule_interval[:slot]  = params["routine"]["slot"]
+            schedule_interval[:hours] = params["routine"]["interval"].to_i
+          elsif params["routine"]["type_time"] == 'minutes'
+            schedule_interval[:minutes] = params["routine"]["interval"].to_i
           else
-            schedule_interval[:seconds] = interval
+            schedule_interval[:seconds] = params["routine"]["interval"].to_i
           end
           file_check    = params["routine"]["file_check"]
           function_boot = { :initialize => params["routine"]["boot"] }
