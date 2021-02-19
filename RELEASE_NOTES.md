@@ -2,6 +2,14 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.65.0 - 2021-02-19
+
+- Added new handler to check if emv_table_reload file exists, it means InfinitePay payment application has updated the table and main application needs to reload it;
+- Map menu# button to access payment application, only for versions >= 8.1 and S920 model;
+- Added :main_menu option which access main menu without password, because in this case the password was validated in another process;
+- Added possibility to schedule tasks in minutes and hours for ruby applications;
+- Update da_funk (3.33.1)
+
 ### 3.64.0 - 2021-02-08
 
 - Update da_funk (3.33.0);
