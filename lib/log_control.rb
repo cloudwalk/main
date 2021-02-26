@@ -9,7 +9,11 @@ class LogControl
     layout
     files = Dir.entries("./main").select { |e| e.include?(".log") }
     ret = files.inject(true) do |ret, log|
-      ret && LogsMenu.send_file(log)
+      if send_by_parts?(log)
+        ret && send_by_parts(log)
+      else
+        ret && LogsMenu.send_file(log)
+      end
     end
 
     if ret
@@ -47,5 +51,53 @@ class LogControl
   def self.get_date_today
     time = Time.now
     "%d-%02d-%02d %02d:%02d:%02d:%06d" % [time.year, time.month, time.day, time.hour, time.min, time.sec, time.usec]
+  end
+
+  def self.send_by_parts?(log)
+    File.size("./main/#{log}") > 51200
+  end
+
+  def self.send_by_parts(log)
+    old_name, path_name = ["./main/#{log}", "./main/#{log}"]
+    if log_from_today?(log)
+      path_name = "./main/#{log.split('.')[0]}_new.log"
+      File.delete(path_name) if File.exists?(path_name)
+      File.rename(old_name, path_name)
+    else
+      path_name = "./main/#{log}"
+    end
+
+    part = 1
+    result = true
+    File.open(path_name) do |file|
+      while buffer = file.read(1024 * 50)
+        filename = "./main/#{log.split('.')[0]}_part_#{part}.log"
+        File.open(filename, 'w') { |f| f.write(buffer) }
+        if File.exists?(filename)
+          newfile = filename[7..-1]
+          unless LogsMenu.send_file(newfile)
+            File.delete(filename) if File.exists?(filename)
+            result = false
+            break
+          end
+          part+=1
+        else
+          result = false
+          break
+        end
+      end
+    end
+    if result
+      File.delete(path_name) if File.exists?(path_name)
+      File.delete(old_name) if File.exists?(old_name)
+    end
+    result
+  rescue => e
+    ContextLog.exception(e, e.backtrace, 'send log by parts')
+    false
+  end
+
+  def self.log_from_today?(log)
+    log.split('.')[0] == get_date_today.split(' ')[0]
   end
 end
