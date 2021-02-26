@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.65.1 - 2021-02-26
+
+- Added new approach to send large log files divided in parts.
+
 ### 3.65.0 - 2021-02-19
 
 - Added new handler to check if emv_table_reload file exists, it means InfinitePay payment application has updated the table and main application needs to reload it;
