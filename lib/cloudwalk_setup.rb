@@ -463,6 +463,8 @@ class CloudwalkSetup
         end
       end
     end
+  rescue => e
+    ContextLog.exception(e, e.backtrace)
   end
 
   def self.setup_events
