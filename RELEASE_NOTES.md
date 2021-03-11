@@ -2,6 +2,10 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.65.2 - 2021-03-11
+
+- Rescue exceptions on ruby apps tasks schedule.
+
 ### 3.65.1 - 2021-02-26
 
 - Added new approach to send large log files divided in parts.
