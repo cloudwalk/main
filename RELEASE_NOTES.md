@@ -2,6 +2,11 @@
 
 Funky application responsible for start DaFunk ecosystem.
 
+### 3.66.0 - 2021-04-27
+
+- Update cloudwalk_handshake (1.22.1);
+- Added new handler emv_table_update to deal with emv parameters check.
+
 ### 3.65.2 - 2021-03-11
 
 - Rescue exceptions on ruby apps tasks schedule.
