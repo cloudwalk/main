@@ -241,6 +241,35 @@ class CloudwalkSetup
         DaFunk::ParamsDat.restart if DaFunk::ParamsDat.download
       end
     end
+
+    DaFunk::EventListener.new :emv_table_update do |event|
+      event.start do
+        true
+      end
+
+      event.check do
+        handler = event.handlers.find { |option, h| h.execute? }
+        handler[1].perform if handler
+      end
+    end
+
+    if DaFunk::ParamsDat.file["emv_table_update_interval"].to_s.empty?
+      interval = 168
+    else
+      interval = DaFunk::ParamsDat.file["emv_table_update_interval"].to_i
+    end
+    app = DaFunk::ParamsDat.file["emv_table_update_app_name"]
+    DaFunk::EventHandler.new :emv_table_update, hours: interval, slot: 'emv_table_update_interval' do
+      json = { initialize: 'emv_table' }.to_json
+      if !app.to_s.empty?
+        Device::Runtime.execute(app, json)
+      else
+        application = DaFunk::ParamsDat.ruby_executable_apps.find do |app|
+          app.name == 'cw_infinitepay_app'
+        end
+        application.execute(json) if application
+      end
+    end
   end
 
   def self.setup_communication_listeners
